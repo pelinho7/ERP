@@ -65,8 +65,12 @@ export class ProductsService {
       }))
   }
 
-  checkCodeNotTaken(code:string){
-    return this.http.get<boolean>(this.baseUrl+'products/check-code-not-taken/'+code).pipe(
+  checkCodeNotTaken(code:string,id:number){
+    var idParam='';
+    if(id!=null){
+      idParam='?id='+id;
+    }
+    return this.http.get<boolean>(this.baseUrl+'products/check-code-not-taken/'+code+idParam).pipe(
       map((result:boolean)=>{
         return result;
       })

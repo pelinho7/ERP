@@ -87,7 +87,7 @@ namespace Products.API.Controllers
         //[HttpGet("{code}", Name = "check-code-not-taken")]
         [Route("check-code-not-taken/{code}")]
         [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<bool>> CheckCodeNotTaken(string code)
+        public async Task<ActionResult<bool>> CheckCodeNotTaken(string code,int? id)
         {
             GetProductByCodeQuery command = new GetProductByCodeQuery(getCompanyId(), code);
             var result = await _mediator.Send(command);

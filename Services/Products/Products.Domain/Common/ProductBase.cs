@@ -34,5 +34,6 @@ namespace Products.Domain.Common
         public bool StockLevelControl { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal StockLevel { get; set; }
+        public bool Archived { get; set; }
     }
 }

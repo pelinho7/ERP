@@ -83,7 +83,7 @@ export class ProductComponent implements OnInit {
     })
 
     if(!this.editMode){
-      this.productForm.controls['code'].setAsyncValidators(ProductCodeNotTaken.createValidator(this.productsService));
+      this.productForm.controls['code'].setAsyncValidators(ProductCodeNotTaken.createValidator(this.productsService,this.product.id));
     }
 
     this.loaded=true;
