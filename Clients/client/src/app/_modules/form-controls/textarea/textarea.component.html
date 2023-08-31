@@ -1,0 +1,33 @@
+<div class="form-group">
+    <label class="label">{{label}}</label>
+    <textarea [class.is-invalid]="ngControl.touched && ngControl.invalid"
+    class="form-control w-100" 
+    [formControl]="ngControl.control"
+    [style.min-height.px]="minHeight"></textarea>
+
+    <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
+    <div *ngIf="ngControl.control?.errors?.minlength" class="invalid-feedback">
+        {{label}} must be at least {{ngControl.control.errors.minlength['requiredLength']}}
+    </div>
+    <div *ngIf="ngControl.control?.errors?.maxlength" class="invalid-feedback">
+        {{label}} must be at most {{ngControl.control.errors.maxlength['requiredLength']}}
+    </div>
+    <div *ngIf="ngControl.control?.errors?.isMatching" class="invalid-feedback">
+        Passwords do not match
+    </div>
+    <div *ngIf="ngControl.control?.errors?.email" class="invalid-feedback">
+        Email is invalid
+    </div>
+    <div *ngIf="ngControl.control?.errors?.emailTaken" class="invalid-feedback">
+        This email has been taken, please use another one
+    </div>
+    <div *ngIf="ngControl.control?.errors?.loginTaken" class="invalid-feedback">
+        This login has been taken, please use another one
+    </div>
+    <div *ngIf="ngControl.control?.errors?.attributeCodeTaken" class="invalid-feedback">
+        This attribute code has been taken, please use another one
+    </div>
+    <div *ngIf="ngControl.control?.errors?.categoryCodeTaken" class="invalid-feedback">
+        This category code has been taken, please use another one
+    </div>
+</div>

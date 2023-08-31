@@ -1,0 +1,10 @@
+<div class="float-right"
+    [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'menu-off':'menu-off'">
+        <ul class="form-navigation">
+            <li *ngFor="let item of navItems; let i = index" (click)="scrollToSection(i)" class="form-navigation-item" [ngClass]="i == 0 ? 'active' : ''">{{item}}</li>
+            <!-- <li (click)="scrollToSection(1)" class="form-navigation-item">Product Codes</li>
+            <li (click)="scrollToSection(2)" class="form-navigation-item">Parameters</li>
+            <li (click)="scrollToSection(3)" class="form-navigation-item">Additional</li> -->
+
+        </ul>
+    </div>

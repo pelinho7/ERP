@@ -1,0 +1,56 @@
+  <div id="side-navbar" class="overflow-auto"
+  [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'overlay-menu':'side-menu'">
+  <button class="btn btn-outline-warning float-right"
+  [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'':'d-none'" 
+  (click)="closeNav()">x</button>
+  <ul class="list-group list-group-flush" style="clear: both;">
+    <!-- <ngx-spinner name="side-navbar-spinner" size="medium" [fullScreen]="false">
+      <h3>Loading...</h3>
+    </ngx-spinner> -->
+    <li class="list-group-item list-group-item-light font-weight-bolder" 
+    [ngClass]="!(((resizeWindowWatcherService.mobileMode$|async)))?'p-4 border-bottom':'menu-header-colapsed p-0 border-0'"
+    style="font-size:large;">ERP</li>
+
+    <!-- <li class="list-group-item list-group-item-light border-bottom p-0">
+      <a class="menu-item p-3" href="#!">Dashboardcxzczx</a>
+    </li>
+  
+    <li class="list-group-item list-group-item-light border-bottom p-0" (click)="expandReduce($event)">
+      <a class="menu-item p-3" href="#!">
+        Dashboardcxzcz
+        <i class="fa fa-chevron-down float-right" aria-hidden="true"></i>
+      </a>
+      <ul class="p-0 submenu-closed">
+        <li class="list-group-item list-group-item-light p-0 submenu-item">
+          <a class="menu-item p-3" href="#!">Dashboard</a>
+        </li>
+        <li class="list-group-item list-group-item-light p-0 submenu-item">
+          <a class="menu-item p-3" href="#!">Dashboard</a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="list-group-item list-group-item-light border-bottom p-0">
+      <a class="menu-item p-3" href="#!" (click)="expandReduce($event)">Dashboardcxzczx</a>
+    </li> -->
+
+    <li *ngFor="let item of navbarItems" class="list-group-item list-group-item-light border-bottom p-0" (click)='item.subItems.length>0?expandReduce($event):""'>
+      <!-- <div class="menu-item p-3">
+        {{item.text}}
+        <i *ngIf="item.subItems.length>0" class="fa fa-chevron-down float-right" aria-hidden="true"></i>
+      </div> -->
+      
+      <a class="menu-item p-3" (click)='item.subItems.length==0?navigate(item.url):""'>
+        {{item.text}}
+        <i *ngIf="item.subItems.length>0" class="fa fa-chevron-down float-right" aria-hidden="true"></i>
+      </a>
+      <ul class="p-0 submenu-closed" *ngIf="item.subItems.length>0">
+        <li *ngFor="let subitem of item.subItems" class="list-group-item list-group-item-light p-0 submenu-item">
+          <a class="menu-item p-3"(click)='navigate(subitem.url)'>{{subitem.text}}</a>
+        </li>
+      </ul>
+    </li> 
+
+    
+    </ul>
+</div>

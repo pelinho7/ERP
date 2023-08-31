@@ -1,0 +1,14 @@
+<div class="form-group">
+    <label class="label">{{label}}</label>
+    <input #numberInput
+        [class.is-invalid]="ngControl.touched && ngControl.invalid"
+        type={{type}}
+        class="form-control" 
+        [formControl]="ngControl.control"
+        triggers="mouseenter:mouseleave" (change)="setDecimalPlaces($event)"
+        step="{{getStep()}}"
+        placeholder={{label}} min="{{min}}" max="{{max}}"
+        (change)="change($event.target.value)"
+        >
+    <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
+</div>

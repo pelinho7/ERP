@@ -1,0 +1,47 @@
+version: '3.4'
+
+services:
+  identityserverdb:
+    container_name: identityserverdb
+    environment:
+        SA_PASSWORD: "625a7ea4-e388-4c28-8c39-aa4769d06d0a"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+        - "1433:1433"
+
+  productsdb:
+    container_name: productsdb
+    environment:
+        SA_PASSWORD: "0612ac02-6603-4c53-b9ea-41b9b52d7f9b"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+        - "1434:1433"
+
+  ocelotapigw:
+    image: ${DOCKER_REGISTRY-}ocelotapigw
+    build:
+      context: .
+      dockerfile: ApiGateways/OcelotApiGw/Dockerfile
+    #depends_on:
+    #    - contractors.api      
+
+  #contractors.api:
+  #  image: ${DOCKER_REGISTRY-}contractorsapi
+  #  build:
+  #    context: .
+  #    dockerfile: Services/Contractors/Contractors.API/Dockerfile
+
+  #identityserver:
+  #  image: ${DOCKER_REGISTRY-}identityserver
+  #  build:
+  #    context: .
+  #    dockerfile: Services/IdentityServer/Dockerfile
+
+  #client:
+  #  image: ${DOCKER_REGISTRY-}client
+  #  build:
+  #    context: .
+  #    dockerfile: Clients/client/Dockerfile
+

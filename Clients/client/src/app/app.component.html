@@ -1,0 +1,14 @@
+<ngx-spinner name="main-spinner">
+  <h3>Loading...</h3>
+</ngx-spinner>
+
+<div class="d-flex flex-row h-100">
+  <!-- <div class="h-100" style="width: 200px; background-color: aquamarine;"></div> -->
+  <app-side-navbar [navbarItems]="navbarItems" style="display: contents"></app-side-navbar>
+
+
+  <div class="h-100 overflow-auto" style="width: 100%; background-color: #F4F6F8;" (scroll)="setCurrentActiveFormSection()">
+    <app-top-navbar></app-top-navbar>
+    <router-outlet></router-outlet>
+</div>
+

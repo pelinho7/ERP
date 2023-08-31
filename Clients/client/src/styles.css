@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* to override accordion tag which is used to generate tree */
+.tree-control .panel-body.card-block.card-body{
+    padding: 0rem;
+    padding-left: 1.25rem;
+  }
+/* html, body { height: 100%; } */
+/* body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container { z-index: 9999!important; } 
+
+app-category-tree-item{
+  width: 100%;
+}
+
+.carousel-indicators li{
+  margin-top: 10px;
+  border: black solid 2px;
+}
+
+span.active.bs-rating-star.ng-star-inserted {
+  color: orange;
+}
+
+html,body{
+  height: 100%;
+}
+

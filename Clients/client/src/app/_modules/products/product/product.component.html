@@ -1,0 +1,122 @@
+<div class="row m-0" *ngIf="saved">
+    <div class="col-12 col-md-6">
+        <button class="btn btn-outline-primary w-100" [routerLink]="['/products']">
+            <div class="float-left p-2 pl-4">
+                <i class="fa fa-list mr-4" aria-hidden="true"></i>
+                Back to list
+            </div>
+        </button>
+    </div>
+    <div class="col-12 col-md-6 mt-2 mt-md-0">
+        <button class="btn btn-outline-primary w-100" [routerLink]="['/products/add']">
+            <div class="float-left p-2 pl-4">
+                <i class="fa fa-plus mr-4" aria-hidden="true"></i>
+                Add next
+            </div>
+        </button>
+    </div>
+    
+</div>
+
+<ngx-spinner name="product-spinner" size="medium" [fullScreen]="false">
+    <h3>Loading...</h3>
+</ngx-spinner>
+<div *ngIf="loaded && !saved">
+    <div class="title-panel">
+        <div class="title-text">
+            {{title}}
+         </div>
+         <div>
+            <button type="button" form="productForm" (click)="save()" class="btn btn-primary" [ngClass]="(!productForm.dirty?'d-none':'')">
+                Save</button>
+            <button class="btn" (click)="close()"><i class="fa fa-times" aria-hidden="true"></i></button>
+         </div>
+        
+      </div>
+    <div class="row ml-0 mr-0">
+        <form id="productForm" [formGroup]="productForm"
+        [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'form-without-menu':'form-with-menu'">
+            <div class="form-section" data-menu-item-id="item-id">
+                <h2 class="form-section-title">General</h2>
+                <div class="form-section-content">
+                    <input type="number" class="d-none" [formControl]='productForm.controls["id"]'/>
+                    <input type="text" class="d-none" [formControl]='productForm.controls["code"]'/>
+
+                    <app-text-input [formControl]='productForm.controls["name"]' [label]='"Name"'></app-text-input>
+    
+                    <div class="form-row">
+                        <app-select class="col-12 col-sm-6" [formControl]='productForm.controls["vatObject"]' 
+                            [label]='"VAT"' [keyValueMap]="staticDataService.getPolishVats()"></app-select>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='productForm.controls["unit"]' [label]='"Unit"'></app-text-input>
+                    </div>
+    
+                    <div class="form-row">
+                        <app-select class="col-12 col-md-6" [formControl]='productForm.controls["type"]' 
+                        [label]='"Type"' [keyValueMap]="staticDataService.getProductTypes()"
+                        (valueChangeEvent)="typeChanged($event)"></app-select>
+                        <app-number-input *ngIf="itemProduct" class="col-12 col-sm-6" [decimalPlaces]="4" [formControl]='productForm.controls["stockLevel"]' 
+                            [label]='"Stock level"'></app-number-input>
+                    </div>
+    
+                    <div class="form-row" *ngIf="itemProduct">
+                        <app-checkbox-input [formControl]='productForm.controls["stockLevelControl"]' [contents]='"Stock level control"'
+                            (valueChangeEvent)="stockLevelControlChanged($event)"></app-checkbox-input>
+                    </div>
+                </div>
+    
+                <h2 class="form-section-title">Sales</h2>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <app-number-input class="col-12 col-sm-4" [decimalPlaces]="2" [formControl]='productForm.controls["saleNetPrice"]'
+                            [label]='"Net price"' (valueChangeEvent)="saleNetPriceChanged($event)"></app-number-input>
+                        <app-number-input class="col-12 col-sm-4" [decimalPlaces]="2" [formControl]='productForm.controls["saleGrossPrice"]' [label]='"Gross price"'></app-number-input>
+                        <app-select class="col-12 col-sm-4" [formControl]='productForm.controls["saleCurrency"]' 
+                            [label]='"Currency"' [keyValueMap]="staticDataService.getCurrencies()"></app-select>
+                    </div>
+                </div>
+    
+                <h2 class="form-section-title">Purchase</h2>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <app-number-input class="col-12 col-sm-4" [decimalPlaces]="2" [formControl]='productForm.controls["purchaseNetPrice"]' 
+                            [label]='"Net price"' (valueChangeEvent)="purchaseNetPriceChanged($event)"></app-number-input>
+                        <app-number-input class="col-12 col-sm-4" [decimalPlaces]="2" [formControl]='productForm.controls["purchaseGrossPrice"]' [label]='"Gross price"'></app-number-input>
+                        <app-select class="col-12 col-sm-4" [formControl]='productForm.controls["purchaseCurrency"]' 
+                            [label]='"Currency"' [keyValueMap]="staticDataService.getCurrencies()"></app-select>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="form-section">
+                <h2 class="form-section-title">Product Codes</h2>
+                <div class="form-section-content">
+                    <app-text-input class="col-6" [disabled]="editMode" [formControl]='productForm.controls["code"]' [label]='"Code"'></app-text-input>
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-md-6" [formControl]='productForm.controls["ean"]' [label]='"EAN"'></app-text-input>
+                        <app-text-input class="col-12 col-md-6" [formControl]='productForm.controls["pkwiu"]' [label]='"PKWiU"'></app-text-input>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="form-section">
+                <h2 class="form-section-title">Parameters</h2>
+                <div class="form-section-content">
+                    <app-checkbox-input [formControl]='productForm.controls["description"]' [contents]='"Split payment"'></app-checkbox-input>
+                </div>
+            </div>
+        
+            <div class="form-section">
+                <h2 class="form-section-title">Additional</h2>
+                <div class="form-section-content">
+                    <app-textarea [formControl]='productForm.controls["description"]' [label]='"Description"'></app-textarea>
+                </div>
+            </div>
+        </form>
+    
+        <app-form-nav [navItems]="navItems"></app-form-nav>
+    </div>
+</div>
+
+
+
+

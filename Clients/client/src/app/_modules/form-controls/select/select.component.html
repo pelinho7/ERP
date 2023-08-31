@@ -1,0 +1,16 @@
+<div class="form-group">
+    <label class="label">{{label}}</label>
+    <select 
+    [class.is-invalid]="ngControl.touched && ngControl.invalid"
+    class="form-control" 
+    [formControl]="ngControl.control"
+    (change)="change(select.value)" #select>
+    <option *ngFor="let keyValue of keyValueMap| keyvalue:asIsOrder" let i = index [value]="keyValue.key"  
+        [attr.disabled] = "keyValue.key==null && hideNullValue?'disabled' : null"
+        [attr.hidden] = "keyValue.key==null && hideNullValue?'hidden' : null">
+        {{keyValue.value}}
+    </option> 
+   
+</select>
+    <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
+</div>

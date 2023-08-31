@@ -1,0 +1,62 @@
+version: '3.4'
+
+services:
+  #ocelotapigw:
+  #  container_name: ocelotapigw--cc4bf452-3294-4738-8212-99524533e983
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #  ports:
+  #    - "8000:80"
+  identityserverdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+
+  productsdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+
+  ocelotapigw:
+    container_name: ocelotapigw
+    ports:
+    - "7000:80"
+    - "8000:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=cc4bf452-3294-4738-8212-99524533e983
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/OcelotApiGw.pfx
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https
+
+  #contractors.api:
+  #  container_name: contractors.api
+  #  ports:
+  #  - "7002:80"
+  #  - "8002:443"
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - ASPNETCORE_URLS=https://+:443;http://+:80
+  #    - ASPNETCORE_Kestrel__Certificates__Default__Password=85cd7b26-611a-4864-8916-7362e8fd1367
+  #    - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/Contractors.API.pfx
+  #  volumes:
+  #    - ~/.aspnet/https:/root/.aspnet/https
+
+  #identityserver:
+  #  container_name: identityserver
+  #  ports:
+  #  - "7001:80"
+  #  - "8001:443"
+  #  environment:
+  #    - ASPNETCORE_ENVIRONMENT=Development
+  #    - ASPNETCORE_URLS=https://+:443;http://+:80
+  #    - ASPNETCORE_Kestrel__Certificates__Default__Password=f10ff190-5451-4fb4-9106-3e54547f9277
+  #    - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/IdentityServer.pfx
+  #    - "ConnectionStrings:IdentityConnectionString=Server=identityserverdb;Database=IdentityServerDb;User Id=sa;Password=625a7ea4-e388-4c28-8c39-aa4769d06d0a;TrustServerCertificate=True;"
+  #  depends_on:
+  #    - identityserverdb
+  #  volumes:
+  #    - ~/.aspnet/https:/root/.aspnet/https
+
+  #client:
+  #  container_name: client
+  #  ports:
+  #  - "7020:80"
+  #  - "8020:443"

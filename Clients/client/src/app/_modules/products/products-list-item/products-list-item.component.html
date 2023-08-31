@@ -1,0 +1,24 @@
+<div class="fold" (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
+    <div class="product-card" (click)="edit()">
+        <div class="d-flex justify-content-between name-price-section">
+            <div class="smart-wrap name">
+                <!-- 432432eeeeeeeeeeeeeeeeeeeeeee fndsjigfnds fndsjfnsao fsdaf fgdst43 -->
+                {{product.name}}
+            </div>
+            <div>
+                <!-- 41516+515616321321 -->
+                {{product.saleNetPrice| currency:product.saleCurrency}}
+            </div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <div class="smart-wrap code">
+                {{product.code}}
+            </div>
+            <div *ngIf="!product.stockLevelControl">
+                {{product.stockLevel| number:'1.4-4' }} {{product.unit}}
+                <i *ngIf="mouseOver || selectMode" class="fa" aria-hidden="true"
+                    [ngClass]="!selected ? 'fa-circle-thin' : 'fa-check-circle text-primary'" (click)="select($event)"></i>
+            </div>
+        </div>
+    </div>
+</div>

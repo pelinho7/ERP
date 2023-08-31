@@ -1,0 +1,89 @@
+<!-- <div class="d-none d-sm-block" id="shop-panel">
+    <h1 class="m-0">Shop</h1>
+</div> -->
+<!-- title-margin-pading -->
+
+<!-- <div class="row border-bottom container-fluid p-2 pr-3 pl-3  m-0"> -->
+
+  <div *ngIf="!selectMode" class="title-panel" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'row':''">
+    <div class="title-text" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'order-0 col-2 p-0':''">
+      Products
+     </div>
+     <!-- <input type="text" placeholder="weras"> -->
+     <div class="input-group w-50 flex-row" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'order-2 col-12 p-0 mt-2':''">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
+      </div>
+      <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" 
+        [(ngModel)]="nameFilterInput" (keypress)="onEnterNameFilerInput($event)" (blur)="onBlurNameFilerInput()">
+    </div>
+    <button class="btn btn-primary" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'order-1 col-10':''"
+    [routerLink]="['/products/add']" >Add Product</button>
+  </div>
+
+  <div *ngIf="selectMode" class="title-panel">
+    <button class="btn" (click)="clearSelections()"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="mt-auto mb-auto font-weight-bolder font-italic">Selected: {{selectedIds.length}}</div>
+    <button class="btn float-right" (click)="delete()"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+  </div>
+
+  <div class="row m-0">
+    <div class="col-12 col-md-6 col-lg-4 p-3" *ngFor="let product of items">
+      <app-products-list-item [product]="product" (selectChangedEvent)="selectChanged($event)"
+       [selectMode]="selectMode"></app-products-list-item>
+  </div>
+</div>
+
+
+  <!-- <div style="width: 100px; height: 100px; background-color: red;">
+
+  </div>
+  <div style="width: 100px; height: 100px; background-color: red;">
+
+  </div>
+  <div style="width: 100px; height: 100px; background-color: red;">
+
+  </div>
+  <div style="width: 100px; height: 100px; background-color: red;">
+
+  </div>
+  <div style="width: 100px; height: 100px; background-color: red;">
+
+  </div>
+  <div style="width: 100px; height: 100px; background-color: red;">
+
+  </div>
+  <div style="width: 100px; height: 100px; background-color: red;">
+
+  </div> -->
+
+
+
+  <!-- <pagination class="pagination-panel" id="pagination-panel" [boundaryLinks]="true" 
+  [totalItems]="5"
+  [itemsPerPage]="5"></pagination> -->
+
+  <!-- <div id="pagination-panel" [ngStyle]="paginationPanelStyles" class="d-flex justify-content-center">
+    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.itemsPerPage"
+            [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.page"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
+</div> -->
+
+
+<div id="pagination-panel" [ngStyle]="paginationPanelStyles" class="pagination-panel" *ngIf="pagination">
+  <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.itemsPerPage"
+          [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.page"
+          (pageChanged)="pageChanged($event)"
+          previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+  </pagination>
+</div>
+
+
+<!-- <div class="h-100" id="container">
+  
+</div> -->
+
+<!-- <div id="copyright">
+  Copyright Foo web designs
+</div> -->

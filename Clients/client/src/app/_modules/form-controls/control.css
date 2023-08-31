@@ -1,0 +1,12 @@
+.label{
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 150%;
+    padding-bottom: 5px;
+    color: #A3A3A3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0px;
+    display: block;
+    color: rgba(0, 0, 0, 0.4);
+}
