@@ -5,7 +5,7 @@ using Products.Appilcation.Features.Products.Commands.Interfaces;
 
 namespace Products.Application.Features.Products.Commands.UpdateProduct
 {
-    public class UpdateProductCommand : ProductCommandBase,IRequest<ProductVm>
+    public class UpdateProductCommand : ProductCommandBase,IRequest<ProductVm>, IUpdateProductCommand
     {
         public int Id { get; set; }
         public int? LastModifiedBy { get; set; }

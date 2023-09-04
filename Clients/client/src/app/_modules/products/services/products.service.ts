@@ -5,13 +5,15 @@ import { environment } from 'src/environments/environment';
 import { Product } from '../product';
 import { Pagination } from '../../utilities/models/pagination';
 import { PagedList } from '../../utilities/models/pagedList';
+import { CreateProductsUrlParamsService } from './create-products-url-params.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
   baseUrl=environment.apiUrl;
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient
+    ,private createProductsUrlParamsService:CreateProductsUrlParamsService) { }
 
   add(product:Product){
     console.log('user');
@@ -28,30 +30,9 @@ export class ProductsService {
       }))
   }
 
-  createProductsUrlParams(name:string,pagination:Pagination){
-    let path:string='';
-    let params=new HttpParams();
-    if(name.length>0){
-      path = '?name='+name
-    }
-    if(path.length>0){
-      path = '?' + path.substring(1);
-    }
-    if(pagination && pagination.page>1){
-      let page='page='+pagination.page;
-      if(path.length==0){
-        path += '?';
-      }
-      else{
-        path += '&';
-      }
-      path+=page;
-    }
-    return path;//[path,params]
-  }
-
+  
   getList(name:string,pagination:Pagination){
-    var path = this.createProductsUrlParams(name,pagination)
+    var path = this.createProductsUrlParamsService.createProductsUrlParams(name,pagination)
     return this.http.get<any>(this.baseUrl+'products'+path).pipe(
       map((products:PagedList<Product>)=>{
         return products;

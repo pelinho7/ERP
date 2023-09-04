@@ -69,11 +69,11 @@
             previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
     </pagination>
 </div> -->
+<div>{{pagination.page}}</div>
 
-
-<div id="pagination-panel" [ngStyle]="paginationPanelStyles" class="pagination-panel" *ngIf="pagination">
-  <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.itemsPerPage"
-          [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.page"
+<div id="pagination-panel" [ngStyle]="paginationPanelStyles" class="pagination-panel" *ngIf="pagination && loaded">
+  <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.pageSize"
+          [itemsPerPage]="pagination.pageSize" [(ngModel)]="pagination.page"
           (pageChanged)="pageChanged($event)"
           previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
   </pagination>

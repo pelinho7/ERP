@@ -2,9 +2,9 @@ export class Product {
     id: number=0;
     code:string='';
     ean:string;
-    pkwiu:string='';
+    pkWiU:string='';
     name:string;
-    descriprion:string='';
+    description:string='';
     unit:string='szt.';
     vatObject:string;
     vatValue:number=23;

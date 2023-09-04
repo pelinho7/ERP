@@ -63,10 +63,10 @@ export class ProductComponent implements OnInit {
 
     this.productForm=this.fb.group({
       id:[this.product.id,Validators.required],
-      code:[{value: this.product.code, disabled: this.editMode},[Validators.required,Validators.maxLength(30)]],
+      code:[this.product.code,[Validators.required,Validators.maxLength(30)]],
       name:[this.product.name,[Validators.required,Validators.maxLength(100)]],
       ean:[this.product.ean,[Validators.required,Validators.maxLength(13)]],
-      pkwiu:[this.product.pkwiu],
+      pkWiU:[this.product.pkWiU],
       type:[this.product.type],
       unit:[this.product.unit,Validators.required],
       stockLevelControl:[this.product.stockLevelControl],
@@ -78,13 +78,11 @@ export class ProductComponent implements OnInit {
       purchaseCurrency:[this.product.purchaseCurrency],
       purchaseNetPrice:[this.product.purchaseNetPrice,Validators.min(0.01)],
       purchaseGrossPrice:[this.product.purchaseGrossPrice,Validators.min(0.01)],
-      description:[this.product.descriprion],
+      description:[this.product.description],
       splitPayment:[this.product.splitPayment],
     })
 
-    if(!this.editMode){
-      this.productForm.controls['code'].setAsyncValidators(ProductCodeNotTaken.createValidator(this.productsService,this.product.id));
-    }
+    this.productForm.controls['code'].setAsyncValidators(ProductCodeNotTaken.createValidator(this.productsService,this.product.id));
 
     this.loaded=true;
   }
@@ -152,9 +150,7 @@ export class ProductComponent implements OnInit {
       product.vatValue=vat.vatValue;
 
       this.loadingScreenService.show();
-      console.log(product)
-      // product.descriprion='';
-      // product.pkwiu='';
+
       if(this.editMode){
         this.update(product);
       }

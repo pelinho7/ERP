@@ -2,9 +2,9 @@
 
 namespace Products.Application.Features.Products.Commands.UpdateProduct
 {
-    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+    public class ArchiveProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
-        public UpdateProductCommandValidator()
+        public ArchiveProductCommandValidator()
         {
             RuleFor(p => p.Code)
                 .NotEmpty().WithMessage("{Code} is required.")

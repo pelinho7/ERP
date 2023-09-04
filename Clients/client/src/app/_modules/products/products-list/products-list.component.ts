@@ -6,6 +6,7 @@ import { ResizeWindowWatcherService } from '../../navbars/services/resize-window
 import { ActivatedRoute, Router } from '@angular/router';
 import { UrlParamsService } from '../../utilities/services/url-params.service';
 import { Product } from '../product';
+import { CreateProductsUrlParamsService } from '../services/create-products-url-params.service';
 
 @Component({
   selector: 'app-products-list',
@@ -29,45 +30,53 @@ export class ProductsListComponent implements OnInit {
     ,private router: Router
     ,private route: ActivatedRoute
     ,private urlParamsService:UrlParamsService
+    ,private createProductsUrlParamsService:CreateProductsUrlParamsService
     ) { }
 
   ngOnInit(): void {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-
-    var urlParam = '';
-    var urlWithoutParams = '';
-    this.pagination=new Pagination();
-    if (this.router.url.includes('?')) {
-      var paramIndexStart = this.router.url.indexOf('?');
-      urlParam = this.router.url.substring(paramIndexStart + 1);
-      urlWithoutParams = this.router.url.substring(0, paramIndexStart);
-      urlParam.split('&')
-      
-      var urlObject = this.urlParamsService.urlParams2Object(urlParam)
-      this.pagination.castJsonToClass(urlObject)
-      if(urlObject.name){
-        this.nameFilterInput=urlObject.name;
+    //this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.route.queryParams.subscribe(params =>{
+      this.pagination=new Pagination();
+      if(params.name){
+        this.nameFilterInput=params.name
       }
-    }
-    else {
-      urlWithoutParams = this.router.url;
-    }
+      else{
+        this.nameFilterInput='';
+      }
+      //this.urlParamsService.urlParams2Object(params)
+      // this.pagination.page=
+      this.pagination.castJsonToClass((params as Pagination))
+
+      console.log(this.pagination)
+      this.loadProducts();
+    });
+
+
+    // var urlParam = '';
+    // var urlWithoutParams = '';
+    // this.pagination=new Pagination();
+    // if (this.router.url.includes('?')) {
+    //   var paramIndexStart = this.router.url.indexOf('?');
+    //   urlParam = this.router.url.substring(paramIndexStart + 1);
+    //   urlWithoutParams = this.router.url.substring(0, paramIndexStart);
+    //   urlParam.split('&')
+      
+    //   var urlObject = this.urlParamsService.urlParams2Object(urlParam)
+    //   this.pagination.castJsonToClass(urlObject)
+    //   if(urlObject.name){
+    //     this.nameFilterInput=urlObject.name;
+    //   }
+    // }
+    // else {
+    //   urlWithoutParams = this.router.url;
+    // }
     
     
 
     
-    //console.log( this.route.queryParams)
-    
-    
-    //this.loaded=true;
-    this.loadProducts();
-    // this.loadingScreenService.show();
-    //   this.productsService.getList().subscribe(x=>{
-        
-    //   })
-    //   .add(()=>{
-    //     this.loadingScreenService.hide();
-    //   })
+   // this.loadProducts();
+
+   
 
   }
 
@@ -79,23 +88,28 @@ export class ProductsListComponent implements OnInit {
     }
   }
 
+  navigate(){
+    var path = this.createProductsUrlParamsService.createProductsUrlParams(this.nameFilterInput,this.pagination)
+    this.router.navigateByUrl('/products'+path)
+  }
+
   onBlurNameFilerInput(){
-    this.loadProducts();
+    //this.loadProducts();
+    this.navigate();
   }
 
   loadProducts(){
-    if(this.nameFilterInput!=this.nameFilter || !this.loaded){
+    if(/*this.nameFilterInput!=this.nameFilter || !this.loaded*/true){
       this.nameFilter=this.nameFilterInput;
       this.loadingScreenService.show();
       this.productsService.getList(this.nameFilterInput,this.pagination).subscribe(x=>{
         this.pagination=x.pagination;
-        this.items=x.items;
-        this.items = this.items.concat(this.items)
-        this.items = this.items.concat(this.items)
-        this.items = this.items.concat(this.items)
 
+
+        this.items=x.items;
+        
         this.loaded=true;
-        console.log(this.items)
+        console.log(this.pagination)
       })
       .add(()=>{
         this.loadingScreenService.hide();
@@ -120,5 +134,9 @@ export class ProductsListComponent implements OnInit {
 
   delete(){
 
+  }
+
+  pageChanged(event:any){
+    this.navigate();
   }
 }

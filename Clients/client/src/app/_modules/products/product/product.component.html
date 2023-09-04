@@ -40,7 +40,6 @@
                 <h2 class="form-section-title">General</h2>
                 <div class="form-section-content">
                     <input type="number" class="d-none" [formControl]='productForm.controls["id"]'/>
-                    <input type="text" class="d-none" [formControl]='productForm.controls["code"]'/>
 
                     <app-text-input [formControl]='productForm.controls["name"]' [label]='"Name"'></app-text-input>
     
@@ -90,10 +89,10 @@
             <div class="form-section">
                 <h2 class="form-section-title">Product Codes</h2>
                 <div class="form-section-content">
-                    <app-text-input class="col-6" [disabled]="editMode" [formControl]='productForm.controls["code"]' [label]='"Code"'></app-text-input>
+                    <app-text-input class="col-6" [formControl]='productForm.controls["code"]' [label]='"Code"'></app-text-input>
                     <div class="form-row">
                         <app-text-input class="col-12 col-md-6" [formControl]='productForm.controls["ean"]' [label]='"EAN"'></app-text-input>
-                        <app-text-input class="col-12 col-md-6" [formControl]='productForm.controls["pkwiu"]' [label]='"PKWiU"'></app-text-input>
+                        <app-text-input class="col-12 col-md-6" [formControl]='productForm.controls["pkWiU"]' [label]='"PKWiU"'></app-text-input>
                     </div>
                 </div>
             </div>
@@ -101,7 +100,7 @@
             <div class="form-section">
                 <h2 class="form-section-title">Parameters</h2>
                 <div class="form-section-content">
-                    <app-checkbox-input [formControl]='productForm.controls["description"]' [contents]='"Split payment"'></app-checkbox-input>
+                    <app-checkbox-input [formControl]='productForm.controls["splitPayment"]' [contents]='"Split payment"'></app-checkbox-input>
                 </div>
             </div>
         

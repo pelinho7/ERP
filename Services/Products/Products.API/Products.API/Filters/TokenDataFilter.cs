@@ -29,6 +29,7 @@ namespace Products.API.Filters
                 else if (context.HttpContext.Request.Method == "PUT")
                 {
                     var arguments = ((IUpdateProductCommand)context.ActionArguments.First().Value);
+                    arguments.CompanyId = int.Parse(companyId);
                     arguments.LastModifiedBy = int.Parse(userId);
                     arguments.LastModifiedDate = DateTime.UtcNow;
                 }

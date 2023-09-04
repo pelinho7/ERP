@@ -8,6 +8,7 @@ using Products.Application.Features.Orders.Commands.CreateProduct;
 using Products.Application.Features.Products.Commands.ArchiveProduct;
 using Products.Application.Features.Products.Commands.CreateProduct;
 using Products.Application.Features.Products.Commands.UpdateProduct;
+using Products.Application.Features.Products.Queries.CheckProductCodeNotTaken;
 using Products.Application.Features.Products.Queries.GetProductByCode;
 using Products.Application.Features.Products.Queries.GetProductById;
 using Products.Application.Features.Products.Queries.GetProductsList;
@@ -48,7 +49,7 @@ namespace Products.API.Controllers
         [Authorize]
         [HttpGet(Name = "GetProducts")]
         [ProducesResponseType(typeof(List<ProductVm>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> Get(string name="",int pageNumber = 1, int pageSize=100)
+        public async Task<ActionResult> Get(string name="",int pageNumber = 1, int pageSize=10)
         {
             GetProductsListQuery command = new GetProductsListQuery(getCompanyId(), name, pageNumber,pageSize);
             var result = await _mediator.Send(command);
@@ -89,9 +90,9 @@ namespace Products.API.Controllers
         [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<bool>> CheckCodeNotTaken(string code,int? id)
         {
-            GetProductByCodeQuery command = new GetProductByCodeQuery(getCompanyId(), code);
+            CheckProductCodeNotTakenQuery command = new CheckProductCodeNotTakenQuery(getCompanyId(), code,id);
             var result = await _mediator.Send(command);
-            return Ok(result == null);
+            return Ok(result);
         }
     }
 }

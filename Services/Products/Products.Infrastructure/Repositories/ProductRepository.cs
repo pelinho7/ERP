@@ -4,7 +4,7 @@ using Products.Application.Contracts.Persistence;
 using Products.Application.Features.Products.Queries.GetProductsList;
 using Products.Domain.Common;
 using Products.Domain.Entities;
-using Products.Infrastructure.Common;
+using Products.Application.Common;
 using Products.Infrastructure.Persistence;
 using System.Collections.Generic;
 using System.ComponentModel.Design;

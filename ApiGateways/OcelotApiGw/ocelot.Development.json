@@ -36,32 +36,32 @@
         }
       ],
       "UpstreamPathTemplate": "/Products",
-      "UpstreamHttpMethod": [ "POST" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "PATCH" ]
     },
-    {
-      "DownstreamPathTemplate": "/api/v1/Products",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Products",
-      "UpstreamHttpMethod": [ "PUT" ]
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Products",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Products",
-      "UpstreamHttpMethod": [ "PATCH" ]
-    },
+    //{
+    //  "DownstreamPathTemplate": "/api/v1/Products",
+    //  "DownstreamScheme": "https",
+    //  "DownstreamHostAndPorts": [
+    //    {
+    //      "Host": "localhost",
+    //      "Port": "5003"
+    //    }
+    //  ],
+    //  "UpstreamPathTemplate": "/Products",
+    //  "UpstreamHttpMethod": [ "PUT" ]
+    //},
+    //{
+    //  "DownstreamPathTemplate": "/api/v1/Products",
+    //  "DownstreamScheme": "https",
+    //  "DownstreamHostAndPorts": [
+    //    {
+    //      "Host": "localhost",
+    //      "Port": "5003"
+    //    }
+    //  ],
+    //  "UpstreamPathTemplate": "/Products",
+    //  "UpstreamHttpMethod": [ "PATCH" ]
+    //},
     {
       "DownstreamPathTemplate": "/api/v1/Products/check-code-not-taken/{code}",
       "DownstreamScheme": "https",
@@ -85,19 +85,20 @@
       ],
       "UpstreamPathTemplate": "/Products/{id}",
       "UpstreamHttpMethod": [ "GET" ]
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/Products",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5003"
-        }
-      ],
-      "UpstreamPathTemplate": "/Products",
-      "UpstreamHttpMethod": [ "GET" ]
     }
+    //,
+    //{
+    //  "DownstreamPathTemplate": "/api/v1/Products",
+    //  "DownstreamScheme": "https",
+    //  "DownstreamHostAndPorts": [
+    //    {
+    //      "Host": "localhost",
+    //      "Port": "5003"
+    //    }
+    //  ],
+    //  "UpstreamPathTemplate": "/Products",
+    //  "UpstreamHttpMethod": [ "GET" ]
+    //}
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:5000"

@@ -1,14 +1,17 @@
 export class Pagination{
     page:number=1;
-    itemsPerPage:number=10;
+    pageSize:number=10;
     totalItems:number=null
     totalPages:number=null
 
     constructor(){}
 
     castJsonToClass(json:Pagination){
-        if(json.itemsPerPage){
-          this.itemsPerPage = json.itemsPerPage;
+        if(json.pageSize){
+          this.pageSize = json.pageSize;
+        }
+        else{
+          this.pageSize = 10;
         }
         if(json.page){
           this.page = json.page;
