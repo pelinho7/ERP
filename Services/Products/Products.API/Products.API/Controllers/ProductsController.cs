@@ -14,6 +14,7 @@ using Products.Application.Features.Products.Queries.GetProductById;
 using Products.Application.Features.Products.Queries.GetProductsList;
 using Products.Domain.Entities;
 using System.Net;
+using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Products.API.Controllers
@@ -36,6 +37,13 @@ namespace Products.API.Controllers
             return int.Parse(companyId);
         }
 
+        [NonAction]
+        private int getUserId()
+        {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
+            return int.Parse(userId);
+        }
+
         [Authorize]
         [HttpGet("{id}", Name = "GetProduct")]
         [ProducesResponseType(typeof(ProductVm), (int)HttpStatusCode.OK)]
@@ -49,9 +57,9 @@ namespace Products.API.Controllers
         [Authorize]
         [HttpGet(Name = "GetProducts")]
         [ProducesResponseType(typeof(List<ProductVm>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> Get(string name="",int pageNumber = 1, int pageSize=10)
+        public async Task<ActionResult> Get(string name="",int page = 1, int pageSize=10)
         {
-            GetProductsListQuery command = new GetProductsListQuery(getCompanyId(), name, pageNumber,pageSize);
+            GetProductsListQuery command = new GetProductsListQuery(getCompanyId(), name, page,pageSize);
             var result = await _mediator.Send(command);
             return Ok(result);
         }
@@ -77,10 +85,15 @@ namespace Products.API.Controllers
         [Authorize]
         [HttpPatch(Name = "Archive")]
         [ProducesResponseType(typeof(ProductVm), (int)StatusCodes.Status200OK)]
-        public async Task<ActionResult<ProductVm>> ArchiveProduct([FromBody] ArchiveProductCommand command)
+        public async Task<ActionResult<ProductVm>> ArchiveProducts([FromBody] IEnumerable<ArchiveProductCommand> commands)
         {
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            foreach (var command in commands)
+            {
+                var result = await _mediator.Send(command);
+                //if(result<1)
+                //    throw new Exception("")
+            }
+            return Ok();
         }
 
         [Authorize]

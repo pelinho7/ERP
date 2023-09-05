@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UrlParamsService } from '../../utilities/services/url-params.service';
 import { Product } from '../product';
 import { CreateProductsUrlParamsService } from '../services/create-products-url-params.service';
+import { ConfirmService } from '../../message-dialogs/services/confirm.service';
+import { Archive } from '../../utilities/models/archive';
 
 @Component({
   selector: 'app-products-list',
@@ -31,90 +33,59 @@ export class ProductsListComponent implements OnInit {
     ,private route: ActivatedRoute
     ,private urlParamsService:UrlParamsService
     ,private createProductsUrlParamsService:CreateProductsUrlParamsService
+    ,private confirmService:ConfirmService
     ) { }
 
   ngOnInit(): void {
-    //this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.route.queryParams.subscribe(params =>{
       this.pagination=new Pagination();
+
+      console.log(this.pagination)
       if(params.name){
         this.nameFilterInput=params.name
       }
       else{
         this.nameFilterInput='';
       }
-      //this.urlParamsService.urlParams2Object(params)
-      // this.pagination.page=
+
       this.pagination.castJsonToClass((params as Pagination))
 
-      console.log(this.pagination)
       this.loadProducts();
     });
-
-
-    // var urlParam = '';
-    // var urlWithoutParams = '';
-    // this.pagination=new Pagination();
-    // if (this.router.url.includes('?')) {
-    //   var paramIndexStart = this.router.url.indexOf('?');
-    //   urlParam = this.router.url.substring(paramIndexStart + 1);
-    //   urlWithoutParams = this.router.url.substring(0, paramIndexStart);
-    //   urlParam.split('&')
-      
-    //   var urlObject = this.urlParamsService.urlParams2Object(urlParam)
-    //   this.pagination.castJsonToClass(urlObject)
-    //   if(urlObject.name){
-    //     this.nameFilterInput=urlObject.name;
-    //   }
-    // }
-    // else {
-    //   urlWithoutParams = this.router.url;
-    // }
-    
-    
-
-    
-   // this.loadProducts();
-
-   
-
   }
 
   onEnterNameFilerInput(event:KeyboardEvent ){
     if(!this.loaded)return;
 
     if(event.key == 'Enter'){
-      this.loadProducts();
+      this.navigate(this.nameFilterInput,new Pagination());
     }
   }
 
-  navigate(){
-    var path = this.createProductsUrlParamsService.createProductsUrlParams(this.nameFilterInput,this.pagination)
+  navigate(name:string,pagination:Pagination){
+    var path = this.createProductsUrlParamsService.createProductsUrlParams(name,pagination)
+    this.loaded=false;
     this.router.navigateByUrl('/products'+path)
   }
 
   onBlurNameFilerInput(){
-    //this.loadProducts();
-    this.navigate();
+    this.navigate(this.nameFilterInput,new Pagination());
   }
 
   loadProducts(){
-    if(/*this.nameFilterInput!=this.nameFilter || !this.loaded*/true){
-      this.nameFilter=this.nameFilterInput;
+    this.nameFilter=this.nameFilterInput;
       this.loadingScreenService.show();
+
       this.productsService.getList(this.nameFilterInput,this.pagination).subscribe(x=>{
         this.pagination=x.pagination;
-
 
         this.items=x.items;
         
         this.loaded=true;
-        console.log(this.pagination)
       })
       .add(()=>{
         this.loadingScreenService.hide();
       })
-    }
   }
 
   selectChanged(productId:number){
@@ -132,11 +103,30 @@ export class ProductsListComponent implements OnInit {
     this.selectMode=false;
   }
 
-  delete(){
+  archive(){
+    this.confirmService.confirm('Archiving of items', 'Are you sure you want to archive the selected items ('+this.selectedIds.length+') ?').subscribe(result=>{
 
+      if(result){
+        this.loadingScreenService.show();
+        var productsToArchive = this.selectedIds.map(x => <Archive>{
+          id: x
+        });
+
+        this.productsService.archive(productsToArchive).subscribe(x=>{
+          // this.navigate(this.nameFilterInput,this.pagination);
+          this.loadProducts();
+        })
+        .add(()=>{
+          this.loadingScreenService.hide();
+        })
+      }
+    })
   }
 
   pageChanged(event:any){
-    this.navigate();
+    if(!this.loaded || event.page == this.pagination.page)return;
+
+    this.pagination.page=event.page;
+    this.navigate(this.nameFilterInput,this.pagination);
   }
 }

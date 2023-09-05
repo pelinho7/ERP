@@ -1,10 +1,3 @@
-<!-- <div class="d-none d-sm-block" id="shop-panel">
-    <h1 class="m-0">Shop</h1>
-</div> -->
-<!-- title-margin-pading -->
-
-<!-- <div class="row border-bottom container-fluid p-2 pr-3 pl-3  m-0"> -->
-
   <div *ngIf="!selectMode" class="title-panel" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'row':''">
     <div class="title-text" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'order-0 col-2 p-0':''">
       Products
@@ -23,8 +16,10 @@
 
   <div *ngIf="selectMode" class="title-panel">
     <button class="btn" (click)="clearSelections()"><i class="fa fa-times" aria-hidden="true"></i></button>
-    <div class="mt-auto mb-auto font-weight-bolder font-italic">Selected: {{selectedIds.length}}</div>
-    <button class="btn float-right" (click)="delete()"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+    <div class="float-right">
+      <div class="mt-auto mb-auto font-weight-bolder font-italic d-inline-block">Selected: {{selectedIds.length}}</div>
+      <button class="btn" (click)="archive()"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+    </div>
   </div>
 
   <div class="row m-0">
@@ -35,27 +30,6 @@
 </div>
 
 
-  <!-- <div style="width: 100px; height: 100px; background-color: red;">
-
-  </div>
-  <div style="width: 100px; height: 100px; background-color: red;">
-
-  </div>
-  <div style="width: 100px; height: 100px; background-color: red;">
-
-  </div>
-  <div style="width: 100px; height: 100px; background-color: red;">
-
-  </div>
-  <div style="width: 100px; height: 100px; background-color: red;">
-
-  </div>
-  <div style="width: 100px; height: 100px; background-color: red;">
-
-  </div>
-  <div style="width: 100px; height: 100px; background-color: red;">
-
-  </div> -->
 
 
 
@@ -63,13 +37,7 @@
   [totalItems]="5"
   [itemsPerPage]="5"></pagination> -->
 
-  <!-- <div id="pagination-panel" [ngStyle]="paginationPanelStyles" class="d-flex justify-content-center">
-    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.itemsPerPage"
-            [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.page"
-            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
-    </pagination>
-</div> -->
-<div>{{pagination.page}}</div>
+ 
 
 <div id="pagination-panel" [ngStyle]="paginationPanelStyles" class="pagination-panel" *ngIf="pagination && loaded">
   <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.pageSize"

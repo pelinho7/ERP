@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace Products.Infrastructure.Repositories
 {
@@ -31,6 +32,7 @@ namespace Products.Infrastructure.Repositories
         {
             var expression = PredicateBuilder.True<Product>();
             expression = expression.And(x => x.CompanyId == companyId);
+            expression = expression.And(x => x.Archived == false);
             if (!string.IsNullOrEmpty(productName))
                 expression = expression.And(x => x.Name.Contains(productName));
             return expression;
@@ -39,8 +41,8 @@ namespace Products.Infrastructure.Repositories
         public async Task<IEnumerable<Product>> GetProductsByCompanyId(int companyId
             , string productName, int pageNumber, int pageSize)
         {
-            var expression = getProductsExpression(companyId,productName);
-            var productList = await GetAsync(expression);
+            var expression = getProductsExpression(companyId, productName);
+            var productList = await GetAsync(expression, pageNumber, pageSize);
 
             return productList;
         }

@@ -29,6 +29,7 @@ namespace Products.Application.Features.Products.Queries.CheckProductCodeNotTake
         {
             var expression = PredicateBuilder.True<Product>();
             expression = expression.And(x => x.CompanyId == request.CompanyId);
+            expression = expression.And(x => x.Archived == false);
             expression = expression.And(x => x.Code.ToUpper() == request.ProductCode.ToUpper());
             if (request.ProductId.HasValue)
                 expression = expression.And(x => x.Id!= request.ProductId.Value);

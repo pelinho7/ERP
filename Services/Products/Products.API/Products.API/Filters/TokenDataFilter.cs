@@ -33,6 +33,18 @@ namespace Products.API.Filters
                     arguments.LastModifiedBy = int.Parse(userId);
                     arguments.LastModifiedDate = DateTime.UtcNow;
                 }
+                else if (context.HttpContext.Request.Method == "PATCH")
+                {
+                    if(context.ActionArguments.First().Value is IEnumerable<IArchiveProductCommand>)
+                    {
+                        foreach(var archive in ((IEnumerable<IArchiveProductCommand>)context.ActionArguments.First().Value))
+                        {
+                            archive.CompanyId = int.Parse(companyId);
+                            archive.LastModifiedBy = int.Parse(userId);
+                            archive.LastModifiedDate = DateTime.UtcNow;
+                        }
+                    }
+                }
             }
 
             await next();

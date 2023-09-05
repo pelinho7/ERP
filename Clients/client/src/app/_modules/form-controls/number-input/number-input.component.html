@@ -11,4 +11,6 @@
         (change)="change($event.target.value)"
         >
     <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
+    <div *ngIf="ngControl.control?.errors?.min" class="invalid-feedback">{{label}} min value is {{ngControl.control?.errors?.min?.min}}</div>
+    <div *ngIf="ngControl.control?.errors?.max" class="invalid-feedback">{{label}} max value is {{ngControl.control?.errors?.max?.max}}</div>
 </div>

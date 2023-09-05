@@ -6,6 +6,7 @@ import { Product } from '../product';
 import { Pagination } from '../../utilities/models/pagination';
 import { PagedList } from '../../utilities/models/pagedList';
 import { CreateProductsUrlParamsService } from './create-products-url-params.service';
+import { Archive } from '../../utilities/models/archive';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,13 @@ export class ProductsService {
   update(product:Product){
     return this.http.put<any>(this.baseUrl+'products',product).pipe(
       map((product:Product)=>{
+
+      }))
+  }
+
+  archive(productsToArchive:Archive[]){
+    return this.http.patch<any>(this.baseUrl+'products',productsToArchive).pipe(
+      map((product:any)=>{
 
       }))
   }

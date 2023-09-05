@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Products.Appilcation.Features.Products;
+using Products.Application.Features.Products.Commands.ArchiveProduct;
 using Products.Application.Features.Products.Commands.CreateProduct;
 using Products.Application.Features.Products.Commands.UpdateProduct;
 //using Products.Application.Features.Orders.Commands.CheckoutOrder;
@@ -15,6 +16,7 @@ namespace Products.Application.Mappings
         {
             CreateMap<Product, CreateProductCommand>().ReverseMap();
             CreateMap<Product, UpdateProductCommand>().ReverseMap();
+            CreateMap<Product, ArchiveProductCommand>().ReverseMap();
             CreateMap<Product, ProductHistory>().ReverseMap();
             CreateMap<Product, ProductHistory>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))

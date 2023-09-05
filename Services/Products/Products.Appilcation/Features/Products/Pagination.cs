@@ -13,11 +13,11 @@ namespace Products.Appilcation.Features.Products
         public Pagination(int count, int pageNumber, int pageSize)
         {
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-            CurrentPage = Math.Min(pageNumber, TotalPages);
+            Page = Math.Min(pageNumber, TotalPages);
             TotalCount = count;
             PageSize = pageSize;
         }
-        public int CurrentPage { get; set; }
+        public int Page { get; set; }
         public int TotalPages { get; set; }
         public int TotalCount { get; set; }
         public int PageSize { get; set; }

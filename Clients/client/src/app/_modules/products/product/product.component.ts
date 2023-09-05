@@ -143,12 +143,13 @@ export class ProductComponent implements OnInit {
   }
 
   save(){
+    this.productForm.markAllAsTouched();
     if(this.productForm.valid){
       var product=(this.productForm.value as Product);
       var vat =this.staticDataService.getVatObjectFromJsonObject(product.vatObject)
       product.vatFlag=vat.vatFlag;
       product.vatValue=vat.vatValue;
-
+      
       this.loadingScreenService.show();
 
       if(this.editMode){
