@@ -14,5 +14,6 @@ namespace Products.Application.Contracts.Persistence
         Task<Product> GetProductById(int productId,int companyId);
         Task<Product> GetProductByCode(string productCode, int companyId);
         Task<int> CountProducts(int companyId, string productName);
+        Task<int> CountProductsByCode(int companyId, string productCode, int? productId);
     }
 }

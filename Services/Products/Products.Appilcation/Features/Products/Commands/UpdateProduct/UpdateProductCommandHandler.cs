@@ -30,7 +30,7 @@ namespace Products.Application.Features.Products.Commands.UpdateProduct
 
         public async Task<ProductVm> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var productToUpdate = await _productRepository.GetByIdAsync(request.Id);
+            var productToUpdate = await _productRepository.GetProductById(request.Id,request.CompanyId);
             if (productToUpdate == null)
             {
                 throw new NotFoundException(nameof(Product), request.Id);

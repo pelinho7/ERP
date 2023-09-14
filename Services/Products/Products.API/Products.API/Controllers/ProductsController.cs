@@ -84,21 +84,18 @@ namespace Products.API.Controllers
 
         [Authorize]
         [HttpPatch(Name = "Archive")]
-        [ProducesResponseType(typeof(ProductVm), (int)StatusCodes.Status200OK)]
+        [ProducesResponseType((int)StatusCodes.Status200OK)]
         public async Task<ActionResult<ProductVm>> ArchiveProducts([FromBody] IEnumerable<ArchiveProductCommand> commands)
         {
             foreach (var command in commands)
             {
                 var result = await _mediator.Send(command);
-                //if(result<1)
-                //    throw new Exception("")
             }
             return Ok();
         }
 
         [Authorize]
         [HttpGet]
-        //[HttpGet("{code}", Name = "check-code-not-taken")]
         [Route("check-code-not-taken/{code}")]
         [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<bool>> CheckCodeNotTaken(string code,int? id)

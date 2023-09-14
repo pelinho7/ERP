@@ -31,6 +31,11 @@ namespace Products.Application.Features.Orders.Commands.CreateProduct
         public async Task<ProductVm> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var productEntity = _mapper.Map<Product>(request);
+            var count = await _productRepository.CountProductsByCode(request.CompanyId, request.Code, null);
+            if(count > 0)
+            {
+                throw new Exception($"Product with the code {request.Code} already exists.");
+            }
             var newProduct = await _productRepository.AddAsync(productEntity);
             
             var productHistoryEntity = _mapper.Map<ProductHistory>(newProduct);

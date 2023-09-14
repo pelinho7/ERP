@@ -7,6 +7,7 @@ namespace Products.Application.Features.Products.Queries.GetProductsList
 {
     public class GetProductsListQuery : IRequest<PagedList<ProductVm>>
     {
+        public GetProductsListQuery() { }
         public GetProductsListQuery(int companyId, string productName, int pageNumber, int pageSize)
         {
             CompanyId = companyId;

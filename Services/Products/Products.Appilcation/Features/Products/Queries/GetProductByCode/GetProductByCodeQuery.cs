@@ -7,6 +7,7 @@ namespace Products.Application.Features.Products.Queries.GetProductByCode
 {
     public class GetProductByCodeQuery : IRequest<ProductVm>
     {
+        public GetProductByCodeQuery() { }
         public GetProductByCodeQuery(int companyId, string productCode)
         {
             this.CompanyId = companyId;

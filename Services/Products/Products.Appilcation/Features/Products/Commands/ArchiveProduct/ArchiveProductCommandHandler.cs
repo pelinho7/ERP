@@ -30,7 +30,7 @@ namespace Products.Application.Features.Products.Commands.ArchiveProduct
 
         public async Task<int> Handle(ArchiveProductCommand request, CancellationToken cancellationToken)
         {
-            var productToArchive = await _productRepository.GetByIdAsync(request.Id);
+            var productToArchive = await _productRepository.GetProductById(request.Id, request.CompanyId);
             if (productToArchive == null)
             {
                 throw new NotFoundException(nameof(Product), request.Id);

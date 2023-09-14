@@ -11,6 +11,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using Azure.Core;
 
 namespace Products.Infrastructure.Repositories
 {
@@ -53,6 +54,19 @@ namespace Products.Infrastructure.Repositories
             var expression = getProductsExpression(companyId, productName);
             var count = await CountAsync(expression);
 
+            return count;
+        }
+
+        public async Task<int> CountProductsByCode(int companyId
+            , string productCode,int? productId)
+        {
+            var expression = PredicateBuilder.True<Product>();
+            expression = expression.And(x => x.CompanyId == companyId);
+            expression = expression.And(x => x.Archived == false);
+            expression = expression.And(x => x.Code.ToUpper() == productCode.ToUpper());
+            if (productId.HasValue)
+                expression = expression.And(x => x.Id != productId.Value);
+            var count = await CountAsync(expression);
             return count;
         }
 
