@@ -26,6 +26,34 @@ export class StaticDataService {
     return types;
   }
 
+  getPaymentForms():Map<number,string>{
+    var types: Map<number, string> = new Map();
+    types.set(0, "Cash");
+    types.set(1, "Transfer");
+    types.set(2, "Card");
+
+    return types;
+  }
+
+  getContractorTypes():Map<number,string>{
+    var types: Map<number, string> = new Map();
+    types.set(0, "Natural person");
+    types.set(1, "Business Entity");
+
+    return types;
+  }
+
+  getContractorStatuses():Map<number,string>{
+    var types: Map<number, string> = new Map();
+    types.set(0, "Domestic");
+    types.set(1, "Intra-EU");
+    types.set(2, "Non-EU");
+    types.set(3, "Trilateral Intra-EU");
+    types.set(4, "OSS procedure");
+
+    return types;
+  }
+
   getPolishVats():Map<string,string>{
     var vats: Map<string, string> = new Map();
     vats.set(JSON.stringify(new Vat(23)), "23%");

@@ -9,6 +9,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 export class CheckboxInputComponent implements ControlValueAccessor,OnInit {
   @Input() contents:string;
+  @Input() inlineInput:false;
   displayedContents:string;
   overflowContents:boolean=false;
   maxContentsLength:number=100;
@@ -35,8 +36,8 @@ export class CheckboxInputComponent implements ControlValueAccessor,OnInit {
       this.displayedContents=this.contents;
       (event.target as Element).innerHTML='Less';
     }
-    console.log((event.target as Element).innerHTML)
-    console.log((event))
+    // console.log((event.target as Element).innerHTML)
+    // console.log((event))
   }
 
   change(value:boolean){

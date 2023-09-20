@@ -1,28 +1,16 @@
 ﻿using Contractors.Domain.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Ordering.Domain.Entities
+namespace Contractors.Domain.Entities
 {
-    public class Contractor : EntityBase
+    public class Contractor : ContractorBase
     {
-        public string UserName { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
-        public decimal TotalPrice { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public int? LastModifiedBy { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
 
-        // BillingAddress
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string EmailAddress { get; set; }
-        public string AddressLine { get; set; }
-        public string Country { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
+        public ICollection<ContractorHistory> ContractorHistories { get; set; }
 
-        // Payment
-        public string CardName { get; set; }
-        public string CardNumber { get; set; }
-        public string Expiration { get; set; }
-        public string CVV { get; set; }
-        public int PaymentMethod { get; set; }
     }
 }

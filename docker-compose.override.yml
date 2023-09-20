@@ -13,6 +13,9 @@ services:
   productsdb:
     image: mcr.microsoft.com/mssql/server:2017-latest
 
+  contractorsdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+
   ocelotapigw:
     container_name: ocelotapigw
     ports:

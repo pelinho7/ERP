@@ -1,0 +1,133 @@
+<div class="row m-0" *ngIf="saved">
+    <div class="col-12 col-md-6">
+        <button class="btn btn-outline-primary w-100" [routerLink]="['/contractors']">
+            <div class="float-left p-2 pl-4">
+                <i class="fa fa-list mr-4" aria-hidden="true"></i>
+                Back to list
+            </div>
+        </button>
+    </div>
+    <div class="col-12 col-md-6 mt-2 mt-md-0">
+        <button class="btn btn-outline-primary w-100" [routerLink]="['/contractors/add']">
+            <div class="float-left p-2 pl-4">
+                <i class="fa fa-plus mr-4" aria-hidden="true"></i>
+                Add next
+            </div>
+        </button>
+    </div>
+    
+</div>
+
+<ngx-spinner name="contractor-spinner" size="medium" [fullScreen]="false">
+    <h3>Loading...</h3>
+</ngx-spinner>
+<div *ngIf="loaded && !saved">
+    <div class="title-panel">
+        <div class="title-text">
+            {{title}}
+         </div>
+         <div>
+            <button type="button" form="contractorForm" (click)="save()" class="btn btn-primary" [ngClass]="(!contractorForm.dirty?'d-none':'')">
+                Save</button>
+            <button class="btn" (click)="close()"><i class="fa fa-times" aria-hidden="true"></i></button>
+         </div>
+        
+      </div>
+    <div class="row ml-0 mr-0">
+        <form id="contractorForm" [formGroup]="contractorForm"
+        [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'form-without-menu':'form-with-menu'">
+            <div class="form-section" data-menu-item-id="item-id">
+                <h2 class="form-section-title">General</h2>
+                <div class="form-section-content">
+                    <input type="number" class="d-none" [formControl]='contractorForm.controls["id"]'/>
+
+
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-4" [formControl]='contractorForm.controls["countryCode"]' [label]='"Country Code"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-8" [formControl]='contractorForm.controls["vatId"]' [label]='"VAT ID"'></app-text-input>
+                    </div>
+
+                    <app-text-input [formControl]='contractorForm.controls["name"]' [label]='"Company Name"'></app-text-input>
+
+
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["repFirstName"]' [label]='"Representative First Name"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["repLastName"]' [label]='"Representative Last Name"'></app-text-input>
+                    </div>
+                    
+                    <div class="form-row">
+                        <app-text-input class="col-6" [formControl]='contractorForm.controls["code"]' [label]='"Code"'></app-text-input>
+                    </div>
+
+                    <div class="form-row">
+                        <app-select class="col-12 col-md-4" [formControl]='contractorForm.controls["type"]' 
+                        [label]='"Type"' [keyValueMap]="staticDataService.getContractorTypes()"></app-select>
+                        <app-select class="col-12 col-md-4" [formControl]='contractorForm.controls["status"]' 
+                        [label]='"Status"' [keyValueMap]="staticDataService.getContractorStatuses()"></app-select>
+                        <app-checkbox-input [formControl]='contractorForm.controls["activeTaxpayer"]' 
+                        [contents]='"Active taxpayer"' [inlineInput]="true"></app-checkbox-input>
+                    </div>
+
+                </div>
+    
+     
+            </div>
+        
+            <div class="form-section">
+                <h2 class="form-section-title">Address</h2>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <app-text-input class="col-12" [formControl]='contractorForm.controls["country"]' [label]='"Country"'></app-text-input>
+                        <app-text-input class="col-12" [formControl]='contractorForm.controls["city"]' [label]='"City"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12" [formControl]='contractorForm.controls["street"]' [label]='"Street"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["streetNo"]' [label]='"Street No."'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["apartmentNo"]' [label]='"Apt/Unit"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["zipCode"]' [label]='"Zip Code"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["postalOffice"]' [label]='"Postal Office"'></app-text-input>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="form-section">
+                <h2 class="form-section-title">Trade</h2>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <app-number-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["discount"]' 
+                        [label]='"Discount [%]"' [decimalPlaces]="2"></app-number-input>
+                        <app-select class="col-12 col-md-6" [formControl]='contractorForm.controls["paymentForm"]' 
+                        [label]='"Payment Form"' [keyValueMap]="staticDataService.getPaymentForms()"></app-select>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12" [formControl]='contractorForm.controls["bankAccountNumber"]' [label]='"Bank Account Number"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["swiftCode"]' [label]='"SWIFT Code"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-checkbox-input [formControl]='contractorForm.controls["splitPayment"]' [contents]='"Split payment"'></app-checkbox-input>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="form-section">
+                <h2 class="form-section-title">Additional</h2>
+                <div class="form-section-content">
+                    <app-textarea [formControl]='contractorForm.controls["note"]' [label]='"Note"'></app-textarea>
+                    <app-textarea [formControl]='contractorForm.controls["additionalInformation"]' [label]='"Additional Information"'></app-textarea>
+                </div>
+            </div>
+        </form>
+    
+        <app-form-nav [navItems]="navItems"></app-form-nav>
+    </div>
+</div>
+
+
+
+

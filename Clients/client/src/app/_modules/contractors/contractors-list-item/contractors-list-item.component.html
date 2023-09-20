@@ -1,0 +1,22 @@
+<div class="fold" (mouseenter)="mouseEnter()" (mouseleave)="mouseLeave()">
+    <div class="product-card" (click)="edit()">
+        <div class="d-flex justify-content-between name-price-section">
+            <div class="smart-wrap name">
+                {{contractor.name}}
+            </div>
+            <div>
+                <!-- {{contractor.saleNetPrice| currency:contractor.saleCurrency}} -->
+            </div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <div class="smart-wrap code">
+                {{contractor.code}}
+            </div>
+            <!-- <div *ngIf="!contractor.stockLevelControl">
+                {{contractor.stockLevel| number:'1.4-4' }} {{contractor.unit}}
+                <i *ngIf="mouseOver || selectMode" class="fa" aria-hidden="true"
+                    [ngClass]="!selected ? 'fa-circle-thin' : 'fa-check-circle text-primary'" (click)="select($event)"></i>
+            </div> -->
+        </div>
+    </div>
+</div>

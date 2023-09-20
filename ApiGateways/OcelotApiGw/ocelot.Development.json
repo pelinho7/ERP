@@ -15,6 +15,30 @@
     //  "FileCacheOptions": { "TtlSeconds": 30 }
     //},
     {
+      "DownstreamPathTemplate": "/api/v1/Contractors",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5002"
+        }
+      ],
+      "UpstreamPathTemplate": "/Contractors",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Contractors/check-code-not-taken/{code}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5002"
+        }
+      ],
+      "UpstreamPathTemplate": "/Contractors/check-code-not-taken/{code}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
       "DownstreamPathTemplate": "/api/v1/Contractors/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -24,7 +48,7 @@
         }
       ],
       "UpstreamPathTemplate": "/Contractors/{id}",
-      "UpstreamHttpMethod": [ "GET", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/Products",

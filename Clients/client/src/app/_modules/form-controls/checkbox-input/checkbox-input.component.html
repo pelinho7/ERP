@@ -1,9 +1,12 @@
 <div class="form-group">
-    <div class="form-check">
+    <!-- style="margin-top: 0.5em;" center horizontal -->
+    <div class="form-check" style="margin-top: 0.5em;">
+        <!-- <label class="label" style="opacity: 0;">a</label> virtual labrt used to center horizontal with other controls with labels -->
+        <label class="label" style="opacity: 0;" [ngClass]="!inlineInput ? 'd-none' : ''">a</label>
         <input type="checkbox" class="form-check-input"
             [class.is-invalid]="ngControl.touched && ngControl.invalid"
             [formControl]="ngControl.control" checked="true" (change)="change($event.target.checked)">
-            <label>{{displayedContents}}</label>
+            <label style="font-size: larger;">{{displayedContents}}</label>
             <a class="ml-2" *ngIf="overflowContents" (click)="moreLess($event)">More</a>
             <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Field must be checked</div>
     </div>

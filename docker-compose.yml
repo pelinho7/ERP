@@ -19,6 +19,15 @@ services:
     ports:
         - "1434:1433"
 
+  contractorsdb:
+    container_name: contractorsdb
+    environment:
+        SA_PASSWORD: "86e81d96-f2a9-45e6-934c-bb41a17534be"
+        ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+        - "1435:1433"
+
   ocelotapigw:
     image: ${DOCKER_REGISTRY-}ocelotapigw
     build:
