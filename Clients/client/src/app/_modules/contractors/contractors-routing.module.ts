@@ -6,9 +6,9 @@ import { ContractorComponent } from './contractor/contractor.component';
 
 // const routes: Routes = [];
 export const routes: Routes = [
-  {path:'',component:ContractorsListComponent},
-  {path:':id',component:ContractorComponent},
-  {path:'add',component:ContractorComponent},
+  {path:'',component:ContractorsListComponent,canActivate:[AuthenticationGuard]},
+  {path:':id',component:ContractorComponent,canActivate:[AuthenticationGuard]},
+  {path:'add',component:ContractorComponent,canActivate:[AuthenticationGuard]},
 ];
 
 @NgModule({

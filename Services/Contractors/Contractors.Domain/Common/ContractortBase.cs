@@ -41,7 +41,7 @@ namespace Contractors.Domain.Common
         [Column(TypeName = "varchar(30)")]
         public string Phone { get; set; }
         [Column(TypeName = "varchar(50)")]
-        public string email { get; set; }
+        public string Email { get; set; }
         [Column(TypeName = "varchar(30)")]
         public string Mobile { get; set; }
         [Column(TypeName = "varchar(30)")]

@@ -13,7 +13,7 @@ import { Archive } from '../../utilities/models/archive';
 @Component({
   selector: 'app-contractors-list',
   templateUrl: './contractors-list.component.html',
-  styleUrls: ['./contractors-list.component.css']
+  styleUrls: ['./contractors-list.component.css','../../../shared css/list-item.css']
 })
 export class ContractorsListComponent implements OnInit {
 

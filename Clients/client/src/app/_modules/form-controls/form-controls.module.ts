@@ -6,8 +6,9 @@ import { TextareaComponent } from './textarea/textarea.component';
 import { SelectComponent } from './select/select.component';
 import { NumberInputComponent } from './number-input/number-input.component';
 import { CheckboxInputComponent } from './checkbox-input/checkbox-input.component';
-
-
+import { SelectSearchComponent } from './select-search/select-search.component';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   declarations: [
@@ -15,18 +16,22 @@ import { CheckboxInputComponent } from './checkbox-input/checkbox-input.componen
     TextareaComponent,
     SelectComponent,
     NumberInputComponent,
-    CheckboxInputComponent
+    CheckboxInputComponent,
+    SelectSearchComponent,
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    NgxMatSelectSearchModule,
   ],
   exports: [
     TextInputComponent,
     TextareaComponent,
     SelectComponent,
     NumberInputComponent,
-    CheckboxInputComponent
+    CheckboxInputComponent,
+    SelectSearchComponent,
   ]
 })
 export class FormControlsModule { }

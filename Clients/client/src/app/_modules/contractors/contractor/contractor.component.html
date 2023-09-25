@@ -38,13 +38,19 @@
         [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'form-without-menu':'form-with-menu'">
             <div class="form-section" data-menu-item-id="item-id">
                 <h2 class="form-section-title">General</h2>
+
+
                 <div class="form-section-content">
                     <input type="number" class="d-none" [formControl]='contractorForm.controls["id"]'/>
 
 
                     <div class="form-row">
-                        <app-text-input class="col-12 col-sm-4" [formControl]='contractorForm.controls["countryCode"]' [label]='"Country Code"'></app-text-input>
-                        <app-text-input class="col-12 col-sm-8" [formControl]='contractorForm.controls["vatId"]' [label]='"VAT ID"'></app-text-input>
+                        <app-select-search class="col-12 col-md-4" [formControl]='contractorForm.controls["countryCode"]' 
+                        [label]='"Country Code"' [keyValueMap]="staticDataService.getCountryPrefixes()" (valueChangeEvent)="countryCodeChanged($event)"></app-select-search>
+        
+                        <!-- <app-text-input class="col-12 col-sm-4" [formControl]='contractorForm.controls["countryCode"]' [label]='"Country Code"'></app-text-input> -->
+                        <app-text-input class="col-12 col-sm-8" [formControl]='contractorForm.controls["vatId"]' 
+                            [label]='"VAT ID"' [acceptableCharsRegex]='"[A-Za-z0-9]+"' [upperCaseOnly]="true"></app-text-input>
                     </div>
 
                     <app-text-input [formControl]='contractorForm.controls["name"]' [label]='"Company Name"'></app-text-input>
@@ -56,7 +62,8 @@
                     </div>
                     
                     <div class="form-row">
-                        <app-text-input class="col-6" [formControl]='contractorForm.controls["code"]' [label]='"Code"'></app-text-input>
+                        <app-text-input class="col-6" [formControl]='contractorForm.controls["code"]' 
+                        [label]='"Code"' [upperCaseOnly]="true"></app-text-input>
                     </div>
 
                     <div class="form-row">
@@ -93,6 +100,23 @@
                     </div>
                 </div>
             </div>
+
+            <div class="form-section">
+                <h2 class="form-section-title">Contact</h2>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["phone"]' [label]='"Phone"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["mobile"]' [label]='"Mobile"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["email"]' [label]='"E-mail"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["fax"]' [label]='"Fax"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12" [formControl]='contractorForm.controls["wwwAddress"]' [label]='"WWW"'></app-text-input>
+                    </div>
+                </div>
+            </div>
     
             <div class="form-section">
                 <h2 class="form-section-title">Trade</h2>
@@ -104,10 +128,13 @@
                         [label]='"Payment Form"' [keyValueMap]="staticDataService.getPaymentForms()"></app-select>
                     </div>
                     <div class="form-row">
-                        <app-text-input class="col-12" [formControl]='contractorForm.controls["bankAccountNumber"]' [label]='"Bank Account Number"'></app-text-input>
+                        <app-text-input class="col-12" [formControl]='contractorForm.controls["bankAccountNumber"]' 
+                        [label]='"Bank Account Number"' [acceptableCharsRegex]='"^[0-9]$"'
+                        [maskType]="maskType.Bankaccount"></app-text-input>
                     </div>
                     <div class="form-row">
-                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["swiftCode"]' [label]='"SWIFT Code"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='contractorForm.controls["swiftCode"]' 
+                        [label]='"SWIFT Code"' [upperCaseOnly]="true"></app-text-input>
                     </div>
                     <div class="form-row">
                         <app-checkbox-input [formControl]='contractorForm.controls["splitPayment"]' [contents]='"Split payment"'></app-checkbox-input>

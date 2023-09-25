@@ -40,9 +40,12 @@ export class ContractorsService {
 
   
   getList(name:string,pagination:Pagination){
+    console.log('sssssss')
     var path = this.createContractorsUrlParamsService.createContractorsUrlParams(name,pagination)
     return this.http.get<any>(this.baseUrl+'contractors'+path).pipe(
       map((contractors:PagedList<Contractor>)=>{
+        console.log(contractors)
+
         return contractors;
       }))
   }

@@ -35,6 +35,16 @@ export class StaticDataService {
     return types;
   }
 
+  getCountryPrefixes():Map<string,string>{
+    var prefixes: Map<string, string> = new Map();
+    prefixes.set("", "");
+    prefixes.set("PL", "PL");
+    prefixes.set("DE", "DE");
+    prefixes.set("IT", "IT");
+
+    return prefixes;
+  }
+
   getContractorTypes():Map<number,string>{
     var types: Map<number, string> = new Map();
     types.set(0, "Natural person");

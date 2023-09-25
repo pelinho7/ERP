@@ -27,7 +27,7 @@ namespace Contractors.Infrastructure.Repositories
                                 .FirstOrDefaultAsync();
         }
 
-        private System.Linq.Expressions.Expression<Func<Contractor, bool>> getProductsExpression(int companyId
+        private System.Linq.Expressions.Expression<Func<Contractor, bool>> getContractorsExpression(int companyId
             , string productName)
         {
             var expression = PredicateBuilder.True<Contractor>();
@@ -40,7 +40,7 @@ namespace Contractors.Infrastructure.Repositories
 
         public async Task<IEnumerable<Contractor>> GetContractorsByCompanyId(int companyId, string contractorName, int pageNumber, int pageSize)
         {
-            var expression = getProductsExpression(companyId, contractorName);
+            var expression = getContractorsExpression(companyId, contractorName);
             var contractorList = await GetAsync(expression, pageNumber, pageSize);
 
             return contractorList;
@@ -55,7 +55,7 @@ namespace Contractors.Infrastructure.Repositories
 
         public async Task<int> CountContractors(int companyId, string contractorName)
         {
-            var expression = getProductsExpression(companyId, contractorName);
+            var expression = getContractorsExpression(companyId, contractorName);
             var count = await CountAsync(expression);
 
             return count;

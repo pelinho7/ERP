@@ -1,0 +1,23 @@
+
+
+<div class="form-group">
+    <label class="label">{{label}}</label>
+
+    <mat-select [formControl]="ngControl.control" 
+    [class.is-invalid]="ngControl.touched && ngControl.invalid"
+    class="form-control" (selectionChange)="cleanFilter()" 
+    (selectionChange)="change($event)"
+    (openedChange)="setFocusOnFilter($event)">
+    
+    <input class="form-control" (keyup)="filter($event)" type="text" #filterRef>
+
+    <mat-option *ngFor="let keyValue of (filteredData|async)| keyvalue:asIsOrder" let i = index [value]="keyValue.key"  
+        [attr.disabled] = "keyValue.key==null && hideNullValue?'disabled' : null"
+        [attr.hidden] = "keyValue.key==null && hideNullValue?'hidden' : null">
+        {{keyValue.value}}
+    </mat-option> 
+
+    </mat-select>
+
+    <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
+</div>

@@ -2,8 +2,9 @@
     <label class="label">{{label}}</label>
     <input 
         [class.is-invalid]="ngControl.touched && ngControl.invalid"
-        type={{type}}
+        type={{type}} (keypress)="keypress($event)" (input)="maskInputedText($event)"
         class="form-control" 
+        [ngClass]="(upperCaseOnly?'input-upper':'')"
         [formControl]="ngControl.control">
     <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
     <div *ngIf="ngControl.control?.errors?.minlength" class="invalid-feedback">
@@ -26,5 +27,8 @@
     </div>
     <div *ngIf="ngControl.control?.errors?.codeTaken" class="invalid-feedback">
         This code has been taken, please use another one
+    </div>
+    <div *ngIf="ngControl.control?.errors?.invalidPolishVatID" class="invalid-feedback">
+        This Polish VAT ID is invalid
     </div>
 </div>

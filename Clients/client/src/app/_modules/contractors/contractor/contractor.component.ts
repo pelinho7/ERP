@@ -9,6 +9,10 @@ import { LoadingScreenService } from '../../utilities/services/loading-screen.se
 import { ConfirmService } from '../../message-dialogs/services/confirm.service';
 import { ContractorsService } from '../services/contractors.service';
 import { Location } from '@angular/common';
+import { ContractorCodeNotTaken } from '../validators/contractor-code-not-taken.validator';
+import { ContractorPolishVatId } from '../validators/contractor-polish-vatId.validator';
+import { MaskType } from '../../form-controls/text-input/mask-factory/mask-type';
+//import { ContractorPolishVatId } from '../validators/contractor-polish-vatId.validator';
 
 @Component({
   selector: 'app-contractor',
@@ -24,7 +28,9 @@ export class ContractorComponent implements OnInit {
   loaded:boolean=false;
   saved:boolean=false;
   title:string='New item';
-  navItems:string[]=["General","Contractor Codes","Parameters","Additional"]
+  navItems:string[]=["General","Address","Contact","Trade","Additional"]
+  public maskType: typeof MaskType = MaskType;
+
   constructor(private fb:FormBuilder,private elem: ElementRef
     ,public resizeWindowWatcherService:ResizeWindowWatcherService
     ,public staticDataService:StaticDataService
@@ -38,7 +44,6 @@ export class ContractorComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(x=>{
-      console.log()
       var id=x['id'];
       if(id!='add'){
         this.getContractor(id);
@@ -55,11 +60,10 @@ export class ContractorComponent implements OnInit {
       id:[this.contractor.id,Validators.required],
       code:[this.contractor.code,[Validators.required,Validators.maxLength(30)]],
       name:[this.contractor.name,[Validators.required,Validators.maxLength(300)]],
-      repFirstName:[this.contractor.repFirstName,[Validators.required,Validators.maxLength(100)]],
-      repLastName:[this.contractor.repLastName,[Validators.required,Validators.maxLength(150)]],
-      countryCode:[this.contractor.countryCode,[Validators.required,Validators.maxLength(13)]],
+      repFirstName:[this.contractor.repFirstName,[Validators.maxLength(100)]],
+      repLastName:[this.contractor.repLastName,[Validators.maxLength(150)]],
+      countryCode:[this.contractor.countryCode],
       vatId:[this.contractor.vatId,[Validators.maxLength(13)]],
-
       street:[this.contractor.street,[Validators.maxLength(150)]],
       streetNo:[this.contractor.streetNo,[Validators.maxLength(10)]],
       apartmentNo:[this.contractor.apartmentNo,[Validators.maxLength(10)]],
@@ -87,9 +91,14 @@ export class ContractorComponent implements OnInit {
       activeTaxpayer:[this.contractor.activeTaxpayer],
     })
 
-    //this.contractorForm.controls['code'].setAsyncValidators(ProductCodeNotTaken.createValidator(this.productsService,this.product.id));
+    this.contractorForm.controls['code'].setAsyncValidators(ContractorCodeNotTaken.createValidator(this.contractorsService,this.contractor.id));
+    this.contractorForm.controls['vatId'].setAsyncValidators(ContractorPolishVatId.createValidator(this.contractorForm.controls['countryCode']));
 
     this.loaded=true;
+  }
+
+  countryCodeChanged(event:any){
+    this.contractorForm.controls['vatId'].updateValueAndValidity();
   }
 
   scrollToSection(sectionId:number){
@@ -126,7 +135,11 @@ export class ContractorComponent implements OnInit {
   }
 
   save(){
+    var contractor=(this.contractorForm.value as Contractor);
+    console.log(contractor)
+    //return;
     this.contractorForm.markAllAsTouched();
+    
     if(this.contractorForm.valid){
       var contractor=(this.contractorForm.value as Contractor);
       
