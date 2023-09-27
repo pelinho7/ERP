@@ -8,16 +8,16 @@ namespace Contractors.Application.Features.Contractors.Queries.GetContractorsLis
     public class GetContractorsListQuery : IRequest<PagedList<ContractorVm>>
     {
         public GetContractorsListQuery() { }
-        public GetContractorsListQuery(int companyId, string contractorName, int pageNumber, int pageSize)
+        public GetContractorsListQuery(int companyId, string filter, int pageNumber, int pageSize)
         {
             CompanyId = companyId;
-            ContractorName = contractorName;
+            ContractorFilter = filter;
             PageNumber = pageNumber;
             PageSize = pageSize;
         }
 
         public int CompanyId { get; set; }
-        public string ContractorName { get; set; }
+        public string ContractorFilter { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
 

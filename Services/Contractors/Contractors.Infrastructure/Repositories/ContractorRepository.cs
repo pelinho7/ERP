@@ -28,19 +28,23 @@ namespace Contractors.Infrastructure.Repositories
         }
 
         private System.Linq.Expressions.Expression<Func<Contractor, bool>> getContractorsExpression(int companyId
-            , string productName)
+            , string contractorFilter)
         {
             var expression = PredicateBuilder.True<Contractor>();
             expression = expression.And(x => x.CompanyId == companyId);
             expression = expression.And(x => x.Archived == false);
-            if (!string.IsNullOrEmpty(productName))
-                expression = expression.And(x => x.Name.Contains(productName));
+            if (!string.IsNullOrEmpty(contractorFilter))
+            {
+                expression = expression.And(x => x.Name.Contains(contractorFilter)
+                    || x.Code.Contains(contractorFilter)
+                    || x.VatId.Contains(contractorFilter));
+            }
             return expression;
         }
 
-        public async Task<IEnumerable<Contractor>> GetContractorsByCompanyId(int companyId, string contractorName, int pageNumber, int pageSize)
+        public async Task<IEnumerable<Contractor>> GetContractorsByCompanyId(int companyId, string contractorFilter, int pageNumber, int pageSize)
         {
-            var expression = getContractorsExpression(companyId, contractorName);
+            var expression = getContractorsExpression(companyId, contractorFilter);
             var contractorList = await GetAsync(expression, pageNumber, pageSize);
 
             return contractorList;

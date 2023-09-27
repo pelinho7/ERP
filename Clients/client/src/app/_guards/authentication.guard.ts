@@ -44,39 +44,81 @@ export class AuthenticationGuard implements CanActivate {
   //   }
   // }
 
-  canActivate(route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean>  {
-    // this.accountService.login();
-    // var user = await this.accountService.currentUser$.toPromise()
-    // this.accountService.onAppInit();
-    // console.log(state.url)
-    // console.log(route)
-    // return of(false);
+  // canActivate(route: ActivatedRouteSnapshot,
+  //   state: RouterStateSnapshot): Observable<boolean>  {
+  //   return this.accountService.currentUser$.pipe(
+  //     map((user:User)=>{
+  //       console.log('AuthenticationGuard')
+  //       if(user) {
+  //         if(this.accountService.isTokenExpired(user.token)){
 
-    return this.accountService.currentUser$.pipe(
-      map((user:User)=>{
-        console.log('AuthenticationGuard')
-        if(user) {
-          if(this.accountService.isTokenExpired(user.token)){
-            //this.toastr.info('Token expired.');
-            var newToken='';
-            this.accountService.getAccessToken().pipe(map((t:string)=>newToken=t));
-            if(this.accountService.isTokenExpired(user.token)){
-              this.toastr.info('Token expired.');
-              return false;
-            }
-            return true;
+  //           var newToken='';
+  //           console.log(user.token)
+  //           this.accountService.getAccessToken().pipe(map((t:string)=>newToken=t));
+  //           this.accountService.getAccessToken().subscribe(x=>{
+  //             console.log('xxxxxxxxxx')
+  //             console.log(x)
+  //           }
+  //           ,
+  //           ()=>{}
+  //           ,
+  //           ()=>{
+  //             if(this.accountService.isTokenExpired(user.token)){
+  //               this.toastr.info('Token expired.');
+  //               return false;
+  //             }
+  //             return true;
+  //           })
+
+  //           return true
+           
+  //         }
+  //         else
+  //           return true;
+  //       }
+  //       else{
+  //         this.accountService.login(state.url);
+  //         return false;
+  //       }
+  //     })
+  //     )
+  // }
+
+  canActivate(route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean> {
+    var u:User;
+
+    const sub = this.accountService.currentUser$.pipe(take(1)).subscribe(value => u = value);
+    sub.unsubscribe();
+    if(u) {
+      if(this.accountService.isTokenExpired(u.token)){
+        //this.toastr.info('Token expired.');
+        var newToken='';
+        console.log(u.token)
+        this.accountService.getAccessToken().subscribe(x=>{
+        }
+        ,
+        ()=>{}
+        ,
+        ()=>{
+          if(this.accountService.isTokenExpired(u.token)){
+            this.toastr.info('Token expired.');
+            return false;
           }
-          else
-            return true;
-        }
-        else{
-          this.accountService.login(state.url);
-          return false;
-        }
-        // this.toastr.error('You shall not pass!');
-        // return false;
-      })
-      )
+          return true;
+        })
+
+        return of(true)
+       
+      }
+      else
+        return of(true);
+    }
+    else{
+      console.log('fffffffffffffffffffffffff')
+      this.accountService.login(state.url);
+      return of(false);
+    }
+    
   }
 }

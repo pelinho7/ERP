@@ -9,6 +9,7 @@ import { ResizeWindowWatcherService } from '../../navbars/services/resize-window
 import { LoadingScreenService } from '../../utilities/services/loading-screen.service';
 import { ContractorsService } from '../services/contractors.service';
 import { Archive } from '../../utilities/models/archive';
+import { CreateContractorsUrlParamsService } from '../services/create-contractors-url-params.service';
 
 @Component({
   selector: 'app-contractors-list',
@@ -32,7 +33,7 @@ export class ContractorsListComponent implements OnInit {
     ,private router: Router
     ,private route: ActivatedRoute
     ,private urlParamsService:UrlParamsService
-    ,private createProductsUrlParamsService:CreateProductsUrlParamsService
+    ,private createContractorsUrlParamsService:CreateContractorsUrlParamsService
     ,private confirmService:ConfirmService
     ) { }
 
@@ -41,8 +42,8 @@ export class ContractorsListComponent implements OnInit {
       this.pagination=new Pagination();
 
       console.log(this.pagination)
-      if(params.name){
-        this.nameFilterInput=params.name
+      if(params.filter){
+        this.nameFilterInput=params.filter
       }
       else{
         this.nameFilterInput='';
@@ -63,7 +64,7 @@ export class ContractorsListComponent implements OnInit {
   }
 
   navigate(name:string,pagination:Pagination){
-    var path = this.createProductsUrlParamsService.createProductsUrlParams(name,pagination)
+    var path = this.createContractorsUrlParamsService.createContractorsUrlParams(name,pagination)
     this.loaded=false;
     this.router.navigateByUrl('/contractors'+path)
   }
@@ -116,6 +117,7 @@ export class ContractorsListComponent implements OnInit {
           this.loadContractors();
         })
         .add(()=>{
+          this.clearSelections();
           this.loadingScreenService.hide();
         })
       }

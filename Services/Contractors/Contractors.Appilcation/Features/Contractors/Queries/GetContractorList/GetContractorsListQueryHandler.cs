@@ -25,9 +25,9 @@ namespace Contractors.Application.Features.Contractors.Queries.GetContractorsLis
         public async Task<PagedList<ContractorVm>> Handle(GetContractorsListQuery request, CancellationToken cancellationToken)
         {
             var contractorList = await _contractorRepository.GetContractorsByCompanyId(request.CompanyId
-                , request.ContractorName, request.PageNumber, request.PageSize);
+                , request.ContractorFilter, request.PageNumber, request.PageSize);
             var count = await _contractorRepository.CountContractors(request.CompanyId
-                , request.ContractorName);
+                , request.ContractorFilter);
             var items = _mapper.Map<List<ContractorVm>>(contractorList);
 
             return new PagedList<ContractorVm>(items, count, request.PageNumber, request.PageSize);

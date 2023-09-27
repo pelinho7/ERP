@@ -106,20 +106,6 @@ export class ContractorComponent implements OnInit {
     sections[sectionId].scrollIntoView();
   }
 
-  purchaseNetPriceChanged(value:number){
-    var vat =this.staticDataService.getVatObjectFromJsonObject(this.contractorForm.get('vatObject').value)
-    this.contractorForm.patchValue({
-      purchaseGrossPrice: value*(vat.vatValue+100)/100, 
-    });
-  }
-
-  saleNetPriceChanged(value:number){
-    var vat =this.staticDataService.getVatObjectFromJsonObject(this.contractorForm.get('vatObject').value)
-    this.contractorForm.patchValue({
-      saleGrossPrice: value*(vat.vatValue+100)/100, 
-    });
-  }
-
   close(){
     if(this.contractorForm.dirty){
       this.confirmService.confirm('Changes have not been saved', 'If you close the form you will loose the unsaved data. Are you sure you want to close the form without saving?').subscribe(result=>{
@@ -136,8 +122,8 @@ export class ContractorComponent implements OnInit {
 
   save(){
     var contractor=(this.contractorForm.value as Contractor);
-    console.log(contractor)
-    //return;
+    contractor.code=contractor.code.toUpperCase();
+
     this.contractorForm.markAllAsTouched();
     
     if(this.contractorForm.valid){
@@ -184,6 +170,11 @@ export class ContractorComponent implements OnInit {
     .add(()=>{
       this.loadingScreenService.hide('contractor-spinner');
     })
+  }
+
+  addNew(){
+    this.saved=false;
+    this.router.navigateByUrl('/contractors/add')
   }
 
 }

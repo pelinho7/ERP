@@ -9,11 +9,11 @@ export class CreateContractorsUrlParamsService {
 
   constructor() { }
 
-  createContractorsUrlParams(name:string,pagination:Pagination){
+  createContractorsUrlParams(filter:string,pagination:Pagination){
     let path:string='';
     let params=new HttpParams();
-    if(name.length>0){
-      path = '?name='+name
+    if(filter.length>0){
+      path = '?filter='+filter
     }
     if(path.length>0){
       path = '?' + path.substring(1);

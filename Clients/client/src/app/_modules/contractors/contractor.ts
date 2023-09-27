@@ -7,6 +7,16 @@ export class Contractor {
     vatId:string='';
     name:string;
 
+    // public set code(code: string) {
+    //     console.log('this._code')
+    //     this._code=code.toUpperCase()
+    //             console.log(this._code)
+    // }
+    // public get code() {
+    //     return 'ggg'//this._code.toUpperCase()
+    // }
+    // private _code: string='';
+
     street:string='';
     streetNo:string='';
     apartmentNo:string='';

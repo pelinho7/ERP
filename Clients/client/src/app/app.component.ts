@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
 
   createNavbarItems(){
     var invoices=new navbarItem('Invoices','');
-    invoices.subItems=[new navbarItem('Products','/products'),new navbarItem('test44','')]
+    invoices.subItems=[new navbarItem('Products','/products'),new navbarItem('Contractors','/contractors')]
     //ar aa=new navbarItem('test33','')
     this.navbarItems=[
       invoices,
@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
   }
 
   ngAfterViewInit(){
-    console.log(this.router.getCurrentNavigation())
+    //console.log(this.router.getCurrentNavigation())
     //setTimeout(()=>{this.accountService.onAppInit(); }, 1000)
     // this.accountService.onAppInit();
    

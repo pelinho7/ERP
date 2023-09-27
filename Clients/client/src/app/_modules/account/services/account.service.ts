@@ -101,6 +101,8 @@ export class AccountService {
   getAccessToken(){
     return this.oidcSecurityService.getAccessToken().pipe(map((accessToken:string)=>{
       this.accessTokenToUser(accessToken);
+      console.log('getAccessToken')
+      console.log(accessToken)
       return accessToken;
     }))
     // var accessToken = await this.oidcSecurityService.getAccessToken().toPromise();
