@@ -17,5 +17,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Services\Contractors\Contractors.Appilcation\Contractors.Appilcation.csproj" />
+    <ProjectReference Include="..\..\..\..\Services\Contractors\Contractors.Domain\Contractors.Domain.csproj" />
+    <ProjectReference Include="..\..\..\..\Services\Contractors\Contractors.Infrastructure\Contractors.Infrastructure.csproj" />
+  </ItemGroup>
   
 </Project>

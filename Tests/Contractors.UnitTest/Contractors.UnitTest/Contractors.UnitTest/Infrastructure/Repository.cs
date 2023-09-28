@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
-using Products.Application.Contracts.Persistence;
-using Products.Domain.Entities;
-using Products.Infrastructure.Persistence;
-using Products.Infrastructure.Repositories;
+using Contractors.Application.Contracts.Persistence;
+using Contractors.Domain.Entities;
+using Contractors.Infrastructure.Persistence;
+using Contractors.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Products.UnitTest.Infrastructure
+namespace Contractors.UnitTest.Infrastructure
 {
     [SetUpFixture]
     public class MySetUpClass
@@ -28,60 +28,102 @@ namespace Products.UnitTest.Infrastructure
 
     public class Repository
     {
-        public static async Task<ProductRepository> CreateRepository()
+        public static async Task<ContractorRepository> CreateRepository()
         {
-            var options = new DbContextOptionsBuilder<ProductContext>()
+            var options = new DbContextOptionsBuilder<ContractorContext>()
                     .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options;
-            var context = new ProductContext(options);
-            var repository = new ProductRepository(context);
+            var context = new ContractorContext(options);
+            var repository = new ContractorRepository(context);
      
-            int productNumber = 3;
+            int ContractorNumber = 3;
 
             for (int companyId = 1; companyId < 3; companyId++)
             {
-                for (int i = 1; i < productNumber + 1; i++)
+                for (int i = 1; i < ContractorNumber + 1; i++)
                 {
-                    await repository.AddAsync(new Product()
+                    await repository.AddAsync(new Contractor()
                     {
                         Code = "Code" + i,
                         CompanyId = companyId,
-                        EAN = "ean",
-                        PurchaseCurrency = "PLN",
-                        SaleCurrency = "PLN",
-                        Unit = "kg",
-                        Description = "",
+                        AdditionalInformation = "",
+                        ApartmentNo = "",
+                        BankAccountNumber = "",
+                        City = "",
+                        Country = "",
+                        CountryCode = "",
+                        Email = "",
+                        Fax = "",
+                        Mobile = "",
                         Name = "Name" + i,
-                        PKWiU = ""
+                        Note = "",
+                        Phone = "",
+                        PostalOffice = "",
+                        RepFirstName = "",
+                        RepLastName = "",
+                        Street = "",
+                        StreetNo = "",
+                        SwiftCode = "",
+                        VatId = "",
+                        WwwAddress = "",
+                        ZipCode = ""
                     });
                 }
             }
 
-            await repository.AddAsync(new Product()
+            await repository.AddAsync(new Contractor()
             {
                 Code = "Code1",
                 CompanyId = 1,
-                EAN = "ean",
-                PurchaseCurrency = "PLN",
-                SaleCurrency = "PLN",
-                Unit = "kg",
-                Description = "",
-                Name = "Name1",
-                PKWiU = "",
                 Archived = true,
+                AdditionalInformation = "",
+                ApartmentNo = "",
+                BankAccountNumber = "",
+                City = "",
+                Country = "",
+                CountryCode = "",
+                Email = "",
+                Fax = "",
+                Mobile = "",
+                Name = "",
+                Note = "",
+                Phone = "",
+                PostalOffice = "",
+                RepFirstName = "",
+                RepLastName = "",
+                Street = "",
+                StreetNo = "",
+                SwiftCode = "",
+                VatId = "",
+                WwwAddress = "",
+                ZipCode = ""
             });
 
-            await repository.AddAsync(new Product()
+            await repository.AddAsync(new Contractor()
             {
                 Code = "Code11",
                 CompanyId = 1,
-                EAN = "ean",
-                PurchaseCurrency = "PLN",
-                SaleCurrency = "PLN",
-                Unit = "kg",
-                Description = "",
                 Name = "Name11",
-                PKWiU = "",
+                AdditionalInformation = "",
+                ApartmentNo = "",
+                BankAccountNumber = "",
+                City = "",
+                Country = "",
+                CountryCode = "",
+                Email = "",
+                Fax = "",
+                Mobile = "",
+                Note = "",
+                Phone = "",
+                PostalOffice = "",
+                RepFirstName = "",
+                RepLastName = "",
+                Street = "",
+                StreetNo = "",
+                SwiftCode = "",
+                VatId = "",
+                WwwAddress = "",
+                ZipCode = ""
             });
 
             return repository;
