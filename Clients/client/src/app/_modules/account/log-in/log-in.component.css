@@ -1,0 +1,10 @@
+.form-section{
+    margin-top: 15px;
+    background: white;
+    padding: 20px;
+    position: relative;
+    border-radius: 6px;
+    border: 1.5px solid transparent;
+    transition: all .25s ease-in;
+    scroll-margin-top: 50px;
+}

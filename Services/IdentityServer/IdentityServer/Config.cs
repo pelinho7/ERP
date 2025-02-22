@@ -36,6 +36,7 @@ namespace IdentityServer
                        {
                            //"https://localhost:4200/account/login-redirect",
                            "https://localhost:4200",
+                           "https://localhost:4200/signin-callback",
                            "https://localhost:4200/assets/silent-renew.html",
                            //"https://localhost:8020",
                            //"https://localhost:8020/assets/silent-renew.html"

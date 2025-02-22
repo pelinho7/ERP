@@ -47,6 +47,13 @@ export class ProductsService {
       }))
   }
 
+  getAll(){
+    return this.http.get<any>(this.baseUrl+'products/all').pipe(
+      map((products:Product[])=>{
+        return products;
+      }))
+  }
+
   getById(id:number){
     return this.http.get<Product>(this.baseUrl+'products/'+id).pipe(
       map((product:Product)=>{

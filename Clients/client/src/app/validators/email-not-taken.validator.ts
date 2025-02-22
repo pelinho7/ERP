@@ -1,6 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 import { map } from 'rxjs/operators';
-import { AccountService } from '../_services/account.service';
+import { AccountService } from '../_modules/account/services/account.service';
 
 export class ValidateEmailNotTaken {
   static createValidator(accountService: AccountService) {

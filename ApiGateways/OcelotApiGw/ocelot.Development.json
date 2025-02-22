@@ -15,6 +15,30 @@
     //  "FileCacheOptions": { "TtlSeconds": 30 }
     //},
     {
+      "DownstreamPathTemplate": "/api/v1/Account/login",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/Account/login",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Account/check-email-not-taken/{code}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/Account/check-email-not-taken/{code}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
       "DownstreamPathTemplate": "/api/v1/Contractors",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -25,6 +49,18 @@
       ],
       "UpstreamPathTemplate": "/Contractors",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Contractors/all",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5002"
+        }
+      ],
+      "UpstreamPathTemplate": "/Contractors/all",
+      "UpstreamHttpMethod": [ "GET" ]
     },
     {
       "DownstreamPathTemplate": "/api/v1/Contractors/check-code-not-taken/{code}",
@@ -86,6 +122,18 @@
     //  "UpstreamPathTemplate": "/Products",
     //  "UpstreamHttpMethod": [ "PATCH" ]
     //},
+    {
+      "DownstreamPathTemplate": "/api/v1/Products/all",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5003"
+        }
+      ],
+      "UpstreamPathTemplate": "/Products/all",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
     {
       "DownstreamPathTemplate": "/api/v1/Products/check-code-not-taken/{code}",
       "DownstreamScheme": "https",

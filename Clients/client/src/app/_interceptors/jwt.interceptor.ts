@@ -24,8 +24,10 @@ export class JwtInterceptor implements HttpInterceptor {
     // })
 
     let currentUser:User;
-    this.accountService.currentUser$.pipe(take(1)).subscribe(user=>currentUser=user);
-   
+    this.accountService.currentUser$.subscribe(user=>{
+      currentUser=user
+    });
+
     if(currentUser){
       console.log('currentUser.token')
       console.log(currentUser.token)

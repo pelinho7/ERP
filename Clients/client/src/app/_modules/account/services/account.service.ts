@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { User } from '../models/user';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { NavigationEnd, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { UrlService } from 'src/app/_services/url.service';
 
 
 @Injectable({
@@ -13,126 +17,155 @@ export class AccountService {
 
   private currentUserSource=new ReplaySubject<User>(1);
   currentUser$=this.currentUserSource.asObservable();
-  constructor(private oidcSecurityService:OidcSecurityService, private router:Router) { 
-    this.currentUserSource.next(null);
-    console.log('AccountService')
-  }
+  baseUrl=environment.apiUrl;
 
-  loadUserFromStorage(){
-    let userJson=localStorage.getItem('user');
-    if(userJson){
-      let user:User = JSON.parse(userJson);
-      this.setCurrentUser(user);
-    }
-  }
-
-  setLoginRedirectUrl(redirectUrl:string=null){
-    if(redirectUrl == null || redirectUrl?.length == 0)
-      redirectUrl=this.router.url;
-    
-    sessionStorage.setItem('loginRedirectUrl',redirectUrl)
-  }
-
-  getLoginRedirectUrl():string{
-    return sessionStorage.getItem('loginRedirectUrl')
-  }
-
-  login(url:string=null){
-    sessionStorage.setItem('authorized','true');
-    this.setLoginRedirectUrl(url);
-    this.oidcSecurityService.authorize();
-  }
-
-  logout(){
-    this.oidcSecurityService.logoff().subscribe((result) => {
-      localStorage.removeItem('user');
-      this.currentUserSource.next(null);
-    });
-  }
-
-  checkAuth(){
-    var redirectUrl = this.getLoginRedirectUrl();
-
-    if(redirectUrl!=null){
-      this.oidcSecurityService.checkAuth().subscribe((x) => {
-
-        if(x.isAuthenticated){
-          this.accessTokenToUser(x.accessToken);
-          if(redirectUrl == null || redirectUrl == 'null'){
-            redirectUrl='';
-          }
-
-          sessionStorage.setItem('loginRedirectUrl',redirectUrl)
-
-          this.router.navigateByUrl(redirectUrl)
+      constructor(private router:Router
+        ,private http:HttpClient, private toastr:ToastrService
+        ,private urlService:UrlService
+      ) {   
+        this.loadUserFromLocalStorage()
+      }
+  
+      logIn(model:any){
+          return this.http.post<User>(this.baseUrl+'account/login',model).pipe(
+            map((user:User)=>{
+              if(user !== null){
+                // console.log(user)
+                this.setCurrentUser(user);
+              }
+            })
+          )
         }
-      });
-    }
-  }
 
-  async accessTokenToUser(token:string){
-    var decodedToken=this.getDecodedToken(token);
-    let tokenJsonValue = JSON.stringify(decodedToken);
-    let user:User = (JSON.parse(tokenJsonValue) as User);
-    user.token=token;
-    this.setCurrentUser(user);
-  }
+        logout(){
+          localStorage.removeItem('user');
+          this.currentUserSource.next(null);
+        }
 
-  onAppInit(){
-    if(document.cookie.indexOf('idsrv.session=')>=0){
-      console.log('onAppInit 1')
-      if(!sessionStorage.getItem('authorized')){
-        console.log('onAppInit 2')
-        // sessionStorage.setItem('authorized','true');
-        this.login();
-      }
-      else{
-        sessionStorage.removeItem('loginRedirectUrl')
-      }
-    }
-  }
+        setCurrentUser(user:User){
+          // const roles =this.getDecodedToken(user.token).role;
+          localStorage.setItem('user',JSON.stringify(user));
+          this.currentUserSource.next(user);
+        }
 
-  async isAuthenticated(){
-    var auth = await this.oidcSecurityService.isAuthenticated().toPromise();
-    console.log('isAuthenticated '+auth)
-    return auth;
-  }
+        loadUserFromLocalStorage(){
+          var userInLocalStorage=localStorage.getItem('user');
+          if(userInLocalStorage!=null){
+            this.setCurrentUser(JSON.parse(userInLocalStorage))
+          }
+        }
 
-  getAccessToken(){
-    return this.oidcSecurityService.getAccessToken().pipe(map((accessToken:string)=>{
-      this.accessTokenToUser(accessToken);
-      console.log('getAccessToken')
-      console.log(accessToken)
-      return accessToken;
-    }))
-    // var accessToken = await this.oidcSecurityService.getAccessToken().toPromise();
-    // this.accessTokenToUser(accessToken);
-    // console.log(accessToken)
-    // return accessToken;
-  }
+        isTokenExpired(token:string){
+          const expiry = (this.getDecodedToken(token)).exp;
+          var ex=(Math.floor((new Date).getTime() / 1000)) >= expiry;
+          return ex;
+        }
 
-  async get(){
-    if(document.cookie.indexOf('idsrv.session=')>=0){
-      if(!sessionStorage.getItem('authorized')){
-        sessionStorage.setItem('authorized','true');
-        this.login();
-      }
-    }
-  }
+        getDecodedToken(token:string){
+          //atob()decode data in Base64 
+          return JSON.parse(atob(token.split('.')[1]))
+        }
 
-  setCurrentUser(user:User){
-    localStorage.setItem('user',JSON.stringify(user));
-    this.currentUserSource.next(user);
-  }
-
-  getDecodedToken(token:string){
-    //atob()decode data in Base64 
-    return JSON.parse(atob(token.split('.')[1]))
-  }
-
-  isTokenExpired(token:string){
-    const expiry = (this.getDecodedToken(token)).exp;
-    var ex=(Math.floor((new Date).getTime() / 1000)) >= expiry;
-    return ex;
-  }
+        redirectIfTokenExpired(){
+          let cUser:User=null;
+          this.currentUser$.pipe(take(1)).subscribe(x=>cUser=x);
+          if(cUser) {
+            if(this.isTokenExpired(cUser.token)){
+              this.toastr.info('Token expired.');
+              this.urlService.setPreviousUrl(this.router.url);
+              this.logout();
+              this.router.navigateByUrl('account/login')
+              return true;
+            }
+            else{
+              return false;
+            }
+          }
+          this.router.navigateByUrl('account/login')
+          return true;
+        }
+      
+        register(model:any){
+          return this.http.post<any>(this.baseUrl+'account/register',model).pipe(
+            map((user:any)=>{
+              console.log(user);
+              // if(user !== null){
+              //   this.setCurrentUser(user);
+              // }
+            })
+          )
+        }
+      
+        checkEmailNotTaken(email:string){
+          if(email.length==0){
+            return of(false)
+          }
+          return this.http.get<boolean>(this.baseUrl+'account/check-email-not-taken?email='+email).pipe(
+            map((result:boolean)=>{
+              return result;
+            })
+          )
+        }
+      
+        checkLoginNotTaken(login:string){
+          return this.http.get<boolean>(this.baseUrl+'account/check-login-not-taken?login='+login).pipe(
+            map((result:boolean)=>{
+              return result;
+            })
+          )
+        }
+      
+        verifyEmail(data: string) { 
+          return this.http.get<User>(this.baseUrl + data).pipe(
+            map((user:User)=>{
+              this.setCurrentUser(user);
+              return user;
+            })
+          )
+        }
+      
+        resendVerificationEmail(user:any) { 
+          return this.http.post(this.baseUrl+'account/resend-verification-email',user);
+        }
+      
+        resetPassword(login:string) { 
+          return this.http.get(this.baseUrl+'account/reset-password?login='+login).pipe(
+            map(_ => {
+              return true;
+            }),
+            catchError(err => {
+              this.toastr.error(err);
+              return of(false);
+            })
+          )
+        }
+      
+        newPassword(model:any){
+          return this.http.post(this.baseUrl+'account/new-password',model);
+        }
+      
+        // getAccountData(){
+        //   return this.http.get<AccountData>(this.baseUrl+'account/data').pipe(
+        //     map((data:AccountData)=>{
+        //       return data;
+        //     })
+        //   )
+        // }
+      
+        // updateAccountData(model:any){
+        //   return this.http.post<User>(this.baseUrl+'account/data',model).pipe(
+        //     map((user:User)=>{
+        //       //reload username after update
+        //         this.currentUser$.pipe(take(1)).subscribe(currentU=>{
+        //           currentU.username=user.username;
+        //           this.setCurrentUser(currentU);
+        //         })
+        //         return user;
+        //       })
+        //   )
+        // }
+      
+        changePassword(model:any){
+          return this.http.post(this.baseUrl+'account/change-password',model);
+        }
 }

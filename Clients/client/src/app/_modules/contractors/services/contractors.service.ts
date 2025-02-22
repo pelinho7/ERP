@@ -51,6 +51,13 @@ export class ContractorsService {
       }))
   }
 
+  getAll(){
+    return this.http.get<any>(this.baseUrl+'contractors/all').pipe(
+      map((contractors:Contractor[])=>{
+        return contractors;
+      }))
+  }
+
   getById(id:number){
     return this.http.get<Contractor>(this.baseUrl+'contractors/'+id).pipe(
       map((contractor:Contractor)=>{

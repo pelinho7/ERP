@@ -76,5 +76,15 @@ namespace Products.Infrastructure.Repositories
                                 .Where(x => x.CompanyId == companyId && x.Code == productCode)
                                 .FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<Product>> GetAllProductsByCompanyId(int companyId)
+        {
+            var expression = PredicateBuilder.True<Product>();
+            expression = expression.And(x => x.CompanyId == companyId);
+            expression = expression.And(x => x.Archived == false);
+            var productList = await GetAsync(expression);
+
+            return productList;
+        }
     }
 }

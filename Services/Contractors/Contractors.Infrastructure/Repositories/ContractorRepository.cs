@@ -76,5 +76,15 @@ namespace Contractors.Infrastructure.Repositories
             var count = await CountAsync(expression);
             return count;
         }
+
+        public async Task<IEnumerable<Contractor>> GetAllContractorsByCompanyId(int companyId)
+        {
+            var expression = PredicateBuilder.True<Contractor>();
+            expression = expression.And(x => x.CompanyId == companyId);
+            expression = expression.And(x => x.Archived == false);
+            var contractorList = await GetAsync(expression);
+
+            return contractorList;
+        }
     }
 }

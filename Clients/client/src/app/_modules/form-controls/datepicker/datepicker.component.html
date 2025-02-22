@@ -1,0 +1,11 @@
+<div class="form-group">
+    <label class="label">{{label}}</label>
+    <input 
+        [class.is-invalid]="ngControl.touched && ngControl.invalid"
+        class="form-control" 
+        type="date"
+        [formControl]="ngControl.control" 
+        min="min" max="max">
+    <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
+    
+</div>

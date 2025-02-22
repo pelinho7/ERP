@@ -9,6 +9,7 @@ using Products.Application.Features.Products.Commands.ArchiveProduct;
 using Products.Application.Features.Products.Commands.CreateProduct;
 using Products.Application.Features.Products.Commands.UpdateProduct;
 using Products.Application.Features.Products.Queries.CheckProductCodeNotTaken;
+using Products.Application.Features.Products.Queries.GetAllProducts;
 using Products.Application.Features.Products.Queries.GetProductByCode;
 using Products.Application.Features.Products.Queries.GetProductById;
 using Products.Application.Features.Products.Queries.GetProductsList;
@@ -103,6 +104,18 @@ namespace Products.API.Controllers
             CheckProductCodeNotTakenQuery command = new CheckProductCodeNotTakenQuery(getCompanyId(), code,id);
             var result = await _mediator.Send(command);
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("all")]
+        [ProducesResponseType(typeof(List<ProductVm>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<ProductVm>>> GetAll()
+        {
+            //GetAllProductsQuery command = new GetAllProductsQuery(getCompanyId());
+            //var result = await _mediator.Send(command);
+            //return Ok(result);
+            return Ok(new List<ProductVm>());
         }
     }
 }

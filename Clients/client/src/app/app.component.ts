@@ -23,16 +23,15 @@ export class AppComponent implements OnInit {
   constructor(public accountService: AccountService, private router:Router
     ,private elem: ElementRef){
     this.createNavbarItems();
-    accountService.checkAuth();
-
+ 
     
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        //console.log('dasdas '+event.url)
-        this.accountService.onAppInit();
-      }
+    // this.router.events.subscribe((event) => {
+    //   if (event instanceof NavigationEnd) {
+    //     //console.log('dasdas '+event.url)
+    //     this.accountService.onAppInit();
+    //   }
       
-    });
+    // });
   }
 
   createNavbarItems(){
@@ -82,7 +81,8 @@ export class AppComponent implements OnInit {
           navItems.forEach((item:any) => {
             item.classList.remove('active');
           });
-          navItems[i].classList.add('active');
+          if(navItems.length>i)
+            navItems[i].classList.add('active');
           return;
         }
       }

@@ -1,0 +1,303 @@
+<div class="row m-0" *ngIf="saved">
+    <div class="col-12 col-md-6">
+        <button class="btn btn-outline-primary w-100" [routerLink]="['/documents']">
+            <div class="float-left p-2 pl-4">
+                <i class="fa fa-list mr-4" aria-hidden="true"></i>
+                Back to list
+            </div>
+        </button>
+    </div>
+    <div class="col-12 col-md-6 mt-2 mt-md-0">
+        <button class="btn btn-outline-primary w-100" (click)="addNew()">
+            <div class="float-left p-2 pl-4">
+                <i class="fa fa-plus mr-4" aria-hidden="true"></i>
+                Add next
+            </div>
+        </button>
+    </div>
+    
+</div>
+
+<ngx-spinner name="document-spinner" size="medium" [fullScreen]="false">
+    <h3>Loading...</h3>
+</ngx-spinner>
+<div *ngIf="loaded && !saved">
+    <div class="title-panel">
+        <div class="title-text">
+            {{title}}
+         </div>
+         <div>
+            <button type="button" form="documentForm" (click)="save()" class="btn btn-primary" [ngClass]="(!documentForm.dirty?'d-none':'')">
+                Save</button>
+            <button class="btn" (click)="close()"><i class="fa fa-times" aria-hidden="true"></i></button>
+         </div>
+        
+      </div>
+    <div class="row ml-0 mr-0">
+        <form id="documentForm" [formGroup]="documentForm" class="col-12">
+            <div class="form-section" data-menu-item-id="item-id">
+
+
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <div class="col-4">
+                            <h2 class="form-section-title border-bottom">CONTRACTOR</h2>
+                            <div formArrayName="items">
+                                <div *ngFor="let item of items.controls; let i = index">
+                                  <div [formGroupName]="i">
+                                    <!-- Inputs dla poszczególnych pól pozycji -->
+                                    <!-- <input formControlName="code" placeholder="Nazwa" /> -->
+                                    <app-text-input class="col-12 col-sm-6" [formControl]='item.controls["code"]' [label]='"Code"'></app-text-input>
+
+                            
+                                    <!-- Przycisk do usuwania pozycji -->
+                                    <!-- <button type="button" (click)="usunPozycje(i)">Usuń pozycję</button> -->
+                                  </div>
+                                </div>
+                              </div>
+                              <button type="button" (click)="test()">Dodaj pozycję</button>
+                        </div>
+                        <div class="col-4">
+                            <h2 class="form-section-title border-bottom">DATE AND FORM OF PAYMENT</h2>
+                            <!-- <app-text-input class="col-12" [formControl]='documentForm.controls["test"]' [label]='"Test"'></app-text-input> -->
+            
+                            <app-datepicker class="col-12 col-sm-8" [formControl]='documentForm.controls["dateOfIssue"]'
+                            [label]='"VAT ID"'></app-datepicker>
+                        </div>
+                        <div class="col-4">
+                            <h2 class="form-section-title border-bottom">TOTAL:</h2>
+    
+                        </div>
+                    </div>
+                    
+                    <!-- <input type="number" class="d-none" [formControl]='documentForm.controls["id"]'/>
+
+
+                    <div class="form-row">
+                        <app-select-search class="col-12 col-md-4" [formControl]='documentForm.controls["countryCode"]' 
+                        [label]='"Country Code"' [keyValueMap]="staticDataService.getCountryPrefixes()" (valueChangeEvent)="countryCodeChanged($event)"></app-select-search>
+        
+                        <app-text-input class="col-12 col-sm-8" [formControl]='documentForm.controls["vatId"]' 
+                            [label]='"VAT ID"' [acceptableCharsRegex]='"[A-Za-z0-9]+"' [upperCaseOnly]="true"></app-text-input>
+                    </div>
+
+                    <app-text-input [formControl]='documentForm.controls["name"]' [label]='"Company Name"'></app-text-input>
+
+
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='documentForm.controls["repFirstName"]' [label]='"Representative First Name"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='documentForm.controls["repLastName"]' [label]='"Representative Last Name"'></app-text-input>
+                    </div>
+                    
+                    <div class="form-row">
+                        <app-text-input class="col-6" [formControl]='documentForm.controls["code"]' 
+                        [label]='"Code"' [upperCaseOnly]="true"></app-text-input>
+                    </div>
+
+                    <div class="form-row">
+                        <app-select class="col-12 col-md-4" [formControl]='documentForm.controls["type"]' 
+                        [label]='"Type"' [keyValueMap]="staticDataService.getDocumentTypes()"></app-select>
+                        <app-select class="col-12 col-md-4" [formControl]='documentForm.controls["status"]' 
+                        [label]='"Status"' [keyValueMap]="staticDataService.getDocumentStatuses()"></app-select>
+                        <app-checkbox-input [formControl]='documentForm.controls["activeTaxpayer"]' 
+                        [contents]='"Active taxpayer"' [inlineInput]="true"></app-checkbox-input>
+                    </div> -->
+
+                </div>
+    
+     
+            </div>
+
+            <div class="form-section">
+                <div class="border-bottom">
+                    <h2 class="form-section-title d-inline">CUSTOMER DATA</h2>
+                    <button class="btn p-0 float-right"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+                </div>
+
+                <!-- 
+                contrStreet:[this.document.contrStreet,[Validators.maxLength(150)]],
+                contrStreetNo:[this.document.contrStreetNo,[Validators.maxLength(10)]],
+                contrApartmentNo:[this.document.contrApartmentNo,[Validators.maxLength(10)]],
+                contrZipCode:[this.document.contrZipCode,[Validators.maxLength(6)]],
+                contrPostalOffice:[this.document.contrPostalOffice,[Validators.maxLength(120)]],
+                contrCity:[this.document.contrCity,[Validators.maxLength(120)]],
+                contrCountry:[this.document.contrCountry,[Validators.maxLength(80)]],
+                contrPhone:[this.document.contrPhone,[Validators.maxLength(30)]],
+                contrEmail:[this.document.contrEmail,[Validators.email,Validators.maxLength(50)]],
+                -->
+                <div class="form-section-content">
+                    <app-select-search class="col-12 col-md-4" [formControl]='documentForm.controls["contrCountryCode"]' 
+                    [label]='"Country Code"' [keyValueMap]="staticDataService.getCountryPrefixes()" (valueChangeEvent)="countryCodeChanged($event)"></app-select-search>
+    
+                    <app-text-input class="col-12 col-sm-8" [formControl]='documentForm.controls["contrVatId"]' 
+                        [label]='"VAT ID"' [acceptableCharsRegex]='"[A-Za-z0-9]+"' [upperCaseOnly]="true"></app-text-input>
+                </div>
+
+                <app-text-input [formControl]='documentForm.controls["contrName"]' [label]='"Company Name"'></app-text-input>
+
+                <div class="form-row">
+                    <app-text-input class="col-12" [formControl]='documentForm.controls["contrCountry"]' [label]='"Country"'></app-text-input>
+                    <app-text-input class="col-12" [formControl]='documentForm.controls["contrCity"]' [label]='"City"'></app-text-input>
+                </div>
+                <div class="form-row">
+                    <app-text-input class="col-12" [formControl]='documentForm.controls["contrStreet"]' [label]='"Street"'></app-text-input>
+                </div>
+                <div class="form-row">
+                    <app-text-input class="col-12 col-sm-6" [formControl]='documentForm.controls["contrStreetNo"]' [label]='"Street No."'></app-text-input>
+                    <app-text-input class="col-12 col-sm-6" [formControl]='documentForm.controls["contrApartmentNo"]' [label]='"Apt/Unit"'></app-text-input>
+                </div>
+                <div class="form-row">
+                    <app-text-input class="col-12 col-sm-6" [formControl]='documentForm.controls["contrZipCode"]' [label]='"Zip Code"'></app-text-input>
+                    <app-text-input class="col-12 col-sm-6" [formControl]='documentForm.controls["contrPostalOffice"]' [label]='"Postal Office"'></app-text-input>
+                </div>
+
+                <div class="form-row">
+                    <app-text-input class="col-12 col-sm-6" [formControl]='documentForm.controls["contrPhone"]' [label]='"Phone"'></app-text-input>
+                    <app-text-input class="col-12 col-sm-6" [formControl]='documentForm.controls["contrEmail"]' [label]='"E-mail"'></app-text-input>
+                </div>
+
+                <!-- 
+                <div class="form-row">
+                    <app-select class="col-12 col-md-4" [formControl]='documentForm.controls["contrStatus"]' 
+                    [label]='"Status"' [keyValueMap]="staticDataService.getContractorStatuses()"></app-select>
+            
+                </div> -->
+            </div>
+
+            <div class="form-section">
+                <div class="border-bottom">
+                    <h2 class="form-section-title d-inline">RECIPENT</h2>
+                    <button class="btn p-0 float-right"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>
+                </div>
+               
+
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-section-title border-bottom">ITEMS</h2>
+                <div class="form-section-content">
+                    <div formArrayName="items">
+                        <table class="table">
+                            <tr>
+                                <th scope="col">Lp</th>
+                                <th scope="col">Item/Service</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col">VAT</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Value</th>
+                              </tr>
+                  
+                        <ng-container *ngFor="let item of items.controls; let i = index">
+                            <tr class="item" [ngClass]="item.controls['editMode'].value ? 'd-none' : ''"
+                                (click)="editItem(i)">
+                                <td scope="row">{{i+1}}</td>
+                                <td>{{item.controls["name"].value}}</td>
+                                <td>{{item.controls["quantity"].value|number:'1.2-2'}}</td>
+                                <td>{{item.controls["unit"].value}}</td>
+                                <td>{{staticDataService.getPolishVats().get(item.controls["vatObject"].value)}}</td>
+                                <td>{{item.controls["discountedPrice"].value|number:'1.2-2'}}</td>
+                                <td>{{item.controls["discountedPrice"].value*item.controls["quantity"].value|number:'1.2-2'}}</td>
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="7">
+                                    <div [formGroupName]="i" class="row border rounded"
+                                        [ngClass]="!item.controls['editMode'].value ? 'd-none' : ''">
+                  
+                                        <div class="col-12 mt-2 mb-4 p-0">            
+                                            <div class="float-right">
+                                                <button class="btn" (click)="cancelEditingItem(i)">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+        
+        
+                                        <div class="col-12 dropdown">
+                                            <app-text-input class="dropbtn" [formControl]='item.controls["name"]' [label]='"Item/Service"'
+                                             (textChangedEvent)="productNameChanged($event,dropdownRef,i)"
+                                             (focusLostEvent)="productNameInputFocusLost(dropdownRef,i)">
+                                            </app-text-input>
+                                            <div #dropdownRef class="dropdown-content"
+                                                appOutsideClick (appOutsideClick)="onOutsideProductDropdownClick(dropdownRef,i)"
+                                                (mouseenter)="productsDropdownOnMouseEnter(dropdownRef)"
+                                                (mouseleave)="productsDropdownOnMouseLeave(dropdownRef)">
+                                                <ngx-spinner name="document-products-list-spinner" size="medium" [fullScreen]="false">
+                                                    <h3>Loading...</h3>
+                                                </ngx-spinner>
+                                                <table class="table" >
+                                                    <tr>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Code</th>
+                                                        <th scope="col">EAN</th>
+                                                        <th scope="col">Net</th>
+                                                        <th scope="col">Gross</th>
+                                                        <th scope="col">Currency</th>
+                                                        <th scope="col">Stock Level</th>
+                                                      </tr>
+                                                      <ng-container *ngFor="let product of filteredProducts|async">
+                                                        <tr class="dropdown-row" (click)="productChanged(product,i,dropdownRef)"
+                                                        [ngClass]="product.id == item.controls['productId'].value ? 'dropdown-selectedrow' : ''" >
+                                                            <td scope="col">{{product.name}}</td>
+                                                            <td scope="col">{{product.code}}</td>
+                                                            <td scope="col">{{product.ean}}</td>
+                                                            <td scope="col">{{(purchaseSale == purchaseSaleEnum.Purchase?product.purchaseNetPrice:product.saleNetPrice)|number:'1.2-2'}}</td>
+                                                            <td scope="col">{{(purchaseSale == purchaseSaleEnum.Purchase?product.purchaseGrossPrice:product.saleGrossPrice)|number:'1.2-2'}}</td>
+                                                            <td scope="col">{{purchaseSale == purchaseSaleEnum.Purchase?product.purchaseCurrency:product.saleCurrency}}</td>
+                                                            <td scope="col">{{product.stockLevelControl?(product.stockLevel|number:'1.2-2'):'-'}}</td>  
+                                                        </tr>
+                                                      </ng-container>
+                                                      
+                                                </table>
+                                              </div>
+                                        </div>
+            
+                                        <app-number-input class="col-12 col-sm-2" [formControl]='item.controls["quantity"]' 
+                                        [label]='"Quantity"' [decimalPlaces]="2"></app-number-input>
+                                        <app-text-input class="col-12 col-sm-2" [formControl]='item.controls["unit"]' [label]='"Unit"'></app-text-input>
+            
+                                        <app-select class="col-12 col-sm-2" [formControl]='item.controls["vatObject"]' 
+                                        [label]='"VAT"' [keyValueMap]="staticDataService.getPolishVats()"></app-select>
+                                        <app-number-input class="col-12 col-sm-2" [formControl]='item.controls["price"]' 
+                                        [label]='"Price"' [decimalPlaces]="2"></app-number-input>
+                                        <app-number-input class="col-12 col-sm-2" [formControl]='item.controls["discount"]' 
+                                        [label]='"Discount [%]"' [decimalPlaces]="2"></app-number-input>
+                                        <app-number-input class="col-12 col-sm-2" [formControl]='item.controls["discountedPrice"]' 
+                                        [label]='"Discounted Price"' [decimalPlaces]="2"></app-number-input>
+            
+                                        <app-text-input class="col-12 col-sm-9" [formControl]='item.controls["description"]' [label]='"Description"'></app-text-input>
+                                        <app-text-input class="col-12 col-sm-3" [formControl]='item.controls["pkWiU"]' [label]='"PKWiU"'></app-text-input>
+            
+                                        <div class="col-12 mt-2 mb-4 p-2">            
+                                            <div class="float-right">
+                                                <button class="btn btn-outline-danger" [ngClass]="!item.controls['added'].value ? 'd-none' : ''" (click)="deleteItem(i)">Delete</button>
+                                                <button class="btn btn-success" [ngClass]="!item.controls['added'].value ? 'd-none' : ''" (click)="saveItem(i)">Save</button>
+                                                <button class="btn btn-primary" [ngClass]="item.controls['added'].value ? 'd-none' : ''" (click)="addItem(i)">Add item</button>
+                                            </div>
+                                        </div>
+            
+                                    </div>
+                                </td>
+               
+                                
+                            </tr>
+                          
+                    </ng-container>
+                    </table>
+                      </div>
+                    <button type="button" class="btn btn-outline-secondary w-100" (click)="initItem()">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        Add product
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    
+    </div>
+</div>
+
+
+
+

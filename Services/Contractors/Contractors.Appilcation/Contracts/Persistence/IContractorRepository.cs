@@ -15,5 +15,6 @@ namespace Contractors.Application.Contracts.Persistence
         Task<Contractor> GetContractorByCode(string contractorCode, int companyId);
         Task<int> CountContractors(int companyId, string contractorName);
         Task<int> CountContractorsByCode(int companyId, string contractorCode, int? contractorId);
+        Task<IEnumerable<Contractor>> GetAllContractorsByCompanyId(int companyId);
     }
 }

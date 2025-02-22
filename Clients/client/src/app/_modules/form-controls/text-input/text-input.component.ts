@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Self } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Self } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { MaskType } from './mask-factory/mask-type';
 import { MaskFactory } from './mask-factory/mask-factory';
@@ -10,6 +10,8 @@ import { MaskTextInput } from './mask-factory/mask-text-input';
   styleUrls: ['./text-input.component.css','../control.css'],
 })
 export class TextInputComponent implements ControlValueAccessor {
+  @Output() textChangedEvent: EventEmitter<string> = new EventEmitter();
+  @Output() focusLostEvent: EventEmitter<any> = new EventEmitter();
   @Input() label:string;
   @Input() type = 'text';
   @Input() upperCaseOnly:boolean = false;
@@ -65,5 +67,13 @@ export class TextInputComponent implements ControlValueAccessor {
 
   maskInputedText(event:any){
     this._maskTextInput?.mask(event)
+  }
+
+  focusLost(event:any){
+    this.focusLostEvent.emit();
+  }
+
+  changed(event:any){
+    this.textChangedEvent.emit(event.target.value);
   }
 }

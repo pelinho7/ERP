@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { AccountService } from '../../account/services/account.service';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-top-navbar',
@@ -16,7 +18,7 @@ export class TopNavbarComponent implements OnInit {
   
   constructor(public resizeWindowWatcherService:ResizeWindowWatcherService
     ,private router:Router,private http:HttpClient
-    ,public accountService:AccountService) { }
+    ,public accountService:AccountService,private toastr:ToastrService) { }
 
   ngOnInit(): void {
   }
@@ -35,24 +37,10 @@ export class TopNavbarComponent implements OnInit {
   }
 
   login(){
-    this.accountService.login();
+    this.router.navigateByUrl('/account/login')
   }
 
   register(){
-    //this.accountService.logout();
-      this.http.get('https://localhost:5000/Products/1')
-  .subscribe(x=>console.log(x))
-
-  // this.http.get('https://localhost:5003/api/v1/Products/1')
-  // .subscribe(x=>console.log(x))
-  }
-  
-  check(){
-    this.accountService.checkAuth();
-
-  }
-
-  async get(){
-    this.accountService.get();
+    this.router.navigateByUrl('/account/register')
   }
 }

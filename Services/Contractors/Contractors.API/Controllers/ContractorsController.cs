@@ -14,6 +14,7 @@ using Contractors.Application.Features.Contractors.Commands.UpdateContractor;
 using Contractors.Application.Features.Contractors.Commands.CreateContractor;
 using Contractors.Application.Features.Contractors.Queries.GetContractorsList;
 using Contractors.Application.Features.Contractors.Queries.GetContractorById;
+using Contractors.Application.Features.Contractors.Queries.GetAllContractors;
 
 namespace Contractors.API.Controllers
 {
@@ -101,6 +102,26 @@ namespace Contractors.API.Controllers
             CheckContractorCodeNotTakenQuery command = new CheckContractorCodeNotTakenQuery(getCompanyId(), code,id);
             var result = await _mediator.Send(command);
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("all")]
+        [ProducesResponseType(typeof(List<ContractorVm>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<ContractorVm>>> GetAll()
+        {
+            GetAllContractorsQuery command = new GetAllContractorsQuery(getCompanyId());
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        //[Authorize]
+        [HttpGet]
+        [Route("Test")]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<bool>> Test1()
+        {
+            return Ok(true);
         }
     }
 }

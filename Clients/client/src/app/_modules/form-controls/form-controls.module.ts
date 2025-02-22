@@ -9,6 +9,8 @@ import { CheckboxInputComponent } from './checkbox-input/checkbox-input.componen
 import { SelectSearchComponent } from './select-search/select-search.component';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { DatepickerComponent } from './datepicker/datepicker.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -18,12 +20,14 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     NumberInputComponent,
     CheckboxInputComponent,
     SelectSearchComponent,
+    DatepickerComponent,
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatSelectModule,
     NgxMatSelectSearchModule,
+    BsDatepickerModule.forRoot(),
   ],
   exports: [
     TextInputComponent,
@@ -32,6 +36,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     NumberInputComponent,
     CheckboxInputComponent,
     SelectSearchComponent,
+    DatepickerComponent,
   ]
 })
 export class FormControlsModule { }

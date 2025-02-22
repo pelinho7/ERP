@@ -1,3 +1,4 @@
+//contractors
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -28,11 +29,12 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = builder.Configuration["IdentityServer"];//"https://localhost:5001";
+        options.Authority = "https://localhost:5001"; //builder.Configuration["IdentityServer"];//"https://localhost:5001";
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateAudience = false
-        };
+            ValidateAudience = false,
+            //ValidAudience = "https://localhost:4200",
+    };
         options.IncludeErrorDetails = true;
     });
 
@@ -46,8 +48,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:8020"));
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+//app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:8020"));
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

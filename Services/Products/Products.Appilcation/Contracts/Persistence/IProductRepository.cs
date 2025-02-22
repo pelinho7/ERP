@@ -15,5 +15,6 @@ namespace Products.Application.Contracts.Persistence
         Task<Product> GetProductByCode(string productCode, int companyId);
         Task<int> CountProducts(int companyId, string productName);
         Task<int> CountProductsByCode(int companyId, string productCode, int? productId);
+        Task<IEnumerable<Product>> GetAllProductsByCompanyId(int companyId);
     }
 }

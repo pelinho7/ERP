@@ -1,0 +1,39 @@
+<div *ngIf="!selectMode" class="title-panel" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'row':''">
+    <div class="title-text" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'order-0 col-2 p-0':''">
+      Sales Invoices
+     </div>
+     <div class="input-group w-50 flex-row" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'order-2 col-12 p-0 mt-2':''">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
+      </div>
+      <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" 
+        [(ngModel)]="nameFilterInput" (keypress)="onEnterNameFilerInput($event)" (blur)="onBlurNameFilerInput()">
+    </div>
+    <button class="btn btn-primary" [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'order-1 col-10':''"
+    [routerLink]="['/sales-invoices/add']" >Add Sales Invoices</button>
+  </div>
+
+  <div *ngIf="selectMode" class="title-panel">
+    <button class="btn" (click)="clearSelections()"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="float-right">
+      <div class="mt-auto mb-auto font-weight-bolder font-italic d-inline-block">Selected: {{selectedIds.length}}</div>
+      <button class="btn" (click)="archive()"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <div class="row m-0">
+    <div class="col-12 col-md-6 col-lg-4 p-3" *ngFor="let document of items">
+      <app-documents-list-item [document]="document" (selectChangedEvent)="selectChanged($event)"
+       [selectMode]="selectMode"></app-documents-list-item>
+  </div>
+</div>
+
+
+
+<div id="pagination-panel" [ngStyle]="paginationPanelStyles" class="pagination-panel" *ngIf="pagination && loaded">
+  <pagination [boundaryLinks]="true" [totalItems]="pagination.totalPages*pagination.pageSize"
+          [itemsPerPage]="pagination.pageSize" [(ngModel)]="pagination.page"
+          (pageChanged)="pageChanged($event)"
+          previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+  </pagination>
+</div>
