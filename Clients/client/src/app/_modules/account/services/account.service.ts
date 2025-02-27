@@ -96,11 +96,15 @@ export class AccountService {
           )
         }
       
-        checkEmailNotTaken(email:string){
+        checkEmailNotTaken(email:string,id:number){
           if(email.length==0){
             return of(false)
           }
-          return this.http.get<boolean>(this.baseUrl+'account/check-email-not-taken?email='+email).pipe(
+          var idParam='';
+          if(id!=null){
+            idParam='&id='+id;
+          }
+          return this.http.get<boolean>(this.baseUrl+'account/check-email-not-taken?email='+email+idParam).pipe(
             map((result:boolean)=>{
               return result;
             })
@@ -129,7 +133,7 @@ export class AccountService {
         }
       
         resetPassword(login:string) { 
-          return this.http.get(this.baseUrl+'account/reset-password?login='+login).pipe(
+          return this.http.get(this.baseUrl+'account/reset-password?email='+login).pipe(
             map(_ => {
               return true;
             }),

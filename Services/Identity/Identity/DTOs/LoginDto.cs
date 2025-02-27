@@ -7,7 +7,7 @@ namespace Identity.DTOs
         [Required]
         public string Login { get; set; }
         [Required]
-        [StringLength(8,MinimumLength = 4)]
+        [MinLength(4)]
         public string Password{get;set;}
         
     }

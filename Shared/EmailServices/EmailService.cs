@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace EmailService
@@ -5,11 +6,16 @@ namespace EmailService
     public class EmailService : IEmailService
     {
         string _senderAddress, _senderPassword;
-        public EmailService(/*string senderAddress,string senderPassword*/)
+        public EmailService(IConfiguration config)
         {
-            _senderAddress = ""; //senderAddress;
-            _senderPassword = ""; //senderPassword;
+            _senderAddress = config["EmailCredential:Address"];
+            _senderPassword = config["EmailCredential:Password"];
         }
+        //public EmailService(string senderAddress,string senderPassword)
+        //{
+        //    _senderAddress = senderAddress;
+        //    _senderPassword = senderPassword;
+        //}
 
         public async Task<(bool,string)> SendEmailAsync(string recevierEmail,string subject,string body){
             return await Task.Run(()=>SendEmail(recevierEmail,subject,body));

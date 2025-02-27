@@ -3,9 +3,9 @@ import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } fr
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../services/account.service';
-import { ValidateEmailNotTaken } from 'src/app/validators/email-not-taken.validator';
 import { Registration } from '../models/registration';
 import { FormHelpersService } from 'src/app/_services/form-helpers.service';
+import { ValidateEmailNotTaken } from '../validators/email-not-taken.validator';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +30,8 @@ export class RegisterComponent implements OnInit {
       agreements: this.fb.array([])
     })
 
-    this.registerForm.controls['email'].setAsyncValidators(ValidateEmailNotTaken.createValidator(this.accountService));
+    this.registerForm.controls['email'].setAsyncValidators(ValidateEmailNotTaken.createValidator(this.accountService,0));
+
   this.loadData=true;
   }
 

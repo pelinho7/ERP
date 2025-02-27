@@ -1,19 +1,5 @@
 {
   "Routes": [
-    //Catalog API
-    //{
-    //  "DownstreamPathTemplate": "/api/v1/Catalog",
-    //  "DownstreamScheme": "http",
-    //  "DownstreamHostAndPorts": [
-    //    {
-    //      "Host": "localhost",
-    //      "Port": "8000"
-    //    }
-    //  ],
-    //  "UpstreamPathTemplate": "/Catalog",
-    //  "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
-    //  "FileCacheOptions": { "TtlSeconds": 30 }
-    //},
     {
       "DownstreamPathTemplate": "/api/v1/Account/login",
       "DownstreamScheme": "https",
@@ -27,7 +13,7 @@
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/v1/Account/check-email-not-taken/{code}",
+      "DownstreamPathTemplate": "/api/v1/Account/check-email-not-taken/{email}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -35,7 +21,43 @@
           "Port": "5001"
         }
       ],
-      "UpstreamPathTemplate": "/Account/check-email-not-taken/{code}",
+      "UpstreamPathTemplate": "/Account/check-email-not-taken/{email}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Account/register",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/Account/register",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Account/resend-verification-email",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/Account/resend-verification-email",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Account/email-confirmation",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/Account/email-confirmation",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {

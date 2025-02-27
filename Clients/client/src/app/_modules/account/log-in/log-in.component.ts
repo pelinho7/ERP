@@ -50,7 +50,10 @@ export class LogInComponent implements OnInit {
   }
 
   resendVerificationEmail(){
-
+    this.accountService.resendVerificationEmail(this.logInForm.value).subscribe(user=>{
+      this.toastr.info('On your email sent verification mail')
+      this.router.navigateByUrl('/');
+    })
   }
 
   openResetPasswordModal() {

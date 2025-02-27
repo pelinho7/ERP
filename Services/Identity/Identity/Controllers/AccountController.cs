@@ -10,6 +10,7 @@ using Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Transactions;
 using System.Xml;
 
@@ -129,13 +130,15 @@ namespace Identity.Controllers
             return new(sendEmailResult, message);
         }
 
-        [HttpPost("register")]
+        [HttpPost]
+        [Route("register")]
+        [ProducesResponseType(typeof(UserDto), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (registerDto == null)
                 return BadRequest();
 
-            var user = new AppUser() { UserName = registerDto.Email };
+            var user = new AppUser() { UserName = registerDto.Email,Email = registerDto.Email };
             //var user = mapper.Map<AppUser>(registerDto);
 
             var result = await userManager.CreateAsync(user, registerDto.Password);
@@ -156,13 +159,15 @@ namespace Identity.Controllers
             };
         }
 
-        [HttpPost("resend-verification-email")]
+        [HttpPost]
+        [Route("resend-verification-email")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<UserDto>> ResendVerificationEmail(LoginDto loginDto)
         {
             if (loginDto == null)
                 return BadRequest();
 
-            var user = await userRepository.GetUserByUsernameAsync(loginDto.Login);
+            var user = await userRepository.GetUserByEmailAsync(loginDto.Login);
 
             if (user == null)
                 return Unauthorized($"Invalid user");
@@ -186,12 +191,12 @@ namespace Identity.Controllers
         }
 
         [HttpGet("reset-password")]
-        public async Task<ActionResult> ResetPassword(string login)
+        public async Task<ActionResult> ResetPassword(string email)
         {
-            if (login == null)
+            if (email == null)
                 return BadRequest();
 
-            var user = await getUserByLoginOrEmail(login);
+            var user = await getUserByLoginOrEmail(email);
             if (user == null)
             {
                 return Unauthorized($"Invalid user");
@@ -211,16 +216,17 @@ namespace Identity.Controllers
             }
         }
 
-        [HttpGet("check-email-not-taken")]
-        public async Task<ActionResult<bool>> CheckEmailNotTaken(string email)
+        [HttpGet]
+        [Route("check-email-not-taken")]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<bool>> CheckEmailNotTaken(string email, int? id)
         {
             if (string.IsNullOrEmpty(email)) return true;
 
             var userByEmail = await userRepository.GetUserByEmailAsync(email);
             if (userByEmail == null) return true;
 
-            var currentUserId = User.GetUserId();
-            if (userByEmail.Id == currentUserId) return true;
+            if (userByEmail.Id == id) return true;
 
             return false;
         }
@@ -279,32 +285,32 @@ namespace Identity.Controllers
             return BadRequest();
         }
 
-        //[HttpPost("new-password")]
-        //public async Task<ActionResult> NewPassword(NewPasswordDto newPasswordDto)
-        //{
+        [HttpPost("new-password")]
+        public async Task<ActionResult> NewPassword(NewPasswordDto newPasswordDto)
+        {
 
-        //    if (newPasswordDto == null || string.IsNullOrEmpty(newPasswordDto.ResetPasswordToken)
-        //    || newPasswordDto.UserId < 1)
-        //    {
-        //        return BadRequest();
-        //    }
+            if (newPasswordDto == null || string.IsNullOrEmpty(newPasswordDto.ResetPasswordToken)
+            || newPasswordDto.UserId < 1)
+            {
+                return BadRequest();
+            }
 
-        //    newPasswordDto.ResetPasswordToken = Uri.UnescapeDataString(newPasswordDto.ResetPasswordToken);
-        //    var user = await unitOfWork.UserRepository.GetUserByIdAsync(newPasswordDto.UserId);
-        //    if (user == null)
-        //        return Unauthorized($"Invalid user");
+            newPasswordDto.ResetPasswordToken = Uri.UnescapeDataString(newPasswordDto.ResetPasswordToken);
+            var user = await userRepository.GetUserByIdAsync(newPasswordDto.UserId);
+            if (user == null)
+                return Unauthorized($"Invalid user");
 
-        //    var resetPasswordResult = await userManager.ResetPasswordAsync(user
-        //        , newPasswordDto.ResetPasswordToken, newPasswordDto.NewPassword);
+            var resetPasswordResult = await userManager.ResetPasswordAsync(user
+                , newPasswordDto.ResetPasswordToken, newPasswordDto.NewPassword);
 
-        //    if (!resetPasswordResult.Succeeded)
-        //    {
-        //        resetPasswordResult.Errors.ToList().ForEach(x => ModelState.AddModelError("", $"{x.Description}"));
-        //        return BadRequest(resetPasswordResult?.Errors.FirstOrDefault().Description);
-        //    }
-        //    else
-        //        return Ok();
-        //}
+            if (!resetPasswordResult.Succeeded)
+            {
+                resetPasswordResult.Errors.ToList().ForEach(x => ModelState.AddModelError("", $"{x.Description}"));
+                return BadRequest(resetPasswordResult?.Errors.FirstOrDefault().Description);
+            }
+            else
+                return Ok();
+        }
 
         #region account data
         //[Authorize]

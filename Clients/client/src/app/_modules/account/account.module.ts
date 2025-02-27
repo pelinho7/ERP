@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountRoutingModule } from './account-routing.module';
 import { FormControlsModule } from "../form-controls/form-controls.module";
 import { RegisterComponent } from './register/register.component';
+import { EmailVerificationComponent } from './email-verification/email-verification.component';
+import { NewPasswordComponent } from './new-password/new-password.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { RegisterComponent } from './register/register.component';
   
     LogInComponent,
             ResetPasswordComponent,
-            RegisterComponent
+            RegisterComponent,
+            EmailVerificationComponent,
+            NewPasswordComponent
   ],
   imports: [
     CommonModule,
