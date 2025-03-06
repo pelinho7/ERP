@@ -49,25 +49,6 @@ builder.Services.AddSwaggerGen(option =>
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.AddAppAuthetication();
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.Authority = builder.Configuration["IdentityServer"];//"https://localhost:5001";
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateAudience = false
-//        };
-//        options.IncludeErrorDetails = true;
-//    });
-
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.AddPolicy("email", policyAdmin =>
-//    {
-//        policyAdmin.RequireClaim(ClaimTypes.Email, "patryk.pele@op.pl");
-//    });
-//    //options.AddPolicy("email", policy => policy.RequireClaim("patryk.pele@op.pl"));
-//});
 
 var app = builder.Build();
 

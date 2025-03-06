@@ -85,6 +85,18 @@
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
+      "DownstreamPathTemplate": "/api/v1/Account/data",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/Account/data",
+      "UpstreamHttpMethod": [ "GET","POST" ]
+    },
+    {
       "DownstreamPathTemplate": "/api/v1/Contractors",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [

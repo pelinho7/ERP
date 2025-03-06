@@ -138,7 +138,13 @@ namespace Identity.Controllers
             if (registerDto == null)
                 return BadRequest();
 
-            var user = new AppUser() { UserName = registerDto.Email,Email = registerDto.Email };
+            var user = new AppUser() 
+            { 
+                UserName = registerDto.Email,
+                Email = registerDto.Email,
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+            };
             //var user = mapper.Map<AppUser>(registerDto);
 
             var result = await userManager.CreateAsync(user, registerDto.Password);
@@ -313,76 +319,66 @@ namespace Identity.Controllers
         }
 
         #region account data
-        //[Authorize]
-        //[HttpGet("{data}")]
-        //public async Task<ActionResult<AccountDataDto>> AccountData()
-        //{
-        //    var currentUserId = User.GetUserId();
-        //    var user = await unitOfWork.UserRepository.GetUserByIdAsync(currentUserId);
-        //    if (user == null)
-        //        return Unauthorized($"Invalid user");
+        [Authorize]
+        [HttpGet("data")]
+        public async Task<ActionResult<AccountDataDto>> AccountData()
+        {
+            var currentUserId = User.GetUserId();
+            var user = await userRepository.GetUserByIdAsync(currentUserId);
+            if (user == null)
+                return Unauthorized($"Invalid user");
 
-        //    return mapper.Map<AccountDataDto>(user);
-        //}
+            return mapper.Map<AccountDataDto>(user);
+        }
 
-        //[Authorize]
-        //[HttpPost("{data}")]
-        //public async Task<ActionResult<UserDto>> AccountData(AccountDataDto accountDataDto)
-        //{
-        //    if (accountDataDto == null) BadRequest();
-        //    var currentUserId = User.GetUserId();
-        //    var user = await unitOfWork.UserRepository.GetUserByIdAsync(currentUserId);
-        //    if (user == null)
-        //        return Unauthorized($"Invalid user");
+        [Authorize]
+        [HttpPost("data")]
+        [ProducesResponseType(typeof(UserDto), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<UserDto>> AccountData(AccountDataDto accountDataDto)
+        {
+            if (accountDataDto == null) BadRequest();
+            var currentUserId = User.GetUserId();
+            var user = await userRepository.GetUserByIdAsync(currentUserId);
+            if (user == null)
+                return Unauthorized($"Invalid user");
 
-        //    var dto = mapper.Map<AccountDataDto>(user);
+            var dto = mapper.Map<AccountDataDto>(user);
 
-        //    if (accountDataDto.Equals(dto))
-        //    {
-        //        return new UserDto() { Username = accountDataDto.Username };
-        //    }
 
-        //    user.UserName = accountDataDto.Username;
-        //    user.Email = accountDataDto.Email;
-        //    user.FirstName = accountDataDto.FirstName;
-        //    user.LastName = accountDataDto.LastName;
-        //    var result = await userManager.UpdateAsync(user);
-        //    if (!result.Succeeded) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
+            user.UserName = accountDataDto.Email;
+            user.Email = accountDataDto.Email;
+            user.FirstName = accountDataDto.FirstName;
+            user.LastName = accountDataDto.LastName;
+            var result = await userManager.UpdateAsync(user);
+            if (!result.Succeeded) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
 
-        //    unitOfWork.UserHistoryRepository.AddUserHistory(user);
-        //    var savingResult = await unitOfWork.Complete();
-        //    if (!savingResult) return StatusCode(StatusCodes.Status500InternalServerError, "Saving data incompleted");
+            return new UserDto() { Username = accountDataDto.Email };
+        }
 
-        //    return new UserDto() { Username = accountDataDto.Username };
-        //}
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            if (changePasswordDto == null)
+                return BadRequest();
 
-        //[Authorize]
-        //[HttpPost("change-password")]
-        //public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
-        //{
-        //    if (changePasswordDto == null)
-        //        return BadRequest();
+            var currentUserId = User.GetUserId();
+            var user = await userRepository.GetUserByIdAsync(currentUserId);
+            if (user == null)
+                return Unauthorized($"Invalid user");
 
-        //    var currentUserId = User.GetUserId();
-        //    var user = await unitOfWork.UserRepository.GetUserByIdAsync(currentUserId);
-        //    if (user == null)
-        //        return Unauthorized($"Invalid user");
+            var checkPasswordResult = await userManager.CheckPasswordAsync(user, changePasswordDto.ActualPassword);
+            if (!checkPasswordResult)
+                return Unauthorized($"Incorrect password");
 
-        //    var checkPasswordResult = await userManager.CheckPasswordAsync(user, changePasswordDto.ActualPassword);
-        //    if (!checkPasswordResult)
-        //        return Unauthorized($"Incorrect password");
+            var changePasswordResult = await userManager.ChangePasswordAsync(user, changePasswordDto.ActualPassword, changePasswordDto.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                return BadRequest(changePasswordResult.Errors.Count() > 0 ? changePasswordResult.Errors.First().Description : "");
+            }
 
-        //    var changePasswordResult = await userManager.ChangePasswordAsync(user, changePasswordDto.ActualPassword, changePasswordDto.NewPassword);
-        //    if (!changePasswordResult.Succeeded)
-        //    {
-        //        return BadRequest(changePasswordResult.Errors.Count() > 0 ? changePasswordResult.Errors.First().Description : "");
-        //    }
-
-        //    unitOfWork.UserHistoryRepository.AddUserHistory(user);
-        //    await unitOfWork.Complete();
-
-        //    return Ok();
-        //}
+            return Ok();
+        }
         #endregion
     }
 }

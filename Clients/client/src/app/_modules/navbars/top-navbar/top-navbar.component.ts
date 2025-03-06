@@ -43,4 +43,12 @@ export class TopNavbarComponent implements OnInit {
   register(){
     this.router.navigateByUrl('/account/register')
   }
+
+  showAccountData(){
+    this.router.navigateByUrl('/account/data')
+  }
+
+  changePassword(){
+    this.router.navigateByUrl('/account/change-password')
+  }
 }

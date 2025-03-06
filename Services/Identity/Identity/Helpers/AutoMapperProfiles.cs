@@ -12,6 +12,7 @@ namespace Identity.Helpers
     {
         public AutoMapperProfiles()
         {
+            CreateMap<AppUser, AccountDataDto>();
             //CreateMap<RegisterDto, AppUser>()
             //.ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
         }

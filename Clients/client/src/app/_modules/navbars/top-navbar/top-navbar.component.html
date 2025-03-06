@@ -29,7 +29,9 @@
             </button>
             <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right drop"
                 role="menu" aria-labelledby="button-animated">
-                <li role="menuitem"><a class="dropdown-item" (click)="logout()">Log out</a>
+                <li role="menuitem"><a class="dropdown-item btn" (click)="showAccountData()">Account data</a>
+                <li role="menuitem"><a class="dropdown-item btn" (click)="changePassword()">Change password</a>
+                <li role="menuitem"><a class="dropdown-item btn" (click)="logout()">Log out</a>
               </ul>
           </div>
           <!-- <div class="btn-group" dropdown>

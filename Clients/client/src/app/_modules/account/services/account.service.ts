@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { UrlService } from 'src/app/_services/url.service';
+import { AccountData } from '../models/accountData';
 
 
 @Injectable({
@@ -148,26 +149,26 @@ export class AccountService {
           return this.http.post(this.baseUrl+'account/new-password',model);
         }
       
-        // getAccountData(){
-        //   return this.http.get<AccountData>(this.baseUrl+'account/data').pipe(
-        //     map((data:AccountData)=>{
-        //       return data;
-        //     })
-        //   )
-        // }
+        getAccountData(){
+          return this.http.get<AccountData>(this.baseUrl+'account/data').pipe(
+            map((data:AccountData)=>{
+              return data;
+            })
+          )
+        }
       
-        // updateAccountData(model:any){
-        //   return this.http.post<User>(this.baseUrl+'account/data',model).pipe(
-        //     map((user:User)=>{
-        //       //reload username after update
-        //         this.currentUser$.pipe(take(1)).subscribe(currentU=>{
-        //           currentU.username=user.username;
-        //           this.setCurrentUser(currentU);
-        //         })
-        //         return user;
-        //       })
-        //   )
-        // }
+        updateAccountData(model:any){
+          return this.http.post<User>(this.baseUrl+'account/data',model).pipe(
+            map((user:User)=>{
+              //reload username after update
+                this.currentUser$.pipe(take(1)).subscribe(currentU=>{
+                  currentU.email=user.email;
+                  this.setCurrentUser(currentU);
+                })
+                return user;
+              })
+          )
+        }
       
         changePassword(model:any){
           return this.http.post(this.baseUrl+'account/change-password',model);

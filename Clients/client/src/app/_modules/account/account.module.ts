@@ -12,16 +12,20 @@ import { FormControlsModule } from "../form-controls/form-controls.module";
 import { RegisterComponent } from './register/register.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { AccountDataComponent } from './account-data/account-data.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
     
   
     LogInComponent,
-            ResetPasswordComponent,
-            RegisterComponent,
-            EmailVerificationComponent,
-            NewPasswordComponent
+    ResetPasswordComponent,
+    RegisterComponent,
+    EmailVerificationComponent,
+    NewPasswordComponent,
+    AccountDataComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
