@@ -1,13 +1,13 @@
 <div class="form-group">
     <label class="label">{{label}}</label>
-    <input 
-        [class.is-invalid]="ngControl.touched && ngControl.invalid"
-        type={{type}} (keypress)="keypress($event)" (input)="maskInputedText($event)"
-        class="form-control" 
-        [ngClass]="(upperCaseOnly?'input-upper':'')"
-        [formControl]="ngControl.control"
-        (keyup)="changed($event)"
-        (blur)="focusLost($event)">
+    <!-- <input 
+    [class.is-invalid]="ngControl.touched && ngControl.invalid"
+    type={{type}} (keypress)="keypress($event)" (input)="maskInputedText($event)"
+    class="form-control" 
+    [ngClass]="(upperCaseOnly?'input-upper':'')"
+    [formControl]="ngControl.control"
+    (keyup)="changed($event)"
+    (blur)="focusLost($event)">
 
     <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
     <div *ngIf="ngControl.control?.errors?.minlength" class="invalid-feedback">
@@ -33,5 +33,51 @@
     </div>
     <div *ngIf="ngControl.control?.errors?.invalidPolishVatID" class="invalid-feedback">
         This Polish VAT ID is invalid
+    </div> -->
+
+        <div class="input-group">
+
+    <input 
+        [class.is-invalid]="ngControl.touched && ngControl.invalid"
+        type={{type}} (keypress)="keypress($event)" (input)="maskInputedText($event)"
+        class="form-control" 
+        [ngClass]="(upperCaseOnly?'input-upper':'')"
+        [formControl]="ngControl.control"
+        (keyup)="changed($event)"
+        (blur)="focusLost($event)">
+
+        <div class="input-group-append" [ngClass]="(!passwordInput?'d-none':'')">
+            <button class="btn btn-outline-secondary" type="button" (click)="showHidePassword()">
+                <i [ngClass]="(showPassword?'fa fa-eye-slash':'fa fa-eye')"></i>
+            </button>
+          </div>
+
+        <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Please enter a {{label}}</div>
+    <div *ngIf="ngControl.control?.errors?.minlength" class="invalid-feedback">
+        {{label}} must be at least {{ngControl.control.errors.minlength['requiredLength']}}
+    </div>
+    <div *ngIf="ngControl.control?.errors?.maxlength" class="invalid-feedback">
+        {{label}} must be at most {{ngControl.control.errors.maxlength['requiredLength']}}
+    </div>
+    <div *ngIf="ngControl.control?.errors?.isMatching" class="invalid-feedback">
+        Passwords do not match
+    </div>
+    <div *ngIf="ngControl.control?.errors?.email" class="invalid-feedback">
+        Email is invalid
+    </div>
+    <div *ngIf="ngControl.control?.errors?.emailTaken" class="invalid-feedback">
+        This email has been taken, please use another one
+    </div>
+    <div *ngIf="ngControl.control?.errors?.loginTaken" class="invalid-feedback">
+        This login has been taken, please use another one
+    </div>
+    <div *ngIf="ngControl.control?.errors?.codeTaken" class="invalid-feedback">
+        This code has been taken, please use another one
+    </div>
+    <div *ngIf="ngControl.control?.errors?.invalidPolishVatID" class="invalid-feedback">
+        This Polish VAT ID is invalid
+    </div>
+  
+
     </div>
 </div>

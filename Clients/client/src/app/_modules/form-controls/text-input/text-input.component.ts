@@ -15,6 +15,8 @@ export class TextInputComponent implements ControlValueAccessor {
   @Input() label:string;
   @Input() type = 'text';
   @Input() upperCaseOnly:boolean = false;
+  public showPassword:boolean=false;
+  public passwordInput:boolean=false;
 
   @Input() set acceptableCharsRegex(acceptableCharsRegex: string) {
     if(this._acceptableCharsRegex==null){
@@ -45,6 +47,7 @@ export class TextInputComponent implements ControlValueAccessor {
   writeValue(obj: any): void {
   }
   registerOnChange(fn: any): void {
+    this.passwordInput=this.type=='password'
   }
   registerOnTouched(fn: any): void {
   }
@@ -75,5 +78,10 @@ export class TextInputComponent implements ControlValueAccessor {
 
   changed(event:any){
     this.textChangedEvent.emit(event.target.value);
+  }
+
+  showHidePassword(){
+    this.showPassword=!this.showPassword;
+    this.type=this.showPassword?'text':'password'
   }
 }
