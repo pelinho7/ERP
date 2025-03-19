@@ -31,6 +31,10 @@ const routes: Routes = [
     path: 'account',
     loadChildren: () => import('./_modules/account/account.module').then(m => m.AccountModule)
   },
+  {
+    path: 'company',
+    loadChildren: () => import('./_modules/companies/companies.module').then(m => m.CompaniesModule)
+  },
   // {path:'account',component:AccountDataComponent,canActivate:[AuthenticationGuard]},
   // {path:'products/:category',component:ProductsListComponent},
   // {path:'product/:code',component:ProductComponent},

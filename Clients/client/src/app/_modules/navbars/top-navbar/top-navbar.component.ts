@@ -51,4 +51,8 @@ export class TopNavbarComponent implements OnInit {
   changePassword(){
     this.router.navigateByUrl('/account/change-password')
   }
+
+  newCompany(){
+    this.router.navigateByUrl('/company/add')
+  }
 }

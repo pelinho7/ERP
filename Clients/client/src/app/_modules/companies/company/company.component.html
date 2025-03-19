@@ -1,0 +1,103 @@
+<ngx-spinner name="company-spinner" size="medium" [fullScreen]="false">
+    <h3>Loading...</h3>
+</ngx-spinner>
+<div *ngIf="loaded">
+    <div class="title-panel">
+        <div class="title-text">
+            {{title}}
+         </div>
+         <div>
+            <button type="button" form="companyForm" (click)="save()" class="btn btn-primary" 
+            [ngClass]="(!companyForm.dirty?'d-none':'')">
+                Save</button>
+            <button class="btn" (click)="close()"><i class="fa fa-times" aria-hidden="true"></i></button>
+         </div>
+        
+      </div>
+    <div class="row ml-0 mr-0">
+        <form id="companyForm" [formGroup]="companyForm"
+        [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'form-without-menu':'form-with-menu'">
+            <div class="form-section" data-menu-item-id="item-id">
+                <h2 class="form-section-title">General</h2>
+
+
+                <div class="form-section-content">
+                    <input type="number" class="d-none" [formControl]='companyForm.controls["id"]'/>
+
+
+                    <div class="form-row">
+                        <app-select-search class="col-12 col-md-4" [formControl]='companyForm.controls["countryCode"]' 
+                        [label]='"Country Code"' [keyValueMap]="staticDataService.getCountryPrefixes()" (valueChangeEvent)="countryCodeChanged($event)"></app-select-search>
+        
+                        <app-text-input class="col-12 col-sm-8" [formControl]='companyForm.controls["vatId"]' 
+                            [label]='"VAT ID"' [acceptableCharsRegex]='"[A-Za-z0-9]+"' [upperCaseOnly]="true"></app-text-input>
+                    </div>
+
+                    <app-text-input [formControl]='companyForm.controls["name"]' [label]='"Company Name"'></app-text-input>
+
+                </div>
+    
+     
+            </div>
+        
+            <div class="form-section">
+                <h2 class="form-section-title">Address</h2>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <app-text-input class="col-12" [formControl]='companyForm.controls["country"]' [label]='"Country"'></app-text-input>
+                        <app-text-input class="col-12" [formControl]='companyForm.controls["city"]' [label]='"City"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12" [formControl]='companyForm.controls["street"]' [label]='"Street"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='companyForm.controls["streetNo"]' [label]='"Street No."'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='companyForm.controls["apartmentNo"]' [label]='"Apt/Unit"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='companyForm.controls["zipCode"]' [label]='"Zip Code"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='companyForm.controls["postalOffice"]' [label]='"Postal Office"'></app-text-input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-section-title">Contact</h2>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='companyForm.controls["phone"]' [label]='"Phone"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='companyForm.controls["mobile"]' [label]='"Mobile"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='companyForm.controls["email"]' [label]='"E-mail"'></app-text-input>
+                        <app-text-input class="col-12 col-sm-6" [formControl]='companyForm.controls["fax"]' [label]='"Fax"'></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12" [formControl]='companyForm.controls["wwwAddress"]' [label]='"WWW"'></app-text-input>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="form-section">
+                <h2 class="form-section-title">Trade</h2>
+                <div class="form-section-content">
+                    <div class="form-row">
+                        <app-text-input class="col-12" [formControl]='companyForm.controls["bankAccountNumber"]' 
+                        [label]='"Bank Account Number"' [acceptableCharsRegex]='"^[0-9]$"'
+                        [maskType]="maskType.Bankaccount"></app-text-input>
+                    </div>
+                    <div class="form-row">
+                        <app-text-input class="col-12 col-sm-6" [formControl]='companyForm.controls["swiftCode"]' 
+                        [label]='"SWIFT Code"' [upperCaseOnly]="true"></app-text-input>
+                    </div>
+                </div>
+            </div>
+        
+        </form>
+    
+        <app-form-nav [navItems]="navItems"></app-form-nav>
+    </div>
+</div>
+
+
+

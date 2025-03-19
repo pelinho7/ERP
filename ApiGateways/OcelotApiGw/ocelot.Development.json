@@ -191,20 +191,31 @@
       ],
       "UpstreamPathTemplate": "/Products/{id}",
       "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Companies",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5004"
+        }
+      ],
+      "UpstreamPathTemplate": "/Companies",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Companies/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5004"
+        }
+      ],
+      "UpstreamPathTemplate": "/Companies/{id}",
+      "UpstreamHttpMethod": [ "GET" ]
     }
-    //,
-    //{
-    //  "DownstreamPathTemplate": "/api/v1/Products",
-    //  "DownstreamScheme": "https",
-    //  "DownstreamHostAndPorts": [
-    //    {
-    //      "Host": "localhost",
-    //      "Port": "5003"
-    //    }
-    //  ],
-    //  "UpstreamPathTemplate": "/Products",
-    //  "UpstreamHttpMethod": [ "GET" ]
-    //}
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:5000"

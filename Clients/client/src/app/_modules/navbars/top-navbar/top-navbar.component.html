@@ -21,6 +21,7 @@
 
         </div>
         <div [ngClass]="(accountService.currentUser$|async)?'d-inline-block':'d-none'">
+          <button class="btn btn-success mr-1" (click)="newCompany()">New company</button>
           <div class="btn-group " dropdown>
             <button id="button-animated" dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle"
                     aria-controls="dropdown-animated">
@@ -34,16 +35,6 @@
                 <li role="menuitem"><a class="dropdown-item btn" (click)="logout()">Log out</a>
               </ul>
           </div>
-          <!-- <div class="btn-group" dropdown>
-            <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right drop"
-                role="menu" aria-labelledby="button-animated">
-              <li role="menuitem"><a class="dropdown-item" (click)="logout()">Log Out</a></li>
-              <li role="menuitem"><a class="dropdown-item" routerLink='account'>My account</a>
-              </li>
-              <li role="menuitem"><a class="dropdown-item" href="#">Something else
-                here</a></li>
-            </ul>
-          </div> -->
         </div>
       </div>
 
