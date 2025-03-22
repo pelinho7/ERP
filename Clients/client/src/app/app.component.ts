@@ -8,6 +8,7 @@ import { RouteWatcherService } from './_services/route-watcher.service';
 import { navbarItem } from './_modules/navbars/models/navbarItem';
 import { AccountService } from './_modules/account/services/account.service';
 import { filter, map } from 'rxjs/operators';
+import { CompaniesService } from './_modules/companies/services/companies.service';
 // import { TopNavbarComponent } from './_modules/navbars/topnavbar/topnavbar/topnavbar.component';
 
 @Component({
@@ -20,18 +21,16 @@ export class AppComponent implements OnInit {
   users:any;
 
   navbarItems:navbarItem[]=[];
-  constructor(public accountService: AccountService, private router:Router
+  constructor(public accountService: AccountService
+    , private companiesService:CompaniesService
+    , private router:Router
     ,private elem: ElementRef){
     this.createNavbarItems();
  
-    
-    // this.router.events.subscribe((event) => {
-    //   if (event instanceof NavigationEnd) {
-    //     //console.log('dasdas '+event.url)
-    //     this.accountService.onAppInit();
-    //   }
-      
-    // });
+    accountService.currentUser$.subscribe(_=>{
+      // companiesService
+    })
+
   }
 
   createNavbarItems(){

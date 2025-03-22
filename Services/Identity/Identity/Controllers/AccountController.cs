@@ -86,6 +86,7 @@ namespace Identity.Controllers
             {
                 UserId = user.Id,
                 Username = user.UserName,
+                Email = user.Email,
                 Token = await tokenService.CreateToken(user)
             };
         }

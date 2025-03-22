@@ -14,17 +14,29 @@ namespace Companies.Infrastructure.Persistence
         }
 
         public DbSet<Company> Companies { get; set; }
-        //public DbSet<ProductHistory> ProductHistories { get; set; }
+        public DbSet<CompanyUser> CompanyUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.Entity<ProductHistory>()
-            //    .HasOne(s => s.Product)
-            //    .WithMany(l => l.ProductHistories)
-            //    .HasForeignKey(s => s.ProductId)
-            //    .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<CompanyUser>()
+                .HasOne(s => s.Company)
+                .WithMany(l => l.CompanyUsers)
+                .HasForeignKey(s => s.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CompanyHistory>()
+                .HasOne(s => s.Company)
+                .WithMany(l => l.CompanyHistories)
+                .HasForeignKey(s => s.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CompanyUserHistory>()
+                .HasOne(s => s.CompanyUser)
+                .WithMany(l => l.CompanyUserHistories)
+                .HasForeignKey(s => s.CompanyUserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

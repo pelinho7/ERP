@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   mobileScreen=false;
   constructor(private http:HttpClient
     ,public accountService:AccountService) { 
-
+      
     }
 
   // @HostListener('window:resize', ['$event'])onResize($event:any) {

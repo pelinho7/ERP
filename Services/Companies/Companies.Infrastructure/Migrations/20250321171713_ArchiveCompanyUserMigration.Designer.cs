@@ -4,6 +4,7 @@ using Companies.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Companies.Infrastructure.Migrations
 {
     [DbContext(typeof(CompanyContext))]
-    partial class CompanyContextModelSnapshot : ModelSnapshot
+    [Migration("20250321171713_ArchiveCompanyUserMigration")]
+    partial class ArchiveCompanyUserMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,101 +121,6 @@ namespace Companies.Infrastructure.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("Companies.Domain.Entities.CompanyHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ApartmentNo")
-                        .IsRequired()
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<bool>("Archived")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("BankAccountNumber")
-                        .IsRequired()
-                        .HasColumnType("varchar(34)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("varchar(120)");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("varchar(80)");
-
-                    b.Property<string>("CountryCode")
-                        .IsRequired()
-                        .HasColumnType("varchar(2)");
-
-                    b.Property<int>("CreatedModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Fax")
-                        .IsRequired()
-                        .HasColumnType("varchar(30)");
-
-                    b.Property<string>("Mobile")
-                        .IsRequired()
-                        .HasColumnType("varchar(30)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(300)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("varchar(30)");
-
-                    b.Property<string>("PostalOffice")
-                        .IsRequired()
-                        .HasColumnType("varchar(120)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<string>("StreetNo")
-                        .IsRequired()
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("SwiftCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VatId")
-                        .IsRequired()
-                        .HasColumnType("varchar(13)");
-
-                    b.Property<string>("WwwAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("varchar(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("CompanyHistory");
-                });
-
             modelBuilder.Entity("Companies.Domain.Entities.CompanyUser", b =>
                 {
                     b.Property<int>("Id")
@@ -264,65 +172,6 @@ namespace Companies.Infrastructure.Migrations
                     b.ToTable("CompanyUsers");
                 });
 
-            modelBuilder.Entity("Companies.Domain.Entities.CompanyUserHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Administrator")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Archived")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CompanyUserId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("ContractorsModuleRead")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ContractorsModuleWrite")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("CreatedModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("ProductsModuleRead")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ProductsModuleWrite")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyUserId");
-
-                    b.ToTable("CompanyUserHistory");
-                });
-
-            modelBuilder.Entity("Companies.Domain.Entities.CompanyHistory", b =>
-                {
-                    b.HasOne("Companies.Domain.Entities.Company", "Company")
-                        .WithMany("CompanyHistories")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
             modelBuilder.Entity("Companies.Domain.Entities.CompanyUser", b =>
                 {
                     b.HasOne("Companies.Domain.Entities.Company", "Company")
@@ -334,27 +183,9 @@ namespace Companies.Infrastructure.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Companies.Domain.Entities.CompanyUserHistory", b =>
-                {
-                    b.HasOne("Companies.Domain.Entities.CompanyUser", "CompanyUser")
-                        .WithMany("CompanyUserHistories")
-                        .HasForeignKey("CompanyUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CompanyUser");
-                });
-
             modelBuilder.Entity("Companies.Domain.Entities.Company", b =>
                 {
-                    b.Navigation("CompanyHistories");
-
                     b.Navigation("CompanyUsers");
-                });
-
-            modelBuilder.Entity("Companies.Domain.Entities.CompanyUser", b =>
-                {
-                    b.Navigation("CompanyUserHistories");
                 });
 #pragma warning restore 612, 618
         }

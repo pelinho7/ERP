@@ -5,37 +5,63 @@
 
 <nav id="top-navbar" class="navbar-expand-lg navbar-light bg-light border-bottom sticky-top container-fluid 
     p-2 pr-3 pl-3 row m-0">
-    <div class="col-3 order-0">
+    <div class="order-0"
+    [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'col-3 col-sm-2 col-md-1':'col-0'">
         <button class="btn btn-outline-secondary" 
         [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'':'d-none'"
         (click)="openSideNavbar()"><i class="fa fa-bars" aria-hidden="true"></i></button>
     </div>
 
-    <div class="col-9 order-1 order-md-1">
-      <div class="float-right">
-        <div [ngClass]="!(accountService.currentUser$|async)?'d-inline-block':'d-none'">
-          <button class="btn btn-outline-success mr-1" (click)="login()">Log In</button>
-          <button class="btn btn-outline-success" (click)="register()">Register</button>
-          <!-- <button class="btn btn-outline-success" (click)="check()">check</button>
-          <button class="btn btn-outline-success" (click)="get()">get</button> -->
-
-        </div>
-        <div [ngClass]="(accountService.currentUser$|async)?'d-inline-block':'d-none'">
-          <button class="btn btn-success mr-1" (click)="newCompany()">New company</button>
-          <div class="btn-group " dropdown>
-            <button id="button-animated" dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle"
-                    aria-controls="dropdown-animated">
-                    {{(accountService.currentUser$|async)?.email}}
-                    <i class="fa fa-user" aria-hidden="true"></i> <span class="caret"></span>
-            </button>
-            <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right drop"
-                role="menu" aria-labelledby="button-animated">
-                <li role="menuitem"><a class="dropdown-item btn" (click)="showAccountData()">Account data</a>
-                <li role="menuitem"><a class="dropdown-item btn" (click)="changePassword()">Change password</a>
-                <li role="menuitem"><a class="dropdown-item btn" (click)="logout()">Log out</a>
-              </ul>
+    <div class="order-1 order-md-1 text-center"
+    [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'col-9 col-sm-10 col-md-11':'col-12'">
+      <div class="row  justify-content-end">
+        <!-- float-right -->
+         <div class="float-right">
+          <div [ngClass]="!(accountService.currentUser$|async)?'d-inline-block':'d-none'">
+            <button class="btn btn-outline-success mr-1" (click)="login()">Log In</button>
+            <button class="btn btn-outline-success" (click)="register()">Register</button>
+            <!-- <button class="btn btn-outline-success" (click)="check()">check</button>
+            <button class="btn btn-outline-success" (click)="get()">get</button> -->
+  
           </div>
-        </div>
+          <div [ngClass]="(accountService.currentUser$|async)?'d-inline-block':'d-none'">
+
+            <div class="btn-group " dropdown>
+              <button id="button-animated" dropdownToggle type="button" class="btn btn-success dropdown-toggle"
+                      aria-controls="dropdown-animated">
+                      Company managment
+                      <i class="fa fa-user" aria-hidden="true"></i> <span class="caret"></span>
+              </button>
+              <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right drop"
+                  role="menu" aria-labelledby="button-animated">
+                  <li role="menuitem"><a class="dropdown-item btn" (click)="newCompany()">New company</a>
+                  <li role="menuitem"><a class="dropdown-item btn" (click)="changeCompany()">Change password</a>
+                </ul>
+            </div>
+
+            <div class="btn-group " dropdown>
+              <button id="button-animated" dropdownToggle type="button" class="btn btn-outline-success dropdown-toggle"
+                      aria-controls="dropdown-animated">
+                      {{(accountService.currentUser$|async)?.email}}
+                      <i class="fa fa-user" aria-hidden="true"></i> <span class="caret"></span>
+              </button>
+              <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right drop"
+                  role="menu" aria-labelledby="button-animated">
+                  <li role="menuitem"><a class="dropdown-item btn" (click)="showAccountData()">Account data</a>
+                  <li role="menuitem"><a class="dropdown-item btn" (click)="changePassword()">Change password</a>
+                  <li role="menuitem"><a class="dropdown-item btn" (click)="logout()">Log out</a>
+                </ul>
+            </div>
+          </div>
+         </div>
+        
+      </div>
+
+      <div class="row"
+      [ngClass]="(companiesService.currentCompany$|async)?'':'d-none'">
+        <p class="text-center w-100 font-italic font-weight-bolder text-warning h5 m-0 mt-3">
+          {{(companiesService.currentCompany$|async)?.name}}
+        </p>
       </div>
 
     </div>

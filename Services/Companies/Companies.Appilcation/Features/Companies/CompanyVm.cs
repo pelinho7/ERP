@@ -1,4 +1,5 @@
-﻿using Companies.Domain.Common;
+﻿using Companies.Appilcation.Features.CompanyUsers;
+using Companies.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Companies.Appilcation.Features.Companies
 {
     public class CompanyVm:CompanyBase
     {
+        public CompanyUserVm CompanyCurrentUser { get; set; }
     }
 }

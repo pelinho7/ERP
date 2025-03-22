@@ -8,20 +8,22 @@ using Companies.Domain.Entities;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Companies.Appilcation.Features.Companies.Commands;
+using Companies.Appilcation.Contracts.Persistence;
 
 namespace Companies.Application.Features.Companies.Commands.ArchiveCompany
 {
-    public class ArchiveCompanyCommandHandler : IRequestHandler<ArchiveCompanyCommand, int>
+    public class ArchiveCompanyCommandHandler : CompanyCommandHandlerBase,IRequestHandler<ArchiveCompanyCommand, int>
     {
-        private readonly ICompanyRepository _companyRepository;
-        private readonly IMapper _mapper;
         private readonly ILogger<ArchiveCompanyCommandHandler> _logger;
 
         public ArchiveCompanyCommandHandler(ICompanyRepository companyRepository
-            , IMapper mapper, ILogger<ArchiveCompanyCommandHandler> logger)
+            , ICompanyHistoryRepository companyHistoryRepository
+            , ITransactionManager transactionManager
+            , IMapper mapper
+            , ILogger<ArchiveCompanyCommandHandler> logger)
+            : base(companyRepository, companyHistoryRepository, transactionManager, mapper)
         {
-            _companyRepository = companyRepository ?? throw new ArgumentNullException(nameof(companyRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -32,14 +34,32 @@ namespace Companies.Application.Features.Companies.Commands.ArchiveCompany
             {
                 throw new NotFoundException(nameof(Company), request.Id);
             }
-            
+            var userPermissions = companyToArchive.CompanyUsers.Where(x => x.UserId == request.LastModifiedBy).FirstOrDefault();
+            if (userPermissions == null || !userPermissions.Administrator)
+            {
+                throw new System.Security.Authentication.AuthenticationException("No administrator rights.");
+            }
             _mapper.Map(request, companyToArchive, typeof(ArchiveCompanyCommand), typeof(Company));
 
-            await _companyRepository.UpdateAsync(companyToArchive);
+            try
+            {
+                companyToArchive.Archived = true;
+                await _companyRepository.UpdateAsync(companyToArchive);
 
-            _logger.LogInformation($"Company {companyToArchive.Id} is successfully archived.");
+                var companyHistoryEntity = _mapper.Map<CompanyHistory>(companyToArchive);
+                await _companyHistoryRepository.AddAsync(companyHistoryEntity);
 
-            return companyToArchive.Id;
+                _transactionManager.CommitTransaction();
+
+                _logger.LogInformation($"Company {companyToArchive.Id} is successfully archived.");
+
+                return companyToArchive.Id;
+            }
+            catch (Exception ex)
+            {
+                _transactionManager.RollbackTransaction();
+                throw;
+            }
         }
     }
 }

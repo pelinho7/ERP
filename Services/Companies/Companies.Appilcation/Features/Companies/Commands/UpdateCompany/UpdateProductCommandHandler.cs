@@ -8,20 +8,24 @@ using Companies.Domain.Entities;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Companies.Appilcation.Features.Companies.Commands;
+using Companies.Appilcation.Contracts.Persistence;
+using Companies.Application.Features.Companies.Commands.CreateCompany;
+using System.Transactions;
 
 namespace Companies.Application.Features.Companies.Commands.UpdateCompany
 {
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateCompanyCommand, CompanyVm>
+    public class UpdateProductCommandHandler : CompanyCommandHandlerBase,IRequestHandler<UpdateCompanyCommand, CompanyVm>
     {
-        private readonly ICompanyRepository _companyRepository;
-        private readonly IMapper _mapper;
         private readonly ILogger<UpdateProductCommandHandler> _logger;
 
         public UpdateProductCommandHandler(ICompanyRepository companyRepository
-            , IMapper mapper, ILogger<UpdateProductCommandHandler> logger)
+            , ICompanyHistoryRepository companyHistoryRepository
+            , ITransactionManager transactionManager
+            , IMapper mapper
+            , ILogger<UpdateProductCommandHandler> logger)
+            : base(companyRepository, companyHistoryRepository, transactionManager, mapper)
         {
-            _companyRepository = companyRepository ?? throw new ArgumentNullException(nameof(companyRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -32,14 +36,34 @@ namespace Companies.Application.Features.Companies.Commands.UpdateCompany
             {
                 throw new NotFoundException(nameof(Company), request.Id);
             }
+            var userPermissions = companyToUpdate.CompanyUsers.Where(x => x.UserId == request.LastModifiedBy).FirstOrDefault();
+            if (userPermissions == null || !userPermissions.Administrator)
+            {
+                throw new System.Security.Authentication.AuthenticationException("No administrator rights.");
+            }
             //check if current user is admin for company 
             _mapper.Map(request, companyToUpdate, typeof(UpdateCompanyCommand), typeof(Company));
 
-            await _companyRepository.UpdateAsync(companyToUpdate);
+            try
+            {
+                _transactionManager.BeginTransaction();
 
-            _logger.LogInformation($"Company {companyToUpdate.Id} is successfully updated.");
+                await _companyRepository.UpdateAsync(companyToUpdate);
 
-            return _mapper.Map<CompanyVm>(companyToUpdate);
+                var companyHistoryEntity = _mapper.Map<CompanyHistory>(companyToUpdate);
+                await _companyHistoryRepository.AddAsync(companyHistoryEntity);
+
+                _transactionManager.CommitTransaction();
+
+                _logger.LogInformation($"Company {companyToUpdate.Id} is successfully updated.");
+
+                return _mapper.Map<CompanyVm>(companyToUpdate);
+            }
+            catch (Exception ex)
+            {
+                _transactionManager.RollbackTransaction();
+                throw;
+            }
         }
     }
 }

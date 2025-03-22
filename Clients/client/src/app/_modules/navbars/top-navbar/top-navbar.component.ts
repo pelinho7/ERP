@@ -6,6 +6,9 @@ import { AccountService } from '../../account/services/account.service';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
+import { CompaniesService } from '../../companies/services/companies.service';
+import { ChooseCompanyComponent } from '../../companies/choose-company/choose-company.component';
+import { ResetPasswordComponent } from '../../account/reset-password/reset-password.component';
 
 @Component({
   selector: 'app-top-navbar',
@@ -18,7 +21,10 @@ export class TopNavbarComponent implements OnInit {
   
   constructor(public resizeWindowWatcherService:ResizeWindowWatcherService
     ,private router:Router,private http:HttpClient
-    ,public accountService:AccountService,private toastr:ToastrService) { }
+    ,public accountService:AccountService
+    ,public companiesService:CompaniesService
+    ,private toastr:ToastrService
+    ,private modalService: BsModalService) { }
 
   ngOnInit(): void {
   }
@@ -55,4 +61,15 @@ export class TopNavbarComponent implements OnInit {
   newCompany(){
     this.router.navigateByUrl('/company/add')
   }
+
+  changeCompany() {
+      const initialState: ModalOptions = {
+        initialState: {
+          list: [],
+          title: ''
+        }
+      };
+      this.bsModalRef = this.modalService.show(ChooseCompanyComponent, initialState);
+      this.bsModalRef.content.closeBtnName = 'Close';
+    }
 }

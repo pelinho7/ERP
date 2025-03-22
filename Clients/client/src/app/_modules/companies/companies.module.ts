@@ -9,11 +9,13 @@ import { NavbarsModule } from '../navbars/navbars.module';
 import { StaticDataModule } from '../static-data/static-data.module';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ChooseCompanyComponent } from './choose-company/choose-company.component';
 
 
 @NgModule({
   declarations: [
     CompanyComponent,
+    ChooseCompanyComponent,
   ],
   exports: [
     CompanyComponent,

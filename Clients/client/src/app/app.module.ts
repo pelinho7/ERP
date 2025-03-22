@@ -21,6 +21,7 @@ import { AdminPanelRoutingModule } from './_modules/admin-panel/admin-panel-rout
 import { AdminPanelModule } from './_modules/admin-panel/admin-panel.module';
 import { NavbarsModule } from './_modules/navbars/navbars.module';
 import { ProductsModule } from './_modules/products/products.module';
+import { CompaniesModule } from './_modules/companies/companies.module';
 
 @NgModule({
   declarations: [
@@ -37,8 +38,8 @@ import { ProductsModule } from './_modules/products/products.module';
     AccountModule,
     AdminPanelModule,
     NavbarsModule,
-    ProductsModule
-    //CrossNumericValidatorDirective
+    ProductsModule,
+    CompaniesModule
   ],
   exports:[
     NavbarsModule

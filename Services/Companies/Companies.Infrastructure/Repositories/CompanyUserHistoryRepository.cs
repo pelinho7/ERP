@@ -14,18 +14,10 @@ using Azure.Core;
 
 namespace Companies.Infrastructure.Repositories
 {
-    public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
+    public class CompanyUserHistoryRepository : RepositoryBase<CompanyUserHistory>, ICompanyUserHistoryRepository
     {
-        public CompanyRepository(CompanyContext dbContext) : base(dbContext)
+        public CompanyUserHistoryRepository(CompanyContext dbContext) : base(dbContext)
         {
-        }
-
-        public async Task<Company> GetCompanyById(int companyId)
-        {
-            return await _dbContext.Companies
-                    .Include(x=>x.CompanyUsers.Where(x=>!x.Archived))
-                    .Where(x => x.Id == companyId)
-                    .FirstOrDefaultAsync();
         }
     }
 }
