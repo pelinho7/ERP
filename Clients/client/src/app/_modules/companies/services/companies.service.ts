@@ -5,6 +5,8 @@ import { Company } from '../models/company';
 import { map } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 import { isNumber } from 'ngx-bootstrap/chronos/utils/type-checks';
+import { CompanyBasic } from '../models/companyBasic';
+import { Archive } from '../../utilities/models/archive';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +28,14 @@ export class CompaniesService {
             this.setCurrentCompany(x);
           })
         }
+    }
+
+    changeCompany(id:number){
+      return this.getById(Number(id)).pipe(
+        map((company:Company)=>{
+          this.setCurrentCompany(company);
+          return company;
+        }))
     }
 
     setCurrentCompany(company:Company){
@@ -52,9 +62,24 @@ export class CompaniesService {
         }))
     }
 
+      archive(companyToArchive:Archive){
+        return this.http.patch<any>(this.baseUrl+'companies',companyToArchive).pipe(
+          map((company:Company)=>{
+            localStorage.removeItem('companyId');
+            this.currentCompanySource.next(null);
+          }))
+      }
+
     getById(id:number){
         return this.http.get<Company>(this.baseUrl+'companies/'+id).pipe(
           map((company:Company)=>{
+            return company;
+          }))
+    }
+
+    getUserCompanies(){
+        return this.http.get<any>(this.baseUrl+'companies').pipe(
+          map((company:CompanyBasic[])=>{
             return company;
           }))
       }

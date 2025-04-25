@@ -1,8 +1,11 @@
-export class Company {
-    id: number=0;
-    countryCode:string='';
-    vatId:string='';
-    name:string;
+import { CompanyBasic } from "./companyBasic";
+import { CompanyUser } from "./companyUser";
+
+export class Company extends CompanyBasic {
+    // id: number=0;
+    // countryCode:string='';
+    // vatId:string='';
+    // name:string;
 
     street:string='';
     streetNo:string='';
@@ -21,6 +24,9 @@ export class Company {
     bankAccountNumber:string='';
     swiftCode:string='';
 
+    companyCurrentUser:CompanyUser=null;
 
-    constructor(){}
+    constructor(){
+        super();
+    }
 }

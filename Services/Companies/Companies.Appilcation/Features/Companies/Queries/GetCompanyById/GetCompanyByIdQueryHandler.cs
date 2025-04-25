@@ -11,16 +11,10 @@ using System.Threading.Tasks;
 
 namespace Companies.Application.Features.Companies.Queries.GetCompanyById
 {
-    public class GetCompanyByIdQueryHandler : IRequestHandler<GetCompanyByIdQuery, CompanyVm>
+    public class GetCompanyByIdQueryHandler :CompanyCommandHandlerQueryBase, IRequestHandler<GetCompanyByIdQuery, CompanyVm>
     {
-        private readonly ICompanyRepository _companyRepository;
-        private readonly IMapper _mapper;
-
         public GetCompanyByIdQueryHandler(ICompanyRepository companyRepository, IMapper mapper)
-        {
-            _companyRepository = companyRepository ?? throw new ArgumentNullException(nameof(companyRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        }
+            :base(companyRepository, mapper) { }
 
         public async Task<CompanyVm> Handle(GetCompanyByIdQuery request, CancellationToken cancellationToken)
         {

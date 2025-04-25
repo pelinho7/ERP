@@ -52,7 +52,13 @@ export class AccountService {
         loadUserFromLocalStorage(){
           var userInLocalStorage=localStorage.getItem('user');
           if(userInLocalStorage!=null){
-            this.setCurrentUser(JSON.parse(userInLocalStorage))
+            var user=JSON.parse(userInLocalStorage);
+            if(this.isTokenExpired(user.token)){
+              this.logout();
+            }
+            else{
+              this.setCurrentUser(JSON.parse(userInLocalStorage))
+            }
           }
         }
 
@@ -172,5 +178,13 @@ export class AccountService {
       
         changePassword(model:any){
           return this.http.post(this.baseUrl+'account/change-password',model);
+        }
+
+        getUsers(filter:string){
+          return this.http.get<User>(this.baseUrl+'users?filter='+filter).pipe(
+            map((result:User)=>{
+              return result;
+            })
+          )
         }
 }

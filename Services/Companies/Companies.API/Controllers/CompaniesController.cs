@@ -1,7 +1,9 @@
 ﻿using Companies.Appilcation.Features.Companies;
+using Companies.Application.Features.Companies.Commands.ArchiveCompany;
 using Companies.Application.Features.Companies.Commands.CreateCompany;
 using Companies.Application.Features.Companies.Commands.UpdateCompany;
 using Companies.Application.Features.Companies.Queries.GetCompanyById;
+using Companies.Application.Features.Companies.Queries.GetUserCompanies;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,15 +43,15 @@ namespace Companies.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet(Name = "GetCompanies")]
         [ProducesResponseType(typeof(List<CompanyVm>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult> Get()
         {
-            //GetProductsListQuery command = new GetProductsListQuery(getCompanyId(), name, page, pageSize);
-            //var result = await _mediator.Send(command);
-            //return Ok(result);
-            return null;
+            var userId = getUserId();
+            GetUserCompaniesQuery command = new GetUserCompaniesQuery(userId);
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
 
         [Authorize]
@@ -70,39 +72,13 @@ namespace Companies.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
-        //[HttpPatch(Name = "Archive")]
-        //[ProducesResponseType((int)StatusCodes.Status200OK)]
-        //public async Task<ActionResult<ProductVm>> ArchiveProducts([FromBody] IEnumerable<ArchiveProductCommand> commands)
-        //{
-        //    foreach (var command in commands)
-        //    {
-        //        var result = await _mediator.Send(command);
-        //    }
-        //    return Ok();
-        //}
-
-        //[Authorize]
-        //[HttpGet]
-        //[Route("check-code-not-taken/{code}")]
-        //[ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
-        //public async Task<ActionResult<bool>> CheckCodeNotTaken(string code,int? id)
-        //{
-        //    CheckProductCodeNotTakenQuery command = new CheckProductCodeNotTakenQuery(getCompanyId(), code,id);
-        //    var result = await _mediator.Send(command);
-        //    return Ok(result);
-        //}
-
-        //[Authorize]
-        //[HttpGet]
-        //[Route("all")]
-        //[ProducesResponseType(typeof(List<ProductVm>), (int)HttpStatusCode.OK)]
-        //public async Task<ActionResult<List<ProductVm>>> GetAll()
-        //{
-        //    //GetAllProductsQuery command = new GetAllProductsQuery(getCompanyId());
-        //    //var result = await _mediator.Send(command);
-        //    //return Ok(result);
-        //    return Ok(new List<ProductVm>());
-        //}
+        [Authorize]
+        [HttpPatch(Name = "Archive")]
+        [ProducesResponseType((int)StatusCodes.Status200OK)]
+        public async Task<ActionResult<CompanyVm>> ArchiveProducts([FromBody] ArchiveCompanyCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
     }
 }

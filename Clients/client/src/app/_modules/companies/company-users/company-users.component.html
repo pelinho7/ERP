@@ -1,0 +1,74 @@
+<ngx-spinner name="company-users-spinner" size="medium" [fullScreen]="false">
+    <h3>Loading...</h3>
+</ngx-spinner>
+
+<div *ngIf="loaded">
+    <div class="title-panel">
+        <div class="title-text">
+            Company users
+         </div>
+         <div>
+            <button type="button" (click)="addCompanyUser()" class="btn btn-primary">Add user</button>
+            <button class="btn" (click)="close()"><i class="fa fa-times" aria-hidden="true"></i></button>
+         </div>
+        
+      </div>
+
+
+      <div *ngFor="let companyUser of companyUsers">
+        <div class="card m-3">
+          <div class="card-header user-header colapsed-user-header">
+            <div class="d-flex align-items-center">
+              <span class="font-italic font-weight-bolder">{{ companyUser.userEmail }}</span>
+            </div>
+            <div>
+              <p class="d-inline">{{ companyUser.administrator?'Administrator':'' }}</p>
+              <button class="btn ml-2" (click)="edit(companyUser.id)">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+              <button class="btn ml-2" (click)="archive(companyUser.id)" *ngIf="(accountService.currentUser$|async)?.userId != companyUser.userId">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </button>
+              <button class="btn ml-2" (click)="toggleUser($event)">
+                <i class="fa fa-arrow-down" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="colapsed-user-modules">
+            <!-- <p class="card-text">{{ companyUser.userEmail }}</p> -->
+
+            <table class="table table-striped">
+              <thead>
+                  <tr>
+                    <th scope="col" class="col-8">Module</th>
+                    <th scope="col" class="col-2">Reading</th>
+                    <th scope="col" class="col-2">Writing</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                      <th scope="row" class="align-middle">Products</th>
+                      <td>
+                        <input type="checkbox" disabled class="form-check-input m-0" [checked]=companyUser.productsModuleRead>
+                      </td>
+                      <td>
+                        <input type="checkbox" disabled class="form-check-input m-0" [checked]="companyUser.productsModuleWrite">
+                      </td>
+                    </tr>
+                  
+                    <tr>
+                      <th scope="row" class="align-middle">Contractors</th>
+                      <td>
+                        <input type="checkbox" disabled class="form-check-input m-0" [checked]=companyUser.contractorsModuleRead>
+                      </td>
+                      <td>
+                        <input type="checkbox" disabled class="form-check-input m-0" [checked]=companyUser.contractorsModuleWrite>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+</div>

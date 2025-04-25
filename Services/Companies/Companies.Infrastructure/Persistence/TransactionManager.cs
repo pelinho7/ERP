@@ -32,7 +32,7 @@ namespace Companies.Infrastructure.Persistence
 
         public void RollbackTransaction()
         {
-            _transaction.Rollback();
+            _transaction?.Rollback();
         }
     }
 }

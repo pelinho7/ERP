@@ -8,7 +8,7 @@ namespace Identity.DBAccess.Interfaces
     public interface IUserRepository
     {
         void Update(AppUser user);
-        Task<IEnumerable<AppUser>> GetUsersAsync();
+        Task<IEnumerable<AppUser>> GetUsersAsync(GetUsersFilter filter);
         Task<AppUser> GetUserByIdAsync(int id);
         Task<AppUser> GetUserByUsernameAsync(string username);
         Task<AppUser> GetUserByEmailAsync(string email);

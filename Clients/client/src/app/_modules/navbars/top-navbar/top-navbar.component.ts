@@ -9,6 +9,10 @@ import { take } from 'rxjs/operators';
 import { CompaniesService } from '../../companies/services/companies.service';
 import { ChooseCompanyComponent } from '../../companies/choose-company/choose-company.component';
 import { ResetPasswordComponent } from '../../account/reset-password/reset-password.component';
+import { ConfirmService } from '../../message-dialogs/services/confirm.service';
+import { Company } from '../../companies/models/company';
+import { Archive } from '../../utilities/models/archive';
+import { LoadingScreenService } from '../../utilities/services/loading-screen.service';
 
 @Component({
   selector: 'app-top-navbar',
@@ -24,7 +28,9 @@ export class TopNavbarComponent implements OnInit {
     ,public accountService:AccountService
     ,public companiesService:CompaniesService
     ,private toastr:ToastrService
-    ,private modalService: BsModalService) { }
+    ,private modalService: BsModalService
+    ,private confirmService:ConfirmService
+    ,private loadingScreenService:LoadingScreenService) { }
 
   ngOnInit(): void {
   }
@@ -62,14 +68,51 @@ export class TopNavbarComponent implements OnInit {
     this.router.navigateByUrl('/company/add')
   }
 
-  changeCompany() {
+  chooseCompany() {
       const initialState: ModalOptions = {
         initialState: {
           list: [],
           title: ''
-        }
+        },
+        class:'modal-lg'
       };
       this.bsModalRef = this.modalService.show(ChooseCompanyComponent, initialState);
       this.bsModalRef.content.closeBtnName = 'Close';
+    }
+
+    editCompany(){
+      this.companiesService.currentCompany$.subscribe(x=>{
+        this.router.navigateByUrl('/company/'+x.id)
+      })
+    }
+   
+    editCompanyUsers(){
+      this.router.navigateByUrl('/company/company-users')
+    }
+
+    archiveCompany(){
+      this.confirmService.confirm('Archiving company', 'Are you sure you want to archive the selected company?').subscribe(result=>{
+        
+        if(result){
+          var companyToArchive: Archive=new Archive();
+          companyToArchive.archive=true;
+  
+          this.loadingScreenService.show('main-spinner');
+  
+          this.companiesService.currentCompany$.pipe(
+            take(1)
+          ).subscribe(x=>{companyToArchive.id=x.id})
+          
+          this.companiesService.archive(companyToArchive).subscribe(x=>{
+  
+          })
+          .add(()=>{
+            this.loadingScreenService.hide('main-spinner');
+            this.router.navigateByUrl('/');
+          })
+        }
+        
+        
+      })
     }
 }

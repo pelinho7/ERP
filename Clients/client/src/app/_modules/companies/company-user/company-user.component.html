@@ -1,0 +1,87 @@
+<ngx-spinner name="company-user-spinner" size="medium" [fullScreen]="false">
+    <h3>Loading...</h3>
+</ngx-spinner>
+
+<div *ngIf="loaded">
+    <div class="title-panel">
+        <div class="title-text">
+            {{title}}
+         </div>
+         <div>
+            <button type="button" form="companyUserForm" (click)="save()" class="btn btn-primary" 
+            [ngClass]="(!companyUserForm.dirty?'d-none':'')">
+                Save</button>
+            <button class="btn" (click)="close()"><i class="fa fa-times" aria-hidden="true"></i></button>
+         </div>
+    
+        </div>
+         <div class="row ml-0 mr-0">
+            <form id="companyUserForm" [formGroup]="companyUserForm"
+            [ngClass]="(((resizeWindowWatcherService.mobileMode$|async)))?'form-without-menu':'form-with-menu'">
+            
+            <div class="form-section">
+                <h2 class="form-section-title">General</h2>
+                <div class="form-section-content">
+                    <ngx-spinner name="users-spinner" size="medium" [fullScreen]="false">
+                        <h3>Loading...</h3>
+                    </ngx-spinner>
+                    <input type="number" class="d-none" [formControl]='companyUserForm.controls["id"]'/>
+                    <input type="number" class="d-none" [formControl]='companyUserForm.controls["companyId"]'/>
+                    <app-select-search class="col-12" [formControl]='companyUserForm.controls["userId"]' 
+                    [label]='"User"' [keyValueMap]="usersMap" (searchTextChangeEvent)="searchTextChanged($event)" 
+                    [reloadData]="reloadSelectDataSubject.asObservable()">
+                </app-select-search>  
+                    <app-checkbox-input [formControl]='companyUserForm.controls["administrator"]' [contents]='"Administrator"'
+                    (valueChangeEvent)="administratorChanged($event)">
+                </app-checkbox-input>
+
+    
+                </div>
+    
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-section-title">Modules</h2>
+                <div class="form-section-content">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                              <th scope="col" class="col-8">Module</th>
+                              <th scope="col" class="col-2">Reading</th>
+                              <th scope="col" class="col-2">Writing</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                                <th scope="row" class="align-middle">Products</th>
+                                <td>
+                                    <app-checkbox-input [formControl]='companyUserForm.controls["productsModuleRead"]' [contents]='""'></app-checkbox-input>
+                                </td>
+                                <td>
+                                    <app-checkbox-input [formControl]='companyUserForm.controls["productsModuleWrite"]' [contents]='""'></app-checkbox-input>
+                                </td>
+                              </tr>
+                            
+                              <tr>
+                                <th scope="row" class="align-middle">Contractors</th>
+                                <td>
+                                    <app-checkbox-input [formControl]='companyUserForm.controls["contractorsModuleRead"]' [contents]='""'></app-checkbox-input>
+                                </td>
+                                <td>
+                                    <app-checkbox-input [formControl]='companyUserForm.controls["contractorsModuleWrite"]' [contents]='""'></app-checkbox-input>
+                                </td>
+                              </tr>
+                          </tbody>
+                    </table>
+
+    
+                </div>
+    
+            </div>
+
+
+
+            </form>
+        </div>
+</div>

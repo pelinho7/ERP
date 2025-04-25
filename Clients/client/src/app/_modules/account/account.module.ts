@@ -41,29 +41,3 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
   providers: []
 })
 export class AccountModule { }
-
-
-
-// import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { RouterModule } from '@angular/router';
-
-// import { AccountRoutingModule } from './account-routing.module';
-// import { AccountComponent } from './account.component';
-
-
-// @NgModule({
-//   declarations: [
-//     AccountComponent,
-//   ],
-//   imports: [
-//     CommonModule,
-//     RouterModule,
-//     AccountRoutingModule
-//   ],
-//   schemas: [
-//     CUSTOM_ELEMENTS_SCHEMA
-//   ],
-//   bootstrap: [AccountComponent]
-// })
-// export class AdminPanelModule { }

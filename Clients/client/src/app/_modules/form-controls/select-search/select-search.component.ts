@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-select-search',
@@ -11,10 +11,12 @@ export class SelectSearchComponent implements ControlValueAccessor {
   @Input() label:string;
   @Input() hideNullValue:boolean=false;
   @Output() valueChangeEvent: EventEmitter<any> = new EventEmitter();
+  @Output() searchTextChangeEvent: EventEmitter<any> = new EventEmitter();
+  @Input() reloadData: Observable<void>;
+  private reloadDataSubscription: Subscription;
 
   public filteredData: ReplaySubject<Map<any,string>> = new ReplaySubject<Map<any,string>>(1);
   @ViewChild('filterRef', { read: ElementRef}) inputElement: any;
-
     @Input() set keyValueMap(data: Map<any,string>) {
       if(this._keyValueMap==null){
         this._keyValueMap = data;
@@ -31,6 +33,20 @@ export class SelectSearchComponent implements ControlValueAccessor {
 
   constructor(@Self() public ngControl: NgControl) { 
     this.ngControl.valueAccessor=this;
+  }
+
+  ngOnInit(): void {
+    if(this.reloadDataSubscription==null && this.reloadData!=null){
+      this.reloadDataSubscription = this.reloadData.subscribe(() => {
+        this.filteredData.next(this._keyValueMap);
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    if(this.reloadDataSubscription!=null){
+      this.reloadDataSubscription.unsubscribe();
+    }
   }
 
   filter(event:any){
@@ -71,6 +87,15 @@ export class SelectSearchComponent implements ControlValueAccessor {
 
   asIsOrder(a:any, b:any) {
     return 1;
+  }
+
+  searchTextChanged(event:any){
+    this.searchTextChangeEvent.emit(this.inputElement.nativeElement.value);
+  }
+
+  onBlur(){
+    //clear filter when control lost focus
+    this.cleanFilter()
   }
 }
 

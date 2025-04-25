@@ -3,13 +3,13 @@
 <div class="form-group">
     <label class="label">{{label}}</label>
 
-    <mat-select [formControl]="ngControl.control" 
+    <mat-select [formControl]="ngControl.control"
     [class.is-invalid]="ngControl.touched && ngControl.invalid"
-    class="form-control" (selectionChange)="cleanFilter()" 
-    (selectionChange)="change($event)"
+    class="form-control" (selectionChange)="cleanFilter()"
+    (selectionChange)="change($event)" (closed)="onBlur()"
     (openedChange)="setFocusOnFilter($event)">
     
-    <input class="form-control" (keyup)="filter($event)" type="text" #filterRef>
+    <input class="form-control" (keyup)="filter($event)" type="text" #filterRef (keyup)="searchTextChanged($event)">
 
     <mat-option *ngFor="let keyValue of (filteredData|async)| keyvalue:asIsOrder" let i = index [value]="keyValue.key"  
         [attr.disabled] = "keyValue.key==null && hideNullValue?'disabled' : null"

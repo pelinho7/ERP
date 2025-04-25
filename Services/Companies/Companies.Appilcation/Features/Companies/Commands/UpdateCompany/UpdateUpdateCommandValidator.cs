@@ -2,9 +2,9 @@
 
 namespace Companies.Application.Features.Companies.Commands.UpdateCompany
 {
-    public class ArchiveProductCommandValidator : AbstractValidator<UpdateCompanyCommand>
+    public class ArchiveCompanyCommandValidator : AbstractValidator<UpdateCompanyCommand>
     {
-        public ArchiveProductCommandValidator()
+        public ArchiveCompanyCommandValidator()
         {
             RuleFor(p => p.Name)
                 .NotEmpty().WithMessage("{Name} is required.")

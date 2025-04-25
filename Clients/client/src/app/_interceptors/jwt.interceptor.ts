@@ -3,10 +3,11 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AccountService } from '../_modules/account/services/account.service';
 import { User } from '../_modules/account/models/user';
@@ -14,7 +15,7 @@ import { User } from '../_modules/account/models/user';
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
-  constructor(private accountService: AccountService) {console.log('request')}
+  constructor(private accountService: AccountService,private router: Router) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     // request=request.clone({
@@ -37,6 +38,15 @@ export class JwtInterceptor implements HttpInterceptor {
       })
     }
     // console.log(request)
-    return next.handle(request);
+    // return next.handle(request);
+
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.router.navigateByUrl('/account/login')
+        }
+        return throwError(error);
+      })
+    );
   }
 }

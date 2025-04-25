@@ -8,6 +8,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Companies.Application.Contracts.Persistence;
+using Companies.Domain.Entities;
+using SendGrid.Helpers.Mail;
 
 namespace Companies.Infrastructure.Repositories
 {

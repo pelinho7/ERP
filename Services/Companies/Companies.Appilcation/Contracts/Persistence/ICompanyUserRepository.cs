@@ -10,5 +10,9 @@ namespace Companies.Application.Contracts.Persistence
 {
     public interface ICompanyUserRepository : IAsyncRepository<CompanyUser>
     {
+        Task<List<Company>> GetUserCompanies(int userId);
+        Task<List<CompanyUser>> GetCompanyUsers(int companyId);
+        Task<CompanyUser> GetCompanyUserById(int id);
+        Task<List<CompanyUser>> GetCompanyAdmins(int companyId);
     }
 }

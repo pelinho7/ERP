@@ -15,15 +15,15 @@ using System.Transactions;
 
 namespace Companies.Application.Features.Companies.Commands.UpdateCompany
 {
-    public class UpdateProductCommandHandler : CompanyCommandHandlerBase,IRequestHandler<UpdateCompanyCommand, CompanyVm>
+    public class UpdateCompanyCommandHandler : CompanyCommandHandlerBase,IRequestHandler<UpdateCompanyCommand, CompanyVm>
     {
-        private readonly ILogger<UpdateProductCommandHandler> _logger;
+        private readonly ILogger<UpdateCompanyCommandHandler> _logger;
 
-        public UpdateProductCommandHandler(ICompanyRepository companyRepository
+        public UpdateCompanyCommandHandler(ICompanyRepository companyRepository
             , ICompanyHistoryRepository companyHistoryRepository
             , ITransactionManager transactionManager
             , IMapper mapper
-            , ILogger<UpdateProductCommandHandler> logger)
+            , ILogger<UpdateCompanyCommandHandler> logger)
             : base(companyRepository, companyHistoryRepository, transactionManager, mapper)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

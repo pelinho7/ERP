@@ -43,6 +43,8 @@ namespace Companies.Application.Features.Companies.Commands.ArchiveCompany
 
             try
             {
+                _transactionManager.BeginTransaction();
+
                 companyToArchive.Archived = true;
                 await _companyRepository.UpdateAsync(companyToArchive);
 

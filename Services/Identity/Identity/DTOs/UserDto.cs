@@ -1,10 +1,7 @@
 namespace Identity.DTOs
 {
-    public class UserDto
+    public class UserDto: UserBasicDto
     {
-        public int UserId { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
         public string Token { get; set; }
     }
 }

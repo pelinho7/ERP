@@ -126,24 +126,26 @@ export class CompanyComponent implements OnInit {
       }
     
       add(company:Company){
+        this.loadingScreenService.show('company-spinner');
         this.companiesService.add(company).subscribe(x=>{
           this.saved=true;
           this.toastr.info('Created');
           this.companyForm.markAsPristine();
         })
         .add(()=>{
-          this.loadingScreenService.hide();
+          this.loadingScreenService.hide('company-spinner');
         })
       }
     
       update(company:Company){
+        this.loadingScreenService.show('company-spinner');
         this.companiesService.update(company).subscribe(x=>{
           this.saved=true;
           this.toastr.info('Updated');
           this.companyForm.markAsPristine();//set dirty false
         })
         .add(()=>{
-          this.loadingScreenService.hide();
+          this.loadingScreenService.hide('company-spinner');
         })
       }
     

@@ -35,7 +35,12 @@
               <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu dropdown-menu-right drop"
                   role="menu" aria-labelledby="button-animated">
                   <li role="menuitem"><a class="dropdown-item btn" (click)="newCompany()">New company</a>
-                  <li role="menuitem"><a class="dropdown-item btn" (click)="changeCompany()">Change password</a>
+                  <li role="menuitem"><a class="dropdown-item btn" (click)="chooseCompany()">{{(companiesService.currentCompany$|async)?'Change company':'Choose company'}}</a>
+                  <ng-container *ngIf="(companiesService.currentCompany$|async)">
+                    <li role="menuitem"><a class="dropdown-item btn" (click)="editCompany()">Edit company</a>
+                    <li role="menuitem"><a class="dropdown-item btn" (click)="editCompanyUsers()">Edit company users</a>
+                    <li role="menuitem"><a class="dropdown-item btn" (click)="archiveCompany()">Archive company</a>
+                  </ng-container>
                 </ul>
             </div>
 

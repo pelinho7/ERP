@@ -1,10 +1,13 @@
 <div class="modal-body p-0">
+  <ngx-spinner name="choose-company-spinner" size="medium" [fullScreen]="false">
+    <h3>Loading...</h3>
+</ngx-spinner>
     <div class="col-12 p-0">
         <div class="card">
           <div class="card-header">
             <div>
                 <div class="d-inline-block">
-                    <h3 class="m-0 font-weight-bold">Reset password</h3>
+                    <h3 class="m-0 font-weight-bold">{{(companiesService.currentCompany$|async)?'Change company':'Choose company'}}</h3>
                 </div>
                 <button type="button" class="btn-close close float-right" aria-label="Close" (click)="bsModalRef.hide()">
                     <span aria-hidden="true" class="visually-hidden">&times;</span>
@@ -12,13 +15,14 @@
             </div>
           </div>
           <div class="card-body">
-            <!-- <form id="logInForm" [formGroup]="resetPasswordForm">
+            <form id="chooseCompanyForm" [formGroup]="chooseCompanyForm">
               <div class="form-group form-row">
-                <app-text-input class="col-12" [formControl]='resetPasswordForm.controls["email"]' [label]='"Email"'></app-text-input>
+                <app-select-search class="col-12" [formControl]='chooseCompanyForm.controls["company"]' 
+                [label]='"Company"' [keyValueMap]="companiesMap"></app-select-search>              
               </div>
   
-              <button [disabled]="!resetPasswordForm.valid" type="button" class="btn btn-success float-right" form="Reset password" (click)="resetPassword()">Reset password</button>
-            </form> -->
+              <button [disabled]="!chooseCompanyForm.valid" type="button" class="btn btn-success float-right" form="Reset password" (click)="chooseCompany()">Ok</button>
+            </form>
           </div>
         </div>
       </div>

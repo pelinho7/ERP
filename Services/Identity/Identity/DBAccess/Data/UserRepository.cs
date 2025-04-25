@@ -40,10 +40,34 @@ namespace Identity.DBAccess.Data
             .SingleOrDefaultAsync(x=>x.UserName==username);
         }
 
-        public async Task<IEnumerable<AppUser>> GetUsersAsync()
+        public async Task<IEnumerable<AppUser>> GetUsersAsync(GetUsersFilter filter)
         {
-            return await context.Users
-            .ToListAsync();
+            var query = context.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filter.EmailLike))
+            {
+                query = query.Where(x => x.Email.ToLower().Contains(filter.EmailLike))
+                    .OrderBy(x => x.Email.Length)
+                    .AsQueryable();
+            }
+            if (filter.UserIds.Any())
+            {
+                query = query.Where(x => filter.UserIds.Contains(x.Id))
+                    .AsQueryable();
+            }
+            if (filter.EmailConfirmed)
+            {
+                query = query.Where(x => filter.EmailConfirmed == true)
+                    .AsQueryable();
+            }
+            if (filter.UsersLimit > 0)
+            {
+                query = query
+                    .Take(filter.UsersLimit)
+                    .AsQueryable();
+            }
+
+            return await query.ToListAsync();
         }
 
         public void Update(AppUser user)

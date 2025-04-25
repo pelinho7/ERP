@@ -10,12 +10,17 @@ import { StaticDataModule } from '../static-data/static-data.module';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ChooseCompanyComponent } from './choose-company/choose-company.component';
+import { CompanyUsersComponent } from './company-users/company-users.component';
+import { CompanyUserComponent } from './company-user/company-user.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
   declarations: [
     CompanyComponent,
     ChooseCompanyComponent,
+    CompanyUsersComponent,
+    CompanyUserComponent,
   ],
   exports: [
     CompanyComponent,
