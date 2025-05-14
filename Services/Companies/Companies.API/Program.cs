@@ -10,6 +10,7 @@ using Companies.API.Filters;
 using Companies.API.Extensions;
 using Companies.Infrastructure.Persistence;
 using Microsoft.OpenApi.Models;
+using Companies.Appilcation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,7 @@ builder.Services.AddSwaggerGen(option =>
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddCacheServices(builder.Configuration);
 builder.AddAppAuthetication();
 
 var app = builder.Build();

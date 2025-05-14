@@ -14,5 +14,6 @@ namespace Companies.Application.Contracts.Persistence
         Task<List<CompanyUser>> GetCompanyUsers(int companyId);
         Task<CompanyUser> GetCompanyUserById(int id);
         Task<List<CompanyUser>> GetCompanyAdmins(int companyId);
+        Task<CompanyUser> GetCompanyUserByUserIdCompanyId(int userId, int companyId);
     }
 }

@@ -49,5 +49,12 @@ namespace Companies.Infrastructure.Repositories
                 .Where(x => x.CompanyId == companyId && x.Archived == false && x.Administrator == true)
                 .ToListAsync();
         }
+
+        public async Task<CompanyUser> GetCompanyUserByUserIdCompanyId(int userId, int companyId)
+        {
+            return await _dbContext.CompanyUsers.AsNoTracking()
+                .Where(x => x.UserId == userId && x.CompanyId == companyId)
+                .FirstOrDefaultAsync();
+        }
     }
 }

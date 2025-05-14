@@ -6,6 +6,7 @@ using Companies.Appilcation.Features.CompanyUsers.Commands.UpdateCompanyUser;
 using Companies.Application.Features.Companies.Commands.ArchiveCompany;
 using Companies.Application.Features.Companies.Commands.CreateCompany;
 using Companies.Application.Features.Companies.Queries.GetUserCompanies;
+using Companies.Application.Features.CompanyUsers.Queries.CheckCompanyUserModulePermission;
 using Companies.Application.Features.CompanyUsers.Queries.GetCompanyUsers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -66,6 +67,17 @@ namespace Companies.API.Controllers
         [ProducesResponseType((int)StatusCodes.Status200OK)]
         public async Task<ActionResult<int>> ArchiveCompanyUser([FromBody] ArchiveCompanyUserCommand command)
         {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("module-permissions")]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<bool>> CompanyUserModulePermission(int companyId, int module)
+        {
+            var userId = getUserId();
+            CheckCompanyUserModulePermissionQuery command = new CheckCompanyUserModulePermissionQuery(companyId, userId, module);
             var result = await _mediator.Send(command);
             return Ok(result);
         }

@@ -53,12 +53,12 @@ namespace Contractors.API.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [Authorize(Policy = "Read")]
         [HttpGet(Name = "GetContractors")]
         [ProducesResponseType(typeof(List<ContractorVm>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> Get(string filter="",int page = 1, int pageSize=10)
+        public async Task<ActionResult> Get(int companyId,string filter="",int page = 1, int pageSize=10)
         {
-            GetContractorsListQuery command = new GetContractorsListQuery(getCompanyId(), filter, page,pageSize);
+            GetContractorsListQuery command = new GetContractorsListQuery(companyId, filter, page,pageSize);
             var result = await _mediator.Send(command);
             return Ok(result);
         }

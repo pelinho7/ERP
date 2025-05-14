@@ -28,6 +28,9 @@ export class CompaniesService {
             this.setCurrentCompany(x);
           })
         }
+        else{
+          this.setCurrentCompany(null);
+        }
     }
 
     changeCompany(id:number){

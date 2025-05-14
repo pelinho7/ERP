@@ -10,6 +10,9 @@ import { LoadingScreenService } from '../../utilities/services/loading-screen.se
 import { ContractorsService } from '../services/contractors.service';
 import { Archive } from '../../utilities/models/archive';
 import { CreateContractorsUrlParamsService } from '../services/create-contractors-url-params.service';
+import { CompaniesService } from '../../companies/services/companies.service';
+import { switchMap, take, tap } from 'rxjs/operators';
+import { Company } from '../../companies/models/company';
 
 @Component({
   selector: 'app-contractors-list',
@@ -34,7 +37,8 @@ export class ContractorsListComponent implements OnInit {
     ,private route: ActivatedRoute
     ,private urlParamsService:UrlParamsService
     ,private createContractorsUrlParamsService:CreateContractorsUrlParamsService
-    ,private confirmService:ConfirmService
+    ,private confirmService:ConfirmService,
+    private companiesService:CompaniesService
     ) { }
 
   ngOnInit(): void {
@@ -64,7 +68,7 @@ export class ContractorsListComponent implements OnInit {
   }
 
   navigate(name:string,pagination:Pagination){
-    var path = this.createContractorsUrlParamsService.createContractorsUrlParams(name,pagination)
+    var path = this.createContractorsUrlParamsService.createContractorsUrlParams(null,name,pagination)
     this.loaded=false;
     this.router.navigateByUrl('/contractors'+path)
   }
@@ -74,10 +78,35 @@ export class ContractorsListComponent implements OnInit {
   }
 
   loadContractors(){
-    this.nameFilter=this.nameFilterInput;
+    // var companyId:number;
+    // this.companiesService.currentCompany$.pipe(
+    //   take(1)
+    // ).subscribe(x=>
+    // {
+    //     companyId=x.id
+    // })  
+
+    // this.nameFilter=this.nameFilterInput;
+    //   this.loadingScreenService.show();
+
+    //   this.contractorsService.getList(companyId,this.nameFilterInput,this.pagination).subscribe(x=>{
+    //     this.pagination=x.pagination;
+
+    //     this.items=x.items;
+        
+    //     this.loaded=true;
+    //   })
+    //   .add(()=>{
+    //     this.loadingScreenService.hide();
+    //   })
+
+
+    this.companiesService.currentCompany$.pipe(
+      tap(company => {
+        this.nameFilter=this.nameFilterInput;
       this.loadingScreenService.show();
 
-      this.contractorsService.getList(this.nameFilterInput,this.pagination).subscribe(x=>{
+      this.contractorsService.getList(company.id,this.nameFilterInput,this.pagination).subscribe(x=>{
         this.pagination=x.pagination;
 
         this.items=x.items;
@@ -87,6 +116,8 @@ export class ContractorsListComponent implements OnInit {
       .add(()=>{
         this.loadingScreenService.hide();
       })
+      })
+    ).subscribe();
   }
 
   selectChanged(productId:number){
